@@ -1,6 +1,15 @@
+/*
+ * @description: 图标显示组件
+ * @author: Jack Chen @懒人码农
+ * @Date: 2024-03-05 20:30:07
+ * @LastEditors: Jack Chen
+ * @LastEditTime: 2024-03-05 22:50:01
+ */
 import {
   Mail,
   Github,
+  Juejin,
+  Csdn,
   Facebook,
   Youtube,
   Linkedin,
@@ -13,6 +22,8 @@ import {
 const components = {
   mail: Mail,
   github: Github,
+  juejin: Juejin,
+  csdn: Csdn,
   facebook: Facebook,
   youtube: Youtube,
   linkedin: Linkedin,
@@ -43,7 +54,7 @@ const SocialIcon = ({ kind, href, size = 8 }: SocialIconProps) => {
     >
       <span className="sr-only">{kind}</span>
       <SocialSvg
-        className={`fill-current text-gray-700 hover:text-primary-500 dark:text-gray-200 dark:hover:text-primary-400 h-${size} w-${size}`}
+        className={`fill-current text-gray-700 hover:text-primary-500 dark:text-gray-200 dark:hover:text-primary-500 h-${size} w-${size}`}
       />
     </a>
   )
