@@ -3,7 +3,8 @@ const siteMetadata = {
   title: 'Web3研习社',
   author: 'Jack Chen',
   headerTitle: 'Web3研习社',
-  description: '分享 JavaScript 以及热门框架，记录Web3前端工程师学习成长历程。',
+  description:
+    '分享区块链、Dapp应用、人工智能、元宇宙以及热门框架，记录Web3前端工程师学习成长历程。',
   language: 'en-us',
   theme: 'system', // system, dark or light
   siteUrl: 'https://54web3.cc',
