@@ -71,6 +71,10 @@ module.exports = () => {
           protocol: 'https',
           hostname: 'picsum.photos',
         },
+        {
+          protocol: 'https',
+          hostname: 'tailwind-nextjs-starter-blog.vercel.app',
+        },
       ],
     },
     async headers() {
