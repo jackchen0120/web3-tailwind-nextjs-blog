@@ -1,3 +1,10 @@
+/*
+ * @description: 根布局
+ * @author: Jack Chen @懒人码农
+ * @Date: 2024-03-05 20:30:07
+ * @LastEditors: Jack Chen
+ * @LastEditTime: 2024-03-05 21:57:29
+ */
 import 'css/tailwind.css'
 import 'pliny/search/algolia.css'
 

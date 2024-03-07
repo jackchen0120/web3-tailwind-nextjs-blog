@@ -4590,6 +4590,7 @@ __metadata:
   languageName: node
   linkType: hard
 
+<<<<<<< HEAD
 "data-view-buffer@npm:^1.0.1":
   version: 1.0.1
   resolution: "data-view-buffer@npm:1.0.1"
@@ -4623,6 +4624,8 @@ __metadata:
   languageName: node
   linkType: hard
 
+=======
+>>>>>>> 9fce293e038b6bf38c72521cd9c000cba402c42d
 "debounce@npm:^1.2.1":
   version: 1.2.1
   resolution: "debounce@npm:1.2.1"
@@ -4846,9 +4849,15 @@ __metadata:
   linkType: hard
 
 "electron-to-chromium@npm:^1.4.668":
+<<<<<<< HEAD
   version: 1.4.693
   resolution: "electron-to-chromium@npm:1.4.693"
   checksum: 3a173467da27d6c82e0e645ee2de3b6aa9cdbd0a8f6b314ddeeadc5b18ebe3555644ed9a720d9b72b7b9ed0574e2617277b7d34e6ee9c5aa962fd55cf1b1a41c
+=======
+  version: 1.4.692
+  resolution: "electron-to-chromium@npm:1.4.692"
+  checksum: 687e8d3833a32499c157c1d96eb11b840b7de71fa81369934ea51df01448d6408c6eed5f45406768b062fa2a45002795682e8e324bfba70528afd3241f79c049
+>>>>>>> 9fce293e038b6bf38c72521cd9c000cba402c42d
   languageName: node
   linkType: hard
 
@@ -4916,16 +4925,24 @@ __metadata:
   linkType: hard
 
 "es-abstract@npm:^1.22.1, es-abstract@npm:^1.22.3, es-abstract@npm:^1.22.4":
+<<<<<<< HEAD
   version: 1.23.0
   resolution: "es-abstract@npm:1.23.0"
+=======
+  version: 1.22.5
+  resolution: "es-abstract@npm:1.22.5"
+>>>>>>> 9fce293e038b6bf38c72521cd9c000cba402c42d
   dependencies:
     array-buffer-byte-length: ^1.0.1
     arraybuffer.prototype.slice: ^1.0.3
     available-typed-arrays: ^1.0.7
     call-bind: ^1.0.7
+<<<<<<< HEAD
     data-view-buffer: ^1.0.1
     data-view-byte-length: ^1.0.0
     data-view-byte-offset: ^1.0.0
+=======
+>>>>>>> 9fce293e038b6bf38c72521cd9c000cba402c42d
     es-define-property: ^1.0.0
     es-errors: ^1.3.0
     es-set-tostringtag: ^2.0.3
@@ -4942,7 +4959,10 @@ __metadata:
     internal-slot: ^1.0.7
     is-array-buffer: ^3.0.4
     is-callable: ^1.2.7
+<<<<<<< HEAD
     is-data-view: ^1.0.1
+=======
+>>>>>>> 9fce293e038b6bf38c72521cd9c000cba402c42d
     is-negative-zero: ^2.0.3
     is-regex: ^1.1.4
     is-shared-array-buffer: ^1.0.3
@@ -4964,7 +4984,11 @@ __metadata:
     typed-array-length: ^1.0.5
     unbox-primitive: ^1.0.2
     which-typed-array: ^1.1.14
+<<<<<<< HEAD
   checksum: 7680ecf8474adeb9eb294ed1cd37eec28c70a73598af6f4915e32450b0c95f19165a2c4d2e50453ac950f0f58a39ee8338dc16dd5fd216dcdbb1995ada293100
+=======
+  checksum: 984ab92f8226812365d1c4ecf12f3a408a4cc7a5bfe448f231fd39fa1ca9fb8cd65f27c76fc1a0bc3d1492c54b6637e57ad8e4954402e39bb916e9db4bcdbc61
+>>>>>>> 9fce293e038b6bf38c72521cd9c000cba402c42d
   languageName: node
   linkType: hard
 
@@ -6779,6 +6803,7 @@ __metadata:
   languageName: node
   linkType: hard
 
+<<<<<<< HEAD
 "is-data-view@npm:^1.0.1":
   version: 1.0.1
   resolution: "is-data-view@npm:1.0.1"
@@ -6788,6 +6813,8 @@ __metadata:
   languageName: node
   linkType: hard
 
+=======
+>>>>>>> 9fce293e038b6bf38c72521cd9c000cba402c42d
 "is-date-object@npm:^1.0.1, is-date-object@npm:^1.0.5":
   version: 1.0.5
   resolution: "is-date-object@npm:1.0.5"

@@ -1,3 +1,10 @@
+/*
+ * @description: 描述信息
+ * @author: Jack Chen @懒人码农
+ * @Date: 2024-03-05 20:30:07
+ * @LastEditors: Jack Chen
+ * @LastEditTime: 2024-03-05 22:56:20
+ */
 import Image from './Image'
 import Link from './Link'
 
@@ -45,7 +52,7 @@ const Card = ({ title, description, imgSrc, href }) => (
             className="text-base font-medium leading-6 text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
             aria-label={`Link to ${title}`}
           >
-            Learn more &rarr;
+            查看详情 &rarr;
           </Link>
         )}
       </div>
