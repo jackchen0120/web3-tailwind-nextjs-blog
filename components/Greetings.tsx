@@ -1,3 +1,10 @@
+/*
+ * @description: 描述信息
+ * @author: Jack Chen @懒人码农
+ * @Date: 2024-03-07 23:59:16
+ * @LastEditors: Jack Chen
+ * @LastEditTime: 2024-03-13 00:30:46
+ */
 import React from 'react'
 import Typed from 'typed.js'
 import Link from 'next/link'
@@ -12,13 +19,7 @@ const Greetings = () => {
 
   React.useEffect(() => {
     const options = {
-      strings: [
-        'Like Web from 2024.',
-        'I was raised in changsha.',
-        'I like 🏊‍♂️ / 🏃 / 🏸.',
-        'I like G·E·M. 🎤',
-        '...',
-      ],
+      strings: ['专注于Web3技术学习、交流与创新的平台'],
       typeSpeed: 50,
       backSpeed: 50,
       loop: true,
@@ -36,24 +37,16 @@ const Greetings = () => {
 
   return (
     <div className="lg:mb-10 lg:mt-10">
-      <h1 className="clip  text-7xl font-extrabold text-transparent dark:to-blue-500">
-        Hi Friends,
-      </h1>
       <div className="dark:prose-dark prose lg:prose-lg">
-        <p>
-          Welcome! I’m <b>Jack Chen</b>
-        </p>
-
+        <h1 className="authorname select-none text-xl font-semibold">Welcome To Web3 研习社</h1>
         <div className="type-wrap">
           <span style={{ whiteSpace: 'pre' }} ref={el} />
-          <br />
-
-          <p>
-            This website is used to introduce myself, publish some regular blogs, document my travel
-            diaries, as well as record books, movies, and music I've experienced. Feel free to{' '}
-            <Link href="/about"> get to know me better.</Link>
-          </p>
         </div>
+        <Link className="rounded-xl" href="/about">
+          <button className="rounded-full bg-sky-500 px-5 py-2 text-sm font-semibold leading-5 text-white hover:bg-sky-700">
+            开启学习之门
+          </button>
+        </Link>
       </div>
       {/* NewBlogButton */}
       {/* <Tooltip title="新的一天~ 记录一下." trigger="hover">

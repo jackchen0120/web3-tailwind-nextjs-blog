@@ -1,9 +1,9 @@
 /*
- * @description: 根布局
+ * @description: 描述信息
  * @author: Jack Chen @懒人码农
  * @Date: 2024-03-05 20:30:07
  * @LastEditors: Jack Chen
- * @LastEditTime: 2024-03-05 21:57:29
+ * @LastEditTime: 2024-03-12 21:28:21
  */
 import 'css/tailwind.css'
 import 'pliny/search/algolia.css'
@@ -17,6 +17,7 @@ import Footer from '@/components/Footer'
 import siteMetadata from '@/data/siteMetadata'
 import { ThemeProviders } from './theme-providers'
 import { Metadata } from 'next'
+import ProgressBarProvider from '@/components/ProgressBarProvider'
 
 const space_grotesk = Space_Grotesk({
   subsets: ['latin'],
@@ -87,7 +88,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <div className="flex h-screen flex-col justify-between font-sans">
               <SearchProvider searchConfig={siteMetadata.search as SearchConfig}>
                 <Header />
-                <main className="mb-auto">{children}</main>
+                <main className="mb-auto">
+                  <ProgressBarProvider>{children}</ProgressBarProvider>
+                </main>
               </SearchProvider>
               <Footer />
             </div>

@@ -3,7 +3,7 @@
  * @author: Jack Chen @懒人码农
  * @Date: 2024-03-05 20:30:07
  * @LastEditors: Jack Chen
- * @LastEditTime: 2024-03-05 23:20:29
+ * @LastEditTime: 2024-03-12 23:54:50
  */
 // @ts-check
 const { fontFamily } = require('tailwindcss/defaultTheme')
@@ -22,6 +22,25 @@ module.exports = {
   darkMode: 'class',
   theme: {
     extend: {
+      keyframes: {
+        'wave-animation': {
+          '0%': { transform: 'rotate(0deg)' },
+          '10%': { transform: 'rotate(14deg)' },
+          '20%': { transform: 'rotate(-8deg)' },
+          '30%': { transform: 'rotate(14deg)' },
+          '40%': { transform: 'rotate(-4deg)' },
+          '50%': { transform: 'rotate(10deg)' },
+          '60%': { transform: 'rotate(0deg)' },
+          '100%': { transform: 'rotate(0deg)' },
+        },
+      },
+      animation: {
+        wave: 'wave-animation 2.5s linear infinite',
+        'music-bar-1': 'music-bar-1 .8s linear infinite',
+        'music-bar-2': 'music-bar-2 .8s linear infinite',
+        'music-bar-3': 'music-bar-3 .8s linear infinite',
+        'music-bar-4': 'music-bar-4 .8s linear infinite',
+      },
       lineHeight: {
         11: '2.75rem',
         12: '3rem',

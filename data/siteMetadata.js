@@ -1,10 +1,17 @@
+/*
+ * @description: 配置网站信息
+ * @author: Jack Chen @懒人码农
+ * @Date: 2024-03-07 23:59:16
+ * @LastEditors: Jack Chen
+ * @LastEditTime: 2024-03-10 15:32:15
+ */
 /** @type {import("pliny/config").PlinyConfig } */
 const siteMetadata = {
   title: 'Web3研习社',
-  author: 'Jack Chen',
+  author: 'Jack Chen @懒人码农',
   headerTitle: 'Web3研习社',
   description:
-    '分享区块链、Dapp应用、人工智能、元宇宙以及热门框架，记录Web3前端工程师学习成长历程。',
+    '分享区块链、Dapp应用、人工智能、元宇宙以及热门技术框架，记录Web3应用工程师学习成长历程。',
   language: 'en-us',
   theme: 'system', // system, dark or light
   siteUrl: 'https://54web3.cc',

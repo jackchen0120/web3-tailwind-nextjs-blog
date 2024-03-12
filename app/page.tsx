@@ -1,13 +1,20 @@
+/*
+ * @description: 描述信息
+ * @author: Jack Chen @懒人码农
+ * @Date: 2024-03-07 23:59:16
+ * @LastEditors: Jack Chen
+ * @LastEditTime: 2024-03-12 21:38:07
+ */
 'use client'
 
 import { sortPosts, allCoreContent } from 'pliny/utils/contentlayer'
 import { allBlogs } from 'contentlayer/generated'
-import Main from './Main'
-// import Greetings from '@/components/Greetings'
+// import Main from './Main'
+import Greetings from '@/components/Greetings'
 
 export default function Page() {
   const sortedPosts = sortPosts(allBlogs)
   const posts = allCoreContent(sortedPosts)
-  return <Main posts={posts} />
-  // return <Greetings />
+  // return <Main posts={posts} />
+  return <Greetings />
 }

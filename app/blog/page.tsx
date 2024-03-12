@@ -5,7 +5,7 @@ import { genPageMetadata } from 'app/seo'
 
 const POSTS_PER_PAGE = 5
 
-export const metadata = genPageMetadata({ title: '文章' })
+export const metadata = genPageMetadata({ title: '博客' })
 
 export default function BlogPage() {
   const posts = allCoreContent(sortPosts(allBlogs))
@@ -24,7 +24,7 @@ export default function BlogPage() {
       posts={posts}
       initialDisplayPosts={initialDisplayPosts}
       pagination={pagination}
-      title="所有文章"
+      title="所有博客"
     />
   )
 }
