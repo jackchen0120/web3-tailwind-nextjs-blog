@@ -3,13 +3,13 @@
  * @author: Jack Chen @懒人码农
  * @Date: 2024-03-07 23:59:16
  * @LastEditors: Jack Chen
- * @LastEditTime: 2024-03-12 21:38:07
+ * @LastEditTime: 2024-03-13 22:24:51
  */
 'use client'
 
 import { sortPosts, allCoreContent } from 'pliny/utils/contentlayer'
 import { allBlogs } from 'contentlayer/generated'
-// import Main from './Main'
+import Main from './Main'
 import Greetings from '@/components/Greetings'
 
 export default function Page() {

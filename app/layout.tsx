@@ -3,7 +3,7 @@
  * @author: Jack Chen @懒人码农
  * @Date: 2024-03-05 20:30:07
  * @LastEditors: Jack Chen
- * @LastEditTime: 2024-03-12 21:28:21
+ * @LastEditTime: 2024-03-13 22:57:43
  */
 import 'css/tailwind.css'
 import 'pliny/search/algolia.css'
@@ -86,9 +86,41 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <Analytics analyticsConfig={siteMetadata.analytics as AnalyticsConfig} />
           <SectionContainer>
             <div className="flex h-screen flex-col justify-between font-sans">
+              <div className="absolute inset-0 -z-10 overflow-hidden bg-[#fcfcfd] dark:bg-[#050a1a]">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  xmlnsXlink="http://www.w3.org/1999/xlink"
+                  fill="none"
+                  viewBox="0 0 1440 900"
+                >
+                  <path
+                    fill="url(#pattern0)"
+                    d="M0 0H1440V900H0z"
+                    opacity="0.36"
+                    style={{ mixBlendMode: 'exclusion' }}
+                  ></path>
+                  <defs>
+                    <pattern
+                      id="pattern0"
+                      width="0.429"
+                      height="0.687"
+                      patternContentUnits="objectBoundingBox"
+                    >
+                      <use transform="scale(.00044 .0007)" xlinkHref="#image0_1288_13896"></use>
+                    </pattern>
+                    <image
+                      id="image0_1288_13896"
+                      width="972"
+                      height="972"
+                      data-name="216.png"
+                      xlinkHref="/static/images/home_bg.png"
+                    ></image>
+                  </defs>
+                </svg>
+              </div>
               <SearchProvider searchConfig={siteMetadata.search as SearchConfig}>
                 <Header />
-                <main className="mb-auto">
+                <main>
                   <ProgressBarProvider>{children}</ProgressBarProvider>
                 </main>
               </SearchProvider>
