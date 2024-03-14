@@ -3,7 +3,7 @@
  * @author: Jack Chen @懒人码农
  * @Date: 2024-03-07 23:59:16
  * @LastEditors: Jack Chen
- * @LastEditTime: 2024-03-10 15:32:15
+ * @LastEditTime: 2024-03-14 23:01:56
  */
 /** @type {import("pliny/config").PlinyConfig } */
 const siteMetadata = {
@@ -11,7 +11,7 @@ const siteMetadata = {
   author: 'Jack Chen @懒人码农',
   headerTitle: 'Web3研习社',
   description:
-    '分享区块链、Dapp应用、人工智能、元宇宙以及热门技术框架，记录Web3应用工程师学习成长历程。',
+    '分享最新的技术动态、应用案例与发展趋势，推动Web3技术的普及和应用创新，以及记录Web3程序员学习成长历程。',
   language: 'en-us',
   theme: 'system', // system, dark or light
   siteUrl: 'https://54web3.cc',
@@ -66,6 +66,19 @@ const siteMetadata = {
     giscusConfig: {
       // Visit the link below, and follow the steps in the 'configuration' section
       // https://giscus.app/
+      // data-repo="jackchen0120/docs"
+      //   data-repo-id="R_kgDOLgVfRw"
+      //   data-category="Announcements"
+      //   data-category-id="DIC_kwDOLgVfR84Cd-FI"
+      //   data-mapping="pathname"
+      //   data-strict="0"
+      //   data-reactions-enabled="1"
+      //   data-emit-metadata="0"
+      //   data-input-position="top"
+      //   data-theme="light"
+      //   data-lang="zh-CN"
+      //   data-loading="lazy"
+      //   crossorigin="anonymous"
       repo: process.env.NEXT_PUBLIC_GISCUS_REPO,
       repositoryId: process.env.NEXT_PUBLIC_GISCUS_REPOSITORY_ID,
       category: process.env.NEXT_PUBLIC_GISCUS_CATEGORY,
@@ -84,7 +97,7 @@ const siteMetadata = {
       // example: https://giscus.app/themes/custom_example.css
       themeURL: '',
       // This corresponds to the `data-lang="en"` in giscus's configurations
-      lang: 'en',
+      lang: 'zh-CN',
     },
   },
   search: {

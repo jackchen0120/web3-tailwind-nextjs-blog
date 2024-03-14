@@ -3,7 +3,7 @@
  * @author: Jack Chen @懒人码农
  * @Date: 2024-03-07 23:59:16
  * @LastEditors: Jack Chen
- * @LastEditTime: 2024-03-13 23:11:40
+ * @LastEditTime: 2024-03-14 22:12:03
  */
 import React from 'react'
 import Typed from 'typed.js'
@@ -18,7 +18,7 @@ const Greetings = () => {
 
   React.useEffect(() => {
     const options = {
-      strings: ['专注Web3技术、应用与创新的学习与分享', '不止于此......'],
+      strings: ['专注Web3技术、应用与创新的学习与交流分享', '不止于此......'],
       typeSpeed: 50,
       backSpeed: 50,
       loop: true,
@@ -75,7 +75,7 @@ const Greetings = () => {
           <div className="type-wrap my-5 dark:text-white">
             <span style={{ whiteSpace: 'pre' }} ref={el} />
           </div>
-          <Link href="/about">
+          <Link href="/blog">
             <button className="rounded-lg bg-sky-500 px-5 py-2 text-sm font-semibold leading-5 text-white hover:bg-sky-700 md:text-base">
               点我充电💪
             </button>

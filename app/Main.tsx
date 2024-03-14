@@ -3,7 +3,14 @@ import Image from '@/components/Image'
 import Tag from '@/components/Tag'
 import siteMetadata from '@/data/siteMetadata'
 import { formatDate } from 'pliny/utils/formatDate'
-import NewsletterForm from 'pliny/ui/NewsletterForm'
+// import NewsletterForm from 'pliny/ui/NewsletterForm'
+
+const postDateTemplate: Intl.DateTimeFormatOptions = {
+  weekday: 'long',
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+}
 
 const MAX_DISPLAY = 5
 
@@ -11,42 +18,39 @@ export default function Home({ posts }) {
   return (
     <>
       <div className="divide-y divide-gray-200 dark:divide-gray-700">
-        <div className="space-y-2 pb-8 pt-6 md:space-y-5">
-          <h1 className="text-3xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-5xl md:leading-14">
-            最新博客
+        <div className="space-y-2 pb-6 pt-4 md:space-y-5">
+          <h1 className="text-2xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100  md:text-3xl md:leading-14">
+            最新动态
           </h1>
-          <p className="text-lg leading-7 text-gray-500 dark:text-gray-400">
-            {siteMetadata.description}
-          </p>
+          <p className="text-lg text-gray-500 dark:text-gray-400">{siteMetadata.description}</p>
         </div>
         <ul className="divide-y divide-gray-200 dark:divide-gray-700">
           {!posts.length && 'No posts found.'}
           {posts.slice(0, MAX_DISPLAY).map((post) => {
             const { slug, date, title, summary, tags, images } = post
             return (
-              <li key={slug} className="py-12">
+              <li key={slug} className="py-6">
                 <article>
-                  <div className="space-y-2 xl:grid xl:grid-cols-4 xl:items-baseline xl:space-y-0">
+                  <div className="space-y-2 md:grid md:grid-cols-4 md:items-center md:space-y-0">
                     <dl>
-                      <dt className="sr-only">Published on</dt>
-                      <dd className="text-base font-medium leading-6 text-gray-500 dark:text-gray-400">
-                        <time dateTime={date}>{formatDate(date, siteMetadata.locale)}</time>
-                      </dd>
-                      <dd className="md:mr-5">
-                        <Image
-                          alt={title}
-                          src={
-                            images
-                              ? images[0] || '/static/images/ocean.jpeg'
-                              : '/static/images/ocean.jpeg'
-                          }
-                          className="h-36 w-full rounded-lg object-cover object-center"
-                          width={256}
-                          height={100}
-                        />
+                      <dt className="sr-only">发布博客</dt>
+                      <dd className="duration-300 hover:-translate-y-1 hover:scale-110 md:mr-5">
+                        <Link href={`/blog/${slug}`} className="text-gray-900 dark:text-gray-100">
+                          <Image
+                            alt={title}
+                            src={
+                              images
+                                ? images[0] || '/static/images/ocean.jpeg'
+                                : '/static/images/ocean.jpeg'
+                            }
+                            className="h-36 w-full rounded-lg object-cover object-center"
+                            width={256}
+                            height={100}
+                          />
+                        </Link>
                       </dd>
                     </dl>
-                    <div className="space-y-5 xl:col-span-3">
+                    <div className="space-y-5 md:col-span-3">
                       <div className="space-y-6">
                         <div>
                           <h2 className="text-2xl font-bold leading-8 tracking-tight">
@@ -63,11 +67,20 @@ export default function Home({ posts }) {
                             ))}
                           </div>
                         </div>
-                        <div className="prose max-w-none text-gray-500 dark:text-gray-400">
+                        <div className="prose max-w-none truncate text-gray-500 dark:text-gray-400">
                           {summary}
                         </div>
                       </div>
-                      <div className="text-base font-medium leading-6">
+                      <div className="flex text-base font-medium leading-6">
+                        <div className="mr-3 text-base font-medium leading-6 text-gray-500 dark:text-gray-400">
+                          <time dateTime={date}>
+                            {new Date(date).toLocaleDateString(
+                              siteMetadata.locale,
+                              postDateTemplate
+                            )}
+                          </time>
+                          {/* <time dateTime={date}>{formatDate(date, siteMetadata.locale)}</time> */}
+                        </div>
                         <Link
                           href={`/blog/${slug}`}
                           className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
