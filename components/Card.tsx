@@ -1,9 +1,9 @@
 /*
- * @description: 描述信息
+ * @description: 卡片组件
  * @author: Jack Chen @懒人码农
  * @Date: 2024-03-05 20:30:07
  * @LastEditors: Jack Chen
- * @LastEditTime: 2024-03-05 22:56:20
+ * @LastEditTime: 2024-03-18 21:36:13
  */
 import Image from './Image'
 import Link from './Link'
@@ -21,7 +21,7 @@ const Card = ({ title, description, imgSrc, href }) => (
             <Image
               alt={title}
               src={imgSrc}
-              className="object-cover object-center md:h-36 lg:h-48"
+              className="object-cover object-center duration-300 hover:-translate-y-1 hover:scale-110 md:h-36 lg:h-48"
               width={544}
               height={306}
             />
@@ -30,7 +30,7 @@ const Card = ({ title, description, imgSrc, href }) => (
           <Image
             alt={title}
             src={imgSrc}
-            className="object-cover object-center md:h-36 lg:h-48"
+            className="object-cover object-center duration-300 hover:-translate-y-1 hover:scale-110 md:h-36 lg:h-48"
             width={544}
             height={306}
           />

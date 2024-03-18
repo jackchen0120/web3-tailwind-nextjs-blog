@@ -2,7 +2,7 @@ import Link from '@/components/Link'
 import Image from '@/components/Image'
 import Tag from '@/components/Tag'
 import siteMetadata from '@/data/siteMetadata'
-import { formatDate } from 'pliny/utils/formatDate'
+// import { formatDate } from 'pliny/utils/formatDate'
 // import NewsletterForm from 'pliny/ui/NewsletterForm'
 
 const postDateTemplate: Intl.DateTimeFormatOptions = {
@@ -34,7 +34,7 @@ export default function Home({ posts }) {
                   <div className="space-y-2 md:grid md:grid-cols-4 md:items-center md:space-y-0">
                     <dl>
                       <dt className="sr-only">发布博客</dt>
-                      <dd className="duration-300 hover:-translate-y-1 hover:scale-110 md:mr-5">
+                      <dd className="shrink-0 duration-300 hover:-translate-y-1 hover:scale-110  md:mr-5">
                         <Link href={`/blog/${slug}`} className="text-gray-900 dark:text-gray-100">
                           <Image
                             alt={title}
@@ -52,7 +52,7 @@ export default function Home({ posts }) {
                     </dl>
                     <div className="space-y-5 md:col-span-3">
                       <div className="space-y-6">
-                        <div>
+                        <div className="shrink-0">
                           <h2 className="text-2xl font-bold leading-8 tracking-tight">
                             <Link
                               href={`/blog/${slug}`}
@@ -104,7 +104,7 @@ export default function Home({ posts }) {
             className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
             aria-label="All posts"
           >
-            所有博客 &rarr;
+            所有文章 &rarr;
           </Link>
         </div>
       )}
