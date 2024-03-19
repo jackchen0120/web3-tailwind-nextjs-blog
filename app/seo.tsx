@@ -1,3 +1,10 @@
+/*
+ * @description: SEO组件
+ * @author: Jack Chen @懒人码农
+ * @Date: 2024-03-05 20:30:07
+ * @LastEditors: Jack Chen
+ * @LastEditTime: 2024-03-19 21:49:45
+ */
 import { Metadata } from 'next'
 import siteMetadata from '@/data/siteMetadata'
 
@@ -18,7 +25,7 @@ export function genPageMetadata({ title, description, image, ...rest }: PageSEOP
       url: './',
       siteName: siteMetadata.title,
       images: image ? [image] : [siteMetadata.socialBanner],
-      locale: 'en_US',
+      locale: 'zh-CN',
       type: 'website',
     },
     twitter: {

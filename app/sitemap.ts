@@ -1,3 +1,10 @@
+/*
+ * @description: 描述信息
+ * @author: Jack Chen @懒人码农
+ * @Date: 2024-03-05 20:30:07
+ * @LastEditors: Jack Chen
+ * @LastEditTime: 2024-03-19 21:50:44
+ */
 import { MetadataRoute } from 'next'
 import { allBlogs } from 'contentlayer/generated'
 import siteMetadata from '@/data/siteMetadata'

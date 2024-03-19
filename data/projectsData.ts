@@ -3,7 +3,7 @@
  * @author: Jack Chen @懒人码农
  * @Date: 2024-03-05 20:30:07
  * @LastEditors: Jack Chen
- * @LastEditTime: 2024-03-18 22:48:01
+ * @LastEditTime: 2024-03-19 21:17:56
  */
 interface Project {
   title: string
@@ -30,6 +30,18 @@ const projectsData: Project[] = [
     description: `Vue全家桶+新版Echarts电商平台数据可视化大屏监控系统进阶实战项目`,
     imgSrc: '/static/images/dataV_2.jpg',
     href: 'https://github.com/jackchen0120/EC-Platform-Monitor?tab=readme-ov-file',
+  },
+  {
+    title: '3D酷炫动画玩转纯手工打造个人博客',
+    description: `NodeJS+3D酷炫动画玩转纯手工打造个人博客，不用博客框架`,
+    imgSrc: '/static/images/frontend_2.png',
+    href: 'https://54web3.cc',
+  },
+  {
+    title: '开发一款微信小程序的个性简历',
+    description: `基于小程序原生组件及官方API接口实现的小程序版个性简历，并引入炫酷的ColorUI组件库，展现不一样的精彩画面。`,
+    imgSrc: '/static/images/frontend_3.png',
+    href: 'https://54web3.cc',
   },
 ]
 

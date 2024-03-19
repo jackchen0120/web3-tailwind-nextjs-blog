@@ -3,7 +3,7 @@
  * @author: Jack Chen @懒人码农
  * @Date: 2024-03-05 20:30:07
  * @LastEditors: Jack Chen
- * @LastEditTime: 2024-03-18 22:57:49
+ * @LastEditTime: 2024-03-19 21:40:29
  */
 import projectsData from '@/data/projectsData'
 import Card from '@/components/Card'
@@ -20,7 +20,7 @@ export default function Projects() {
             项目
           </h1>
           <p className="text-lg leading-7 text-gray-500 dark:text-gray-400">
-            提高开发技巧及思维能力从学习优质开源项目动手实操✍️
+            提高开发技巧及思维能力，从学习优质开源项目+动手实操✍️
           </p>
         </div>
         <div className="container py-12">

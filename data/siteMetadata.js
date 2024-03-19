@@ -3,7 +3,7 @@
  * @author: Jack Chen @懒人码农
  * @Date: 2024-03-07 23:59:16
  * @LastEditors: Jack Chen
- * @LastEditTime: 2024-03-18 23:10:32
+ * @LastEditTime: 2024-03-19 22:25:55
  */
 /** @type {import("pliny/config").PlinyConfig } */
 const siteMetadata = {
@@ -11,13 +11,13 @@ const siteMetadata = {
   author: 'Jack Chen @懒人码农',
   headerTitle: 'Web3研习社',
   description:
-    '分享最新的Web3技术动态、应用案例与发展趋势，推动Web3技术的普及和应用创新，探寻Web4数字化未来时代，以及记录Web3程序员学习成长历程。',
+    '分享最新的Web3技术动态、应用案例与发展趋势，推动Web3.0技术的普及和应用创新，探寻Web4.0数字化未来时代。',
   language: 'en-us',
   theme: 'system', // system, dark or light
   siteUrl: 'https://54web3.cc',
   siteRepo: 'https://github.com/timlrx/tailwind-nextjs-starter-blog',
   siteLogo: '/static/favicons/favicon.ico',
-  socialBanner: '/static/images/twitter-card.png',
+  socialBanner: '/static/images/logo.png',
   mastodon: 'https://mastodon.social/@mastodonuser',
   email: '278910933@qq.com',
   github: 'https://github.com/jackchen0120',

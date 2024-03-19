@@ -154,7 +154,7 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
                   className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
                   aria-label="Back to the blog"
                 >
-                  &larr; 返回博客列表
+                  &larr; 返回列表
                 </Link>
               </div>
             </footer>

@@ -40,8 +40,8 @@ export default function Home({ posts }) {
                             alt={title}
                             src={
                               images
-                                ? images[0] || '/static/images/ocean.jpeg'
-                                : '/static/images/ocean.jpeg'
+                                ? images[0] || '/static/images/default.jpg'
+                                : '/static/images/default.jpg'
                             }
                             className="h-36 w-full rounded-lg object-cover object-center"
                             width={256}
@@ -86,7 +86,7 @@ export default function Home({ posts }) {
                           className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
                           aria-label={`Read more: "${title}"`}
                         >
-                          查看详情 &rarr;
+                          详情 &rarr;
                         </Link>
                       </div>
                     </div>

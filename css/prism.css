@@ -142,3 +142,7 @@
 .token.table {
   display: inline;
 }
+
+.prose :where(code):not(:where([class~="not-prose"],[class~="not-prose"] *)) {
+  color: #ff502c;
+}

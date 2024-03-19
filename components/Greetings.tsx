@@ -3,7 +3,7 @@
  * @author: Jack Chen @懒人码农
  * @Date: 2024-03-07 23:59:16
  * @LastEditors: Jack Chen
- * @LastEditTime: 2024-03-18 23:06:58
+ * @LastEditTime: 2024-03-19 21:58:59
  */
 import React from 'react'
 import Typed from 'typed.js'
@@ -18,7 +18,7 @@ const Greetings = () => {
 
   React.useEffect(() => {
     const options = {
-      strings: ['专注Web3技术、应用与创新的学习与交流分享', '不止于此......'],
+      strings: ['专注Web3技术、应用与创新的学习与交流分享', '人生不止于此......'],
       typeSpeed: 50,
       backSpeed: 50,
       loop: true,
@@ -71,8 +71,11 @@ const Greetings = () => {
         </div> */}
 
         <div className="dark:prose-dark prose text-center lg:prose-lg sm:mx-auto">
-          <h1 className="authorname select-none text-2xl font-semibold">Welcome To Web3 研习社</h1>
-          <div className="type-wrap my-5 dark:text-white">
+          <h1 className="select-none text-2xl font-semibold">
+            <span className="authorname">Welcome To Web3 研习社</span>
+            <span>👋</span>
+          </h1>
+          <div className="type-wrap my-5 font-bold dark:text-white">
             <span style={{ whiteSpace: 'pre' }} ref={el} />
           </div>
           <Link href="/blog">

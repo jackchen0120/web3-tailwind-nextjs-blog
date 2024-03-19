@@ -3,7 +3,7 @@
  * @author: Jack Chen @懒人码农
  * @Date: 2024-03-05 20:30:07
  * @LastEditors: Jack Chen
- * @LastEditTime: 2024-03-18 23:14:56
+ * @LastEditTime: 2024-03-19 21:38:25
  */
 import toolsData from '@/data/toolsData'
 import Card from '@/components/Card'
@@ -25,7 +25,7 @@ export default function Projects() {
         </div>
         <div className="container py-12">
           <div className="-m-4 flex flex-wrap">
-            <h2 className="mx-auto text-lg">码农紧急开发中...</h2>
+            <h2 className="mx-auto text-lg">码农甄选中...</h2>
             {toolsData.map((d) => (
               <Card
                 key={d.title}
