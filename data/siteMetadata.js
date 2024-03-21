@@ -11,7 +11,7 @@ const siteMetadata = {
   author: 'Jack Chen @懒人码农',
   headerTitle: 'Web3研习社',
   description:
-    '分享最新的技术动态、应用案例与发展趋势，推动Web3技术的普及和应用创新，探寻Web4.0数字化未来时代。以及记录码农学习技术的经验总结，分享学习心得，帮助同志共同成长。',
+    '分享最新的技术动态、应用案例与发展趋势，推动Web3技术的普及和应用创新，探寻Web4.0数字化未来时代。以及记录码农学习的经验，分享学习心得，帮助同志共同成长。',
   language: 'en-us',
   theme: 'system', // system, dark or light
   siteUrl: 'https://54web3.cc',

@@ -33,8 +33,8 @@ export default function Home({ posts }) {
                 <article>
                   <div className="space-y-2 md:grid md:grid-cols-4 md:items-center md:space-y-0">
                     <dl>
-                      <dt className="sr-only">发布博客</dt>
-                      <dd className="shrink-0 duration-300 hover:-translate-y-1 hover:scale-110  md:mr-5">
+                      <dt className="sr-only">发布文章</dt>
+                      <dd className="shrink-0 overflow-hidden rounded-lg md:mr-5">
                         <Link href={`/blog/${slug}`} className="text-gray-900 dark:text-gray-100">
                           <Image
                             alt={title}
@@ -43,7 +43,7 @@ export default function Home({ posts }) {
                                 ? images[0] || '/static/images/default.jpg'
                                 : '/static/images/default.jpg'
                             }
-                            className="h-36 w-full rounded-lg object-cover object-center"
+                            className="h-36 w-full rounded-lg object-cover object-center duration-300 hover:-translate-y-1 hover:scale-110"
                             width={256}
                             height={100}
                           />

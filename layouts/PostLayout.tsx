@@ -42,7 +42,7 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
             <div className="space-y-1 text-center">
               <dl className="space-y-10">
                 <div>
-                  <dt className="sr-only">发布博客</dt>
+                  <dt className="sr-only">发布文章</dt>
                   <dd className="text-base font-medium leading-6 text-gray-500 dark:text-gray-400">
                     <time dateTime={date}>
                       {new Date(date).toLocaleDateString(siteMetadata.locale, postDateTemplate)}
@@ -74,7 +74,7 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
                       <dl className="whitespace-nowrap text-sm font-medium leading-5">
                         <dt className="sr-only">作者</dt>
                         <dd className="text-gray-900 dark:text-gray-100">{author.name}</dd>
-                        <dt className="sr-only">Twitter</dt>
+                        {/* <dt className="sr-only">Twitter</dt>
                         <dd>
                           {author.twitter && (
                             <Link
@@ -84,7 +84,7 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
                               {author.twitter.replace('https://twitter.com/', '@')}
                             </Link>
                           )}
-                        </dd>
+                        </dd> */}
                       </dl>
                     </li>
                   ))}

@@ -7,7 +7,7 @@
  */
 const headerNavLinks = [
   { href: '/', title: '首页' },
-  { href: '/blog', title: '博客' },
+  { href: '/blog', title: '文章' },
   { href: '/tags', title: '标签' },
   { href: '/projects', title: '项目' },
   { href: '/tool', title: '工具箱' },

@@ -3,7 +3,7 @@
  * @author: Jack Chen @懒人码农
  * @Date: 2024-03-05 20:30:07
  * @LastEditors: Jack Chen
- * @LastEditTime: 2024-03-19 21:17:56
+ * @LastEditTime: 2024-03-21 22:47:41
  */
 interface Project {
   title: string
@@ -35,13 +35,19 @@ const projectsData: Project[] = [
     title: '3D酷炫动画玩转纯手工打造个人博客',
     description: `NodeJS+3D酷炫动画玩转纯手工打造个人博客，不用博客框架`,
     imgSrc: '/static/images/frontend_2.png',
-    href: 'https://54web3.cc',
+    href: 'https://juejin.cn/post/6854573210038435847',
   },
   {
     title: '开发一款微信小程序的个性简历',
     description: `基于小程序原生组件及官方API接口实现的小程序版个性简历，并引入炫酷的ColorUI组件库，展现不一样的精彩画面。`,
     imgSrc: '/static/images/frontend_3.png',
-    href: 'https://54web3.cc',
+    href: 'https://juejin.cn/post/6844904178121179150',
+  },
+  {
+    title: '去中心化交易所',
+    description: `轻松交换你的代币。一个社区的宠儿，让你可以和全网的人交换代币。`,
+    imgSrc: '/static/images/frontend_4.png',
+    href: 'https://github.com/Uniswap/interface',
   },
 ]
 

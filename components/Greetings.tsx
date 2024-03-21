@@ -3,7 +3,7 @@
  * @author: Jack Chen @懒人码农
  * @Date: 2024-03-07 23:59:16
  * @LastEditors: Jack Chen
- * @LastEditTime: 2024-03-19 21:58:59
+ * @LastEditTime: 2024-03-21 22:20:34
  */
 import React from 'react'
 import Typed from 'typed.js'
@@ -80,7 +80,7 @@ const Greetings = () => {
           </div>
           <Link href="/blog">
             <button className="rounded-lg bg-sky-500 px-5 py-2 text-sm font-semibold leading-5 text-white hover:bg-sky-700 md:text-base">
-              免费充电💪
+              免费充电🚀
             </button>
           </Link>
         </div>

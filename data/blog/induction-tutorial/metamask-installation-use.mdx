@@ -1,0 +1,115 @@
+---
+title: 'MetaMask钱包安装和使用'
+date: '2024-03-19'
+lastmod: '2024-03-19'
+tags: ['入门教程', '钱包', '工具']
+draft: false
+summary: '如何学习安装和使用钱包MetaMask，MetaMask是我们开始web3开发的必备工具之一，MetaMask为您提供了管理数字资产所需的一切功能。'
+images: []
+---
+
+<TOCInline toc={props.toc} exclude="Introduction" />
+
+## 前言
+
+> MetaMask是一款插件型（无需下载客户端）轻量级数字货币钱包，主要用于Chrome谷歌浏览器和火狐浏览器Firefox，标志性logo为小狐狸头，辨识度非常高。MetaMask不存储用户的钱包数据，所有私钥由使用者自身持有和保管，非常安全，加上其对以太坊智能合约和Dapp的高度兼容，在开发者社区和资深用户中大受欢迎。在这里，我们来带大家一步步完成MetaMask的安装，并了解其基本使用。
+
+如何学习安装和使用钱包MetaMask，MetaMask是我们开始web3开发的必备工具之一，MetaMask为您提供了管理数字资产所需的一切功能。包括密钥库、安全登录、代币钱包和代币交换等，它是浏览器连接区块链的通道。钱包有很多种，但MetaMask无疑是使用量最大、最受信任的一个。它的源码都是开源的，接受一切审计。
+
+MetaMask是一个浏览器插件，在任何支撑插件的浏览器，都可以安装使用，比如chrome、firefox、edge，而且在任何浏览器里，它的使用方式和功能都完全一样。
+
+## 钱包安装
+
+MetaMask有两种安装方式，第一种通过浏览器直接安装，第二种通过github的安装包进行安装。我依次为您讲解，第一种通过浏览器直接安装，使用chrome浏览器访问官网地址[https://metamask.io](https://metamask.io).这时候，你有可能会出现无法访问以上地址的情况。这里有个解决方法，就是换用火狐浏览器firefox，因为它带有某种超能力，可以正常访问这个地址。如果你不愿意用火狐的话，可以往下看第二种安装方法。
+
+![Web3研习社](https://s1.imagehub.cc/images/2024/03/21/ec7de625f6dfebaca964282bbec42ceb.png)
+
+输入官网地址，开始浏览，我们看到了MetaMask官网首页，下方和上方都有Download按钮，点击任何一个Download，右侧会出现添加到chrome的按钮，点击添加。安装完成直接进入MetaMask使用界面，也有人称为小狐狸钱包。
+
+![Web3研习社](https://s1.imagehub.cc/images/2024/03/21/e9460bfaeeb32e31822af4a5e54153bb.png)
+
+![Web3研习社](https://s1.imagehub.cc/images/2024/03/21/7b67614a9f375bf08e69ac6f1c1d8750.png)
+
+第二种方法通过github的安装包安装。我们访问它的开源代码github地址[https://github.com/MetaMask/metamask-extension/releases](https://github.com/MetaMask/metamask-extension/releases)。来到github地址，我们看到这个项目的所有历史发布版本，我们找到它的chrome版本的安装包，点击下载完成。自动解压到一个目录，目录中的文件就是MetaMask插件的所有代码。我们在chrome浏览器中，打开扩展程序管理界面，访问地址[chrome://extensions/](chrome://extensions/)。点击加载已解压的扩展程序，选择刚才压缩包的解压目录，我们看到MetaMask插件已经安装完成了，并且直接打开MetaMask使用界面。下面我讲解以下MetaMask钱包的使用。
+
+![Web3研习社](https://s1.imagehub.cc/images/2024/03/21/266fd5be41cc1f15e71fb6dc947b7722.png)
+
+## 钱包使用
+
+我们点击开始使用，点我同意按钮。
+
+![Web3研习社](https://s1.imagehub.cc/images/2024/03/21/9cf117d5a18b89feef59edb64ece8fb9.png)
+
+![Web3研习社](https://s1.imagehub.cc/images/2024/03/21/82fa0d378771e9a4f273721cb4ffac17.png)
+
+这里有两个选项，第一个选项，是导入一个你已经有的钱包。第二个选项，是创建一个新的钱包。
+
+![Web3研习社](https://s1.imagehub.cc/images/2024/03/21/433aa8dfb4c92b8a8b5e781b315c280d.png)
+
+我们这里点击新建，这里输入你钱包的登录密码，勾选同意，点击创建按钮。
+
+![Web3研习社](https://s1.imagehub.cc/images/2024/03/21/2dbdb08e977ac16561e70b0a058f5386.png)
+
+这里有一个官方的视频，讲解什么是账户助记词以及如何保护你的钱包安全。如果是正式的钱包，将用来管理你的资产，那么应该按照他们的建议，最好将助记词记录在纸上保存。因为放在电脑或者网络上是有可能被盗走的。记住，永远不要分享你的助记词，也不要和别人分享你的私钥。
+
+![Web3研习社](https://s1.imagehub.cc/images/2024/03/21/38dad35d02bcab7ca35d1ba90e227b7d.png)
+
+点击下一步到达账户助记词界面，点击显示账户助记词。助记词是为了便于你记录和简化记住私钥的，它可以推导出所有账户的私钥，所以务必保存好。当然，我们开发测试账号，是无所谓的，但是重新安装钱包后，导入账号时还是需要使用的，把助记词记好后，点击下一步，输入助记词，点击确认，进入安装成功界面。
+
+![Web3研习社](https://s1.imagehub.cc/images/2024/03/21/4c7e7fdc0d9ff590a1d81bda05738285.png)
+
+![Web3研习社](https://s1.imagehub.cc/images/2024/03/21/0727b1b8b1fd2c4af9e0634cff7f2024.png)
+
+![Web3研习社](https://s1.imagehub.cc/images/2024/03/21/7d6db339500cd45b6bb8b105046afd38.png)
+
+代表你已经拥有了一个MetaMask钱包，点击全部完成。于是MetaMask生成了一个账户。
+
+![Web3研习社](https://s1.imagehub.cc/images/2024/03/21/0b2f36ef6ba51249fb11f7d147fcf60c.png)
+
+## 如何使用MetaMask功能
+
+我们讲一下MetaMask各部分功能，从上往下看，首先我们看这里的切换网络，目前显示的是以太坊主网络，也就是真正实际使用的以太坊网络，在主网络上流动的就是真金白银，真正的ETH。你可以在主网上转账，也可以部署智能合约，或者调用智能合约。点击下拉框，我们可以看到，有一个显示和隐藏，你可以选择打开或者关闭测试网，测试网是我们用于测试的网络，我们开发的智能合约正式上线以前，都会部署到测试网上进行模拟测试。没有问题之后，再部署到主网络上。点击一下，那么所有的测试网都被打开显示的。
+
+![Web3研习社](https://s1.imagehub.cc/images/2024/03/21/19a30994363f97f1b22ffbbd1cefbb1d.png)
+
+另外，我们还可以添加网络，添加的网络通常是自己搭建的私有节点，或者是模拟网络，用于本地测试，我们会用到这个功能。
+
+![Web3研习社](https://s1.imagehub.cc/images/2024/03/21/8cd871c44a92b525cdde1d8ea1308b3e.png)
+
+我们再看下一个功能，账户管理，点击账户管理的图标，我们可以看到除了当前生成的账号以外，下方还有创建账户和导入账户等功能。创建账户就是创建一个全新的账户，MetaMask允许多个账号同时存在。导入账户就是导入一个以前已经存在的账户。
+
+![Web3研习社](https://s1.imagehub.cc/images/2024/03/21/e303f75107b694f4130dc0f4e49f1ffe.png)
+
+我们点击创建账户，输入账户名称，点击创建。我们就会看到生成了一个账户3，并且，新创建的账户3已经打开，我们再来看一下账户的列表，那么就变成了3个账户了。而且账户3是被激活的。
+
+![Web3研习社](https://s1.imagehub.cc/images/2024/03/21/75dd9638ae022b21ef617565fde1dc17.png)
+
+![Web3研习社](https://s1.imagehub.cc/images/2024/03/21/64cd2ad4f91932750307caeeb10bffd8.png)
+
+![Web3研习社](https://s1.imagehub.cc/images/2024/03/21/cc8ce8c3452ebb67879030eb88a989b9.png)
+
+另外我们也可以导入一个已经存在的账户。点击导入账户，这需要输入你的私钥，我们就不再演示了。
+
+![Web3研习社](https://s1.imagehub.cc/images/2023/07/02/m17.png)
+
+我们再回到钱包的主界面，我们看一下其他的功能，这是当前账户的地址，我们可以点击一下，把它给拷贝到剪贴板，在其他地方使用。这是当前账户的余额和它的总价值。这是发送功能，发送就是给其他账户转账或支付。再往下看，添加资产功能，MetaMask钱包不仅可以保存以太坊，还可以保存其他代币，这个功能以后我们会用到。
+
+![Web3研习社](https://s1.imagehub.cc/images/2023/07/02/m18.png)
+
+目前我们还不需要，我们还可以查看或者修改当前账户的信息，点击这里的三个点，点击查看账户详情，可以看到账户的名称，地址二维码和地址。
+
+![Web3研习社](https://s1.imagehub.cc/images/2023/07/02/m19.png)
+
+![Web3研习社](https://s1.imagehub.cc/images/2023/07/02/m20.png)
+
+另外，我们还可以修改账户的名称，方便区分不同的账户，比如把账户3修改为懒人码农。
+
+![Web3研习社](https://s1.imagehub.cc/images/2023/07/02/m22.png)
+
+我们还可以在这里导出当前账户的私钥，需要输入账号密码，点击确认。这就是当前账户的私钥。
+
+![Web3研习社](https://s1.imagehub.cc/images/2023/07/02/m21.png)
+
+最后我们为了快速启动MetaMask钱包，可以将钱包的程序钉在工具栏上，这样使用起来比较方便，以上就是MetaMask钱包的安装和使用方法。
+
+![Web3研习社](https://s1.imagehub.cc/images/2023/07/02/m23.png)

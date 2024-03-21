@@ -1,11 +1,18 @@
-import ListLayout from '@/layouts/ListLayoutWithTags'
+/*
+ * @description: 文章列表页
+ * @author: Jack Chen @懒人码农
+ * @Date: 2024-03-05 20:30:07
+ * @LastEditors: Jack Chen
+ * @LastEditTime: 2024-03-22 00:21:59
+ */
+import ListLayout from '@/layouts/ListLayout'
 import { allCoreContent, sortPosts } from 'pliny/utils/contentlayer'
 import { allBlogs } from 'contentlayer/generated'
 import { genPageMetadata } from 'app/seo'
 
 const POSTS_PER_PAGE = 5
 
-export const metadata = genPageMetadata({ title: '博客' })
+export const metadata = genPageMetadata({ title: '文章' })
 
 export default function BlogPage() {
   const posts = allCoreContent(sortPosts(allBlogs))

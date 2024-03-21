@@ -2,10 +2,11 @@
 
 import { useState } from 'react'
 import { usePathname } from 'next/navigation'
-import { formatDate } from 'pliny/utils/formatDate'
+// import { formatDate } from 'pliny/utils/formatDate'
 import { CoreContent } from 'pliny/utils/contentlayer'
 import type { Blog } from 'contentlayer/generated'
 import Link from '@/components/Link'
+import Image from '@/components/Image'
 import Tag from '@/components/Tag'
 import siteMetadata from '@/data/siteMetadata'
 
@@ -20,6 +21,13 @@ interface ListLayoutProps {
   pagination?: PaginationProps
 }
 
+const postDateTemplate: Intl.DateTimeFormatOptions = {
+  weekday: 'long',
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+}
+
 function Pagination({ totalPages, currentPage }: PaginationProps) {
   const pathname = usePathname()
   const basePath = pathname.split('/')[1]
@@ -31,7 +39,7 @@ function Pagination({ totalPages, currentPage }: PaginationProps) {
       <nav className="flex justify-between">
         {!prevPage && (
           <button className="cursor-auto disabled:opacity-50" disabled={!prevPage}>
-            Previous
+            上一页
           </button>
         )}
         {prevPage && (
@@ -39,20 +47,20 @@ function Pagination({ totalPages, currentPage }: PaginationProps) {
             href={currentPage - 1 === 1 ? `/${basePath}/` : `/${basePath}/page/${currentPage - 1}`}
             rel="prev"
           >
-            Previous
+            上一页
           </Link>
         )}
         <span>
-          {currentPage} of {totalPages}
+          第{currentPage}页，共{totalPages}页
         </span>
         {!nextPage && (
           <button className="cursor-auto disabled:opacity-50" disabled={!nextPage}>
-            Next
+            下一页
           </button>
         )}
         {nextPage && (
           <Link href={`/${basePath}/page/${currentPage + 1}`} rel="next">
-            Next
+            下一页
           </Link>
         )}
       </nav>
@@ -80,17 +88,17 @@ export default function ListLayout({
     <>
       <div className="divide-y divide-gray-200 dark:divide-gray-700">
         <div className="space-y-2 pb-8 pt-6 md:space-y-5">
-          <h1 className="text-3xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-6xl md:leading-14">
+          <h1 className="text-3xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-5xl md:leading-14">
             {title}
           </h1>
           <div className="relative max-w-lg">
             <label>
-              <span className="sr-only">Search articles</span>
+              <span className="sr-only">搜索文章</span>
               <input
                 aria-label="Search articles"
                 type="text"
                 onChange={(e) => setSearchValue(e.target.value)}
-                placeholder="Search articles"
+                placeholder="搜索文章"
                 className="block w-full rounded-md border border-gray-300 bg-white px-4 py-2 text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-900 dark:bg-gray-800 dark:text-gray-100"
               />
             </label>
@@ -110,21 +118,67 @@ export default function ListLayout({
             </svg>
           </div>
         </div>
-        <ul>
-          {!filteredBlogPosts.length && 'No posts found.'}
+        <ul className="divide-y divide-gray-200 dark:divide-gray-700">
+          {!filteredBlogPosts.length && '没有找到文章.'}
           {displayPosts.map((post) => {
-            const { path, date, title, summary, tags } = post
+            const { path, date, title, summary, tags, images } = post
             return (
-              <li key={path} className="py-4">
-                <article className="space-y-2 xl:grid xl:grid-cols-4 xl:items-baseline xl:space-y-0">
+              <li key={path} className="py-6">
+                <article className="space-y-2 md:grid md:grid-cols-4 md:items-center md:space-y-0">
                   <dl>
-                    <dt className="sr-only">Published on</dt>
-                    <dd className="text-base font-medium leading-6 text-gray-500 dark:text-gray-400">
-                      <time dateTime={date}>{formatDate(date, siteMetadata.locale)}</time>
+                    <dt className="sr-only">发布文章</dt>
+                    <dd className="shrink-0 overflow-hidden rounded-lg md:mr-5">
+                      <Link href={`/${path}`} className="text-gray-900 dark:text-gray-100">
+                        <Image
+                          alt={title}
+                          src={
+                            images
+                              ? images[0] || '/static/images/default.jpg'
+                              : '/static/images/default.jpg'
+                          }
+                          className="h-36 w-full rounded-lg object-cover object-center duration-300 hover:-translate-y-1 hover:scale-110"
+                          width={256}
+                          height={100}
+                        />
+                      </Link>
                     </dd>
+                    {/* <dd className="text-base font-medium leading-6 text-gray-500 dark:text-gray-400">
+                      <time dateTime={date}>{formatDate(date, siteMetadata.locale)}</time>
+                    </dd> */}
                   </dl>
-                  <div className="space-y-3 xl:col-span-3">
-                    <div>
+                  <div className="space-y-5 md:col-span-3">
+                    <div className="space-y-6">
+                      <div className="shrink-0">
+                        <h2 className="text-2xl font-bold leading-8 tracking-tight">
+                          <Link href={`/${path}`} className="text-gray-900 dark:text-gray-100">
+                            {title}
+                          </Link>
+                        </h2>
+                        <div className="flex flex-wrap">
+                          {tags.map((tag) => (
+                            <Tag key={tag} text={tag} />
+                          ))}
+                        </div>
+                      </div>
+                      <div className="prose max-w-none truncate text-gray-500 dark:text-gray-400">
+                        {summary}
+                      </div>
+                    </div>
+                    <div className="flex text-base font-medium leading-6">
+                      <div className="mr-3 text-base font-medium leading-6 text-gray-500 dark:text-gray-400">
+                        <time dateTime={date}>
+                          {new Date(date).toLocaleDateString(siteMetadata.locale, postDateTemplate)}
+                        </time>
+                      </div>
+                      <Link
+                        href={`/${path}`}
+                        className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
+                        aria-label={`Read more: "${title}"`}
+                      >
+                        详情 &rarr;
+                      </Link>
+                    </div>
+                    {/* <div>
                       <h3 className="text-2xl font-bold leading-8 tracking-tight">
                         <Link href={`/${path}`} className="text-gray-900 dark:text-gray-100">
                           {title}
@@ -136,7 +190,7 @@ export default function ListLayout({
                     </div>
                     <div className="prose max-w-none text-gray-500 dark:text-gray-400">
                       {summary}
-                    </div>
+                    </div> */}
                   </div>
                 </article>
               </li>

@@ -1,0 +1,97 @@
+---
+title: 'Ganache安装和使用'
+date: '2024-03-19'
+lastmod: '2024-03-19'
+tags: ['入门教程', '工具']
+draft: false
+summary: '如何学习安装和使用个人以太坊区块链Ganache，Ganache是没有开发经验或者初级开发者，学习Web3开发的必备工具之一。'
+images: []
+---
+
+<TOCInline toc={props.toc} exclude="Introduction" />
+
+## 前言
+
+> 如何学习安装和使用个人以太坊区块链Ganache，Ganache是没有开发经验或者初级开发者，学习Web3开发的必备工具之一。通过之前介绍Dapp架构系统组成部分，Dapp最大的特点就是结合了区块链技术，所以它需要具备连接区块链的能力。
+
+我们作为开发者，在开发和调试程序过程中，不能在正式的以太坊主链上做测试。因为在主链上操作，需要花费真金白银，而且也不安全，搞不好会把钱包的以太坊搞没了，还有一个原因上网速度和区块确认可能会很慢。查询区块链信息和日志很麻烦，所以我们最好有一个本地的以太坊区块链环境，这样调试程序就会非常方便。Ganache就是为了解决这个问题产生的，它模拟了以太坊主链的所有功能，可以快速启动一个\`个人以太坊区块链\`。通过Ganache可以创建账户，快速地查看所有账户的状态，包括他们的地址、私钥、交易和余额。还能查看区块链的日志输出，检查所有区块和交易数据，以便开发者快速定位和解决问题。所以，Ganache是Web3、Dapp开发者必备的工具之一。
+
+Ganache是Dapp开发测试集成框架Truffle套件中的一部分，它不仅可以跟智能合约开发工具Remix集成，也可以跟钱包MetaMask配合使用。Ganache界面版本是使用了Electron技术开发的，所以它是一个跨平台软件，可以运行在Windows、Linux和MacOS上，而且操作命令和界面都是统一的。
+
+## nodejs安装
+
+安装和使用Ganache，需要node.js和npm的支持，所以首先要安装node.js，node.js安装包内部已经集成了npm，安装过程及其简单，下载地址：[https://nodejs.org/en](https://nodejs.org/en)，访问这个地址页面会根据你当前使用的操作系统，给出合适的安装包，选择左边推荐的大多数人使用的版本。其实哪一个都可以，只是稳定版和最新版的差别，点击下载，继续下一步next，直到安装完毕。
+
+![Web3研习社](https://s1.imagehub.cc/images/2024/03/22/cba86b9b8c047b8a084cc70c2053f709.png)
+
+安装完成之后，我们打开命令行终端，输入以下命令，查看版本，只要输出正常，就表明安装成功。
+
+```bash
+# node -v
+# npm -v
+```
+
+## Ganache安装
+
+接下来安装Ganache，有两种安装的使用方式。第一种是命令行模式，安装后也只能在命令行中使用，不建议使用这种方式，这种方式的安装方法很简单。在命令行中，输入以下命令，安装完成后，运行Ganache。
+
+```bash
+# npm i -g ganache-cli
+# ganache-cli
+```
+
+第二种是UI模式，也就是图形界面模式，比较直观，建议使用这种方式。我们去Truffle官网下载Ganache，下载地址[https://trufflesuite.com/ganache/](https://trufflesuite.com/ganache/)，访问这个地址，页面会根据你当前使用的操作系统，给出合适的安装包。
+
+![Web3研习社](https://s1.imagehub.cc/images/2024/03/22/042f0f317e32765f1add28b7758f4087.png)
+
+下载后，点击安装，安装成功后，启动程序会进入如下界面。
+
+![Web3研习社](https://s1.imagehub.cc/images/2024/03/22/49ce1eb9058af2d92f5edb809a0f4dd3.png)
+
+如果出现启动不了Ganache的情况（主要是一直在转圈），则需要使用镜像的exe文件，官网的appx文件对windows系统兼容不好，可以[点击这里](https://sourceforge.net/projects/ganache.mirror/)下载exe文件后，双击安装。
+
+\`因为从官网下载的是appx类型的文件，win10无法正常启用，打开程序后，一直在转圈，无法正常启动。\`推荐直接在github下载，访问地址[https://github.com/trufflesuite/ganache-ui/releases](https://github.com/trufflesuite/ganache-ui/releases)
+
+![Web3研习社](https://s1.imagehub.cc/images/2024/03/22/57ba152ab4dcbf5dc7e6b099b64ff779.png)
+
+点击New Workspace，创建一个新的工作空间，输入你想要的空间名称，点击Start。
+
+![Web3研习社](https://s1.imagehub.cc/images/2023/07/02/g15.png)
+
+于是Ganache开始工作，并立即生成了10个账户，每个账户里有100个以太币。首先我们看到的是账户ACCOUNTS界面，系统已经为我们生成了10个账户。
+
+![Web3研习社](https://s1.imagehub.cc/images/2024/03/22/70a9b00c37ea1c3b90126b67e233d934.png)
+
+我们点击其中的一个账户右边的小钥匙，就可以查看到这个账户的私钥。
+
+![Web3研习社](https://s1.imagehub.cc/images/2024/03/22/97823c872a13c60f1c91dd1b4d5be709.png)
+
+另外，这个界面上方有一个RPC SERVER，有一个URL地址，这个非常重要。外部系统就是通过它，来使用我们Ganache节点，也就是当前节点的入口。
+
+![Web3研习社](https://s1.imagehub.cc/images/2024/03/22/d80439cc4695511e4a57ab6a9436a5f2.png)
+
+我们看一下区块BLOCKS界面，这是一个区块链浏览器，可以查看区块链上所有的区块信息，目前已经产生了2个区块。点击2个区块，就可以看到区块里所有的交易。比如，这是一笔创建合约的交易。
+
+![Web3研习社](https://s1.imagehub.cc/images/2023/07/02/g13.png)
+
+![Web3研习社](https://s1.imagehub.cc/images/2023/07/02/g14.png)
+
+交易TRANSACTIONS界面，交易界面会把所有的交易给列出来。比如，我刚才创建了一个智能合约。在这里就可以看到，发生了一笔交易。
+
+![Web3研习社](https://s1.imagehub.cc/images/2023/07/02/g16.png)
+
+![Web3研习社](https://s1.imagehub.cc/images/2023/07/02/g20.png)
+
+这是合约CONTRACTS界面，只有跟Truffle集成之后，才能看到创建的合约。我们目前还没有使用到Truffle，所以还没有显示有关信息。
+
+![Web3研习社](https://s1.imagehub.cc/images/2024/03/22/2bde2729829d69a45985eae09f4bad3e.png)
+
+事件EVENTS界面，我们在合约里可以产生事件，这些事件将会在这里展示，目前暂时为空。
+
+![Web3研习社](https://s1.imagehub.cc/images/2023/07/02/g18.png)
+
+日志LOGS界面，可以看到当前系统产生的一些日志，我们通过这些日志可以调试系统或者追踪问题。我们刚才创建了一笔交易，在这儿可以看得到。
+
+![Web3研习社](https://s1.imagehub.cc/images/2023/07/02/g19.png)
+
+这就是Ganache最基本的功能，后面我们在用到某个功能的时候，再详细讲解。

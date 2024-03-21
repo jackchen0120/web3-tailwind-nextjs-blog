@@ -1,9 +1,9 @@
 /*
- * @description: 博文列表页
+ * @description: 带标签文章列表页
  * @author: Jack Chen @懒人码农
  * @Date: 2024-03-05 20:30:07
  * @LastEditors: Jack Chen
- * @LastEditTime: 2024-03-18 23:03:51
+ * @LastEditTime: 2024-03-22 00:21:25
  */
 import ListLayout from '@/layouts/ListLayoutWithTags'
 import { allCoreContent, sortPosts } from 'pliny/utils/contentlayer'

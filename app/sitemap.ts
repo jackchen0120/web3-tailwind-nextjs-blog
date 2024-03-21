@@ -1,9 +1,9 @@
 /*
- * @description: 描述信息
+ * @description: sitemap配置文件
  * @author: Jack Chen @懒人码农
  * @Date: 2024-03-05 20:30:07
  * @LastEditors: Jack Chen
- * @LastEditTime: 2024-03-19 21:50:44
+ * @LastEditTime: 2024-03-22 00:38:21
  */
 import { MetadataRoute } from 'next'
 import { allBlogs } from 'contentlayer/generated'
@@ -19,7 +19,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: post.lastmod || post.date,
     }))
 
-  const routes = ['', 'blog', 'projects', 'tags'].map((route) => ({
+  const routes = ['', 'blog', 'projects', 'tags', 'tool'].map((route) => ({
     url: `${siteUrl}/${route}`,
     lastModified: new Date().toISOString().split('T')[0],
   }))
