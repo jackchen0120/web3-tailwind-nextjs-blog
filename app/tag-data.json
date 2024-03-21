@@ -10,9 +10,11 @@
   "区块链": 0,
   "比特币": 0,
   "以太坊": 0,
+  "Wallet": 0,
+  "Crypto": 0,
   "DeFi": 0,
   "NFT": 0,
   "GameFi": 0,
-  "DAO": 0,
-  "SocialFi": 0
+  "SocialFi": 0,
+  "Layer2": 0
 }

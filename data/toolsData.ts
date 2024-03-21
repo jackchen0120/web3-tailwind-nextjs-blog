@@ -5,31 +5,211 @@
  * @LastEditors: Jack Chen
  * @LastEditTime: 2024-03-18 22:36:22
  */
+interface Tools {
+  title: string
+  tools: Tool[]
+}
+
 interface Tool {
   title: string
   description: string
-  href?: string
-  imgSrc?: string
+  href: string
+  imgSrc: string
 }
 
-const toolsData: Tool[] = [
+const toolsData: Tools[] = [
+  {
+    title: '实用钱包',
+    tools: [
+      {
+        title: 'MetaMask',
+        description: `浏览器插件钱包`,
+        imgSrc: '/static/images/tool/metamask.png',
+        href: 'https://metamask.io/',
+      },
+      {
+        title: 'OKX Wallet',
+        description: `Web3 多链钱包`,
+        imgSrc: '/static/images/tool/okx.jpeg',
+        href: 'https://www.okx.com/cn/web3',
+      },
+      {
+        title: 'WalletConnect',
+        description: `Dapp与钱包通讯协议`,
+        imgSrc: '/static/images/tool/walletconnect.png',
+        href: 'https://walletconnect.com/',
+      },
+      {
+        title: 'Coinbase Wallet',
+        description: `Coinbase钱包非托管`,
+        imgSrc: '/static/images/tool/coinbase.png',
+        href: 'https://www.coinbase.com/wallet',
+      },
+      {
+        title: 'Binance Wallet',
+        description: `一站式加密钱包`,
+        imgSrc: '/static/images/tool/bnbchain.png',
+        href: 'https://www.bnbchain.org/en/binance-wallet',
+      },
+      {
+        title: 'Safe Wallet',
+        description: `用户安全的多签钱包`,
+        imgSrc: '/static/images/tool/safe.png',
+        href: 'https://app.safe.global/welcome',
+      },
+    ],
+  },
+  {
+    title: 'Dapp应用',
+    tools: [
+      {
+        title: 'DappRadar',
+        description: `综合类Dapp应用数据`,
+        imgSrc: '/static/images/tool/dapp.jpg',
+        href: 'https://dappradar.com/',
+      },
+      {
+        title: 'My MetaData',
+        description: `GameFi分析平台`,
+        imgSrc: '/static/images/tool/gamefi.jpg',
+        href: 'https://www.mymetadata.io/',
+      },
+      {
+        title: 'PlayToEarn',
+        description: `链游排名`,
+        imgSrc: '/static/images/tool/playearn.jpg',
+        href: 'https://playtoearn.net/blockchaingames',
+      },
+    ],
+  },
+  {
+    title: '辅助工具',
+    tools: [
+      {
+        title: 'Remix',
+        description: `ETH开发线上编辑器`,
+        imgSrc: '/static/images/tool/remix.png',
+        href: 'https://remix.ethereum.org/',
+      },
+      {
+        title: 'ChainList',
+        description: `EVM网络聚合`,
+        imgSrc: '/static/images/tool/chainlist.png',
+        href: 'https://chainlist.org/zh',
+      },
+      {
+        title: '以太坊浏览器',
+        description: `ETH链上查询`,
+        imgSrc: '/static/images/tool/eth.png',
+        href: 'https://etherscan.io/',
+      },
+      // {
+      //   title: 'Certik',
+      //   description: `智能合约审计机构`,
+      //   imgSrc: '/static/images/tool/certik.png',
+      //   href: 'https://www.certik.com/zh-CN',
+      // },
+      {
+        title: 'Mct',
+        description: `批量处理工具箱`,
+        imgSrc: '/static/images/tool/mct.png',
+        href: 'https://mct.xyz/',
+      },
+    ],
+  },
+  {
+    title: '综合数据',
+    tools: [
+      {
+        title: 'CoinMarketCap',
+        description: '行情综合数据查询工具',
+        imgSrc: '/static/images/tool/dapp.jpg',
+        href: 'https://coinmarketcap.com/',
+      },
+      {
+        title: 'CoinGecko',
+        description: '行情综合数据查询工具',
+        imgSrc: '/static/images/tool/coingecko.png',
+        href: 'https://www.coingecko.com/',
+      },
+      {
+        title: 'Dune',
+        description: '综合链上数据分析',
+        imgSrc: '/static/images/tool/dune.png',
+        href: 'https://dune.com/browse/dashboards',
+      },
+      {
+        title: 'Defi Llama',
+        description: '全链DeFi数据',
+        imgSrc: '/static/images/tool/defi.png',
+        href: 'https://defillama.com/',
+      },
+      {
+        title: 'NFTGO',
+        description: 'NFT行情数据',
+        imgSrc: '/static/images/tool/nft.png',
+        href: 'https://nftgo.io/',
+      },
+      {
+        title: 'Orbiter',
+        description: 'Layer2综合数据',
+        imgSrc: '/static/images/tool/orbiter.png',
+        href: 'https://www.orbiter.finance/data',
+      },
+      {
+        title: 'Unisat',
+        description: '钱包及交易平台',
+        imgSrc: '/static/images/tool/unisat.jpg',
+        href: 'https://unisat.io/',
+      },
+      {
+        title: 'OpenSea',
+        description: '最大NFT交易平台',
+        imgSrc: '/static/images/tool/opensea.png',
+        href: 'https://opensea.io/rankings',
+      },
+      {
+        title: 'IPFS',
+        description: '点对点分布式文件系统',
+        imgSrc: '/static/images/tool/ipfs.png',
+        href: 'https://ipfs.tech/',
+      },
+      {
+        title: 'Uniswap',
+        description: '兑换代币及换取奖励',
+        imgSrc: '/static/images/tool/uniswap.png',
+        href: 'https://uniswap.org/',
+      },
+      {
+        title: 'Ordinals Wallet',
+        description: 'Ordinals交易平台',
+        imgSrc: '/static/images/tool/ordinals.jpg',
+        href: 'https://ordinalswallet.com/',
+      },
+    ],
+  },
   // {
-  //   title: '大数据可视化平台',
-  //   description: `基于Vue + Echarts 构建的数据可视化平台，酷炫大屏展示模板和组件库，持续更新各行各业实用模板和炫酷小组件。`,
-  //   imgSrc: '/static/images/dataV.jpg',
-  //   href: 'https://jackchen0120.github.io/vueDataV/#/',
-  // },
-  // {
-  //   title: '全栈后台管理系统',
-  //   description: `NodeJS全栈开发之前端基于Vue+iViewUI构建用户界面，功能包括：登录，注册，找回密码，自动登录，登出，todoList增删改查CRUD`,
-  //   imgSrc: '/static/images/frontend.jpg',
-  //   href: 'https://github.com/jackchen0120/todo-vue-admin',
-  // },
-  // {
-  //   title: '电商平台数据大屏实时监控系统',
-  //   description: `技术知识点有：Vue全家桶、WebSocket前后端数据推送、后端框架Koa2、Echarts新版图表组件（折线图、柱状图、饼图、地图、散点图），还支持主题切换, 展示酷炫的图表效果，同时也能够支持大屏和小屏的切换，保证了图表在不同屏幕上呈现的效果。`,
-  //   imgSrc: '/static/images/dataV_2.jpg',
-  //   href: 'https://github.com/jackchen0120/EC-Platform-Monitor?tab=readme-ov-file',
+  //   title: '热门公链',
+  //   tools: [
+  //     {
+  //       title: '以太坊生态',
+  //       description: `以太坊生态`,
+  //       imgSrc: '/static/images/tool/dapp.jpg',
+  //       href: 'https://ethereum.org/zh/dapps/',
+  //     },
+  //     {
+  //       title: 'My MetaData',
+  //       description: `GameFi分析平台`,
+  //       imgSrc: '/static/images/tool/gamefi.jpg',
+  //       href: 'https://www.mymetadata.io/',
+  //     },
+  //     {
+  //       title: 'PlayToEarn',
+  //       description: `链游排名`,
+  //       imgSrc: '/static/images/tool/playearn.jpg',
+  //       href: 'https://playtoearn.net/blockchaingames',
+  //     },
+  //   ],
   // },
 ]
 

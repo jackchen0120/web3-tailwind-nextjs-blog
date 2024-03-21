@@ -11,14 +11,13 @@ const siteMetadata = {
   author: 'Jack Chen @懒人码农',
   headerTitle: 'Web3研习社',
   description:
-    '分享最新的Web3技术动态、应用案例与发展趋势，推动Web3.0技术的普及和应用创新，探寻Web4.0数字化未来时代。',
+    '分享最新的技术动态、应用案例与发展趋势，推动Web3技术的普及和应用创新，探寻Web4.0数字化未来时代。以及记录码农学习技术的经验总结，分享学习心得，帮助同志共同成长。',
   language: 'en-us',
   theme: 'system', // system, dark or light
   siteUrl: 'https://54web3.cc',
   siteRepo: 'https://github.com/timlrx/tailwind-nextjs-starter-blog',
   siteLogo: '/static/favicons/favicon.ico',
   socialBanner: '/static/images/logo.png',
-  mastodon: 'https://mastodon.social/@mastodonuser',
   email: '278910933@qq.com',
   github: 'https://github.com/jackchen0120',
   juejin: 'https://juejin.cn/user/1714893872433928/posts',

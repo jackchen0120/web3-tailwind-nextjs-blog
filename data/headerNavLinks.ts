@@ -10,7 +10,7 @@ const headerNavLinks = [
   { href: '/blog', title: '博客' },
   { href: '/tags', title: '标签' },
   { href: '/projects', title: '项目' },
-  { href: '/tool', title: '工具' },
+  { href: '/tool', title: '工具箱' },
   { href: '/about', title: '关于我' },
   { href: 'https://datav.54web3.cc', title: '可视化' },
   { href: 'https://game.54web3.cc', title: '小游戏' },

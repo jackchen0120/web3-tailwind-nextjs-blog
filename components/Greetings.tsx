@@ -80,7 +80,7 @@ const Greetings = () => {
           </div>
           <Link href="/blog">
             <button className="rounded-lg bg-sky-500 px-5 py-2 text-sm font-semibold leading-5 text-white hover:bg-sky-700 md:text-base">
-              点我充电💪
+              免费充电💪
             </button>
           </Link>
         </div>

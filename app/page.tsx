@@ -13,7 +13,7 @@ import Main from './Main'
 import Greetings from '@/components/Greetings'
 
 export default function Page() {
-  console.log('allBlogs', allBlogs)
+  // console.log('allBlogs', allBlogs)
   const sortedPosts = sortPosts(allBlogs)
   const posts = allCoreContent(sortedPosts)
   // return <Main posts={posts} />
