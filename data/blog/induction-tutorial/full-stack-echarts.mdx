@@ -1,0 +1,2225 @@
+---
+title: '全栈Echarts电商平台数据可视化大屏实战项目'
+date: '2024-03-22'
+lastmod: '2024-03-22'
+tags: ['入门教程', '数据可视化']
+draft: false
+summary: '假期重学了新版Echarts，一个基于JavaScript的开源可视化图表库，收集参考了很多网上资料，最终选择电商平台作为练手项目。'
+images: []
+---
+
+<TOCInline toc={props.toc} exclude="Introduction" />
+
+## 1. 前言
+
+> 五一假期重学了新版Echarts，一个基于JavaScript的开源可视化图表库，收集参考了很多网上资料，最终选择电商平台作为练手项目。此篇涉及技术知识点有：Vue全家桶、WebSocket前后端数据推送、后端框架Koa2、Echarts新版图表组件（折线图、柱状图、饼图、地图、散点图），还支持主题切换, 展示酷炫的图表效果，同时也能够支持大屏和小屏的切换，保证了图表在不同屏幕上呈现的效果。
+
+## 2. 入门篇（新手指南）
+
+[ECharts数据可视化快速入门](/blog/induction-tutorial/datav-use-course)
+
+## 3. 实战篇（上下两部）
+
+[Vue+Echarts构建可视化大数据平台实战项目分享](index.html#manual/Vue-echarts)
+
+## 4. 进阶篇
+
+### 4.1 前后端分离
+
+前端项目采用的技术栈是基于Vue + Echarts，用vue-cli构建前端界面，后端项目采用的技术栈是基于Node.js + Koa2 + WebSocket，用Koa2搭建的后端服务器。
+
+附上详细的思维导图如下：
+
+![Web3研习社](https://s1.ax1x.com/2023/07/25/pCX5cLt.png)
+
+分享之前，我们先来了解一下新版 Echarts 5.x，都有哪些变化，如下图：
+
+![Web3研习社](https://s1.ax1x.com/2023/07/25/pCX52eP.png)
+
+### 4.2 后端部分
+
+#### 4.2.1 Koa2的介绍
+
+- 基于 Node.js 平台的Web服务器框架
+- 由 Express 原班人马打造，Express、Koa、Koa2 都是 Web 服务器的框架，他们之间的区别如下图：
+
+![Web3研习社](https://s1.ax1x.com/2023/07/25/pCX5Wo8.png)
+
+- 环境依赖 Node v7.6.0 及以上 由于 Koa2 它是支持 async 和 await ，所以它对 Node 的版本是有要求的，它要求 Node 的版本至少是在7.6级以上,因为语法糖 async和await 是在 Node7.6 版本之后出现才支持
+- 洋葱模型的中间件 如下图所示, 对于服务器而言，它其实就是来处理一个又一个的请求， Web 服务器接收由浏览器发 过来的一个又一个请求之后，它形成一个又一个的响应返回给浏览器. 而请求到达我们的服务器是 需要经过程序处理的,程序处理完之后才会形成响应，返回给浏览器，我们服务器处理请求的这一 块程序，在 Koa2 的世界当中就把它称之为中间件
+
+![Web3研习社](https://s1.ax1x.com/2023/07/25/pCX5hFS.png)
+
+这种中间件可能还不仅仅只有一个，可能会存在多个，比如上图所示, 它就存在三层中间件，这三 层中间件在处理请求的过程以及它调用的顺序为:
+
+- 当一个请求到达咱们的服务器，最先最先处理这个请求的是第一层中间件
+- 第一层的中间件在处理这个请求之后，它会把这个请求给第二层的中间件
+- 第二层的中间件在处理这个请求之后，它会把这个请求给第三层的中间件
+- 第三层中间件内部并没有中间件了, 所以第三层中间件在处理完所有的代码之后，这个请求又会到了第二层的中间件，所以第二层中间件对这个请求经过了两次的处处理
+- 第二层的中间件在处理完这个请求之后，又到了第一层的中间件, 所以第一层的中间件也对这个请求经过了两次的处理
+
+这个调用顺序就是洋葱模型, 中间件对请求的处理有一种先进后出的感觉，请求最先到达第一层中 间件，而最后也是第一层中间件对请求再次处理了一下
+
+#### 4.2.2 Koa2的快速上手
+
+##### 4.2.2.1 检查node版本，Koa2的使用要求node版本在7.6以上
+
+```bash
+    node -v
+```
+
+##### 4.2.2.2 安装 Koa2
+
+```bash
+    npm init -y
+    npm install koa
+```
+
+如果下载特别慢，可以将npm的下载源换成国内的下载源，命令如下：
+
+```bash
+    npm set registry https://registry.npm.taobao.org/
+```
+
+##### 4.2.2.3 编写入口文件app.js
+
+- 创建Koa的实例对象
+
+```js
+const Koa = require('koa') // 导入构造方法
+const app = new Koa() // 通过构造方法，创建实例对象
+```
+
+- 编写响应函数（中间件）
+
+  响应函数是通过use的方式才能产生效果, 这个函数有两个参数, 一个是 ctx，一个是 next
+
+  **ctx**：上下文, 指的是请求所处于的Web容器,我们可以通过 ctx.request 拿到请求对象, 也可以通过 ctx.response 拿到响应对象
+
+  **next**：内层中间件执行的入口
+
+```js
+app.use((ctx, next) => {
+  ctx.response.body = 'Hello Echarts'
+})
+```
+
+- 绑定端口号
+
+```js
+app.listen(9898)
+```
+
+- 启动服务器
+
+```bash
+    node app.js
+```
+
+然后在浏览器中输入 http://localhost:9898/ 你将会看到浏览器中出现 Hello Echarts 的字符串, 并且在服务器的终端中, 也能看到请求的 url
+
+#### 4.2.3 Koa2中间件的特点
+
+- Koa2 的实例对象通过 use 方法加入一个中间件
+- 一个中间件就是一个函数,这个函数具备两个参数,分别是 ctx 和 next
+- 中间件的执行符合洋葱模型
+- 内层中间件能否执行取决于外层中间件的 next 函数是否调用
+- 调用 next 函数得到的是 Promise 对象, 如果想得到 Promise 所包装的数据, 可以结合 await 和 async
+
+```js
+app.use(async (ctx, next) => {
+  // 刚进入中间件想做的事情
+  await next()
+  // 内层所有中间件结束之后想做的事情
+})
+```
+
+#### 4.2.4 后端项目
+
+##### 4.2.4.1 目标
+
+我们已学完 Koa2 的快速上手, 并且对 Koa2 当中的中间件的特点进行了了解. 接下来就是利用Koa2 的知识来进行后台项目的开发，后台项目需要达到以下几个目标:
+
+- 计算服务器处理请求的总耗时
+
+  计算出服务器对于这个请求它的所有中间件总耗时时长究竟是，我们需要计算一下
+
+- 在响应头上加上响应内容的 mime 类型
+
+  加入mime类型, 可以让浏览器更好的来处理由服务器返回的数据
+
+  如果响应给前端浏览器是 json 格式的数据，这时候就需要在咱们的响应头当中增加 Content- Type 它的值就是 application/json ， application/json 就是 json 数据类型的 mime 类型
+
+- 根据URL读取指定目录下的文件内容
+
+  为了简化后台服务器的代码，前端图表所要的数据, 并没有存在数据库当中，而是将存在文件当中 的，这种操作只是为了简化咱们后台的代码. 所以咱们是需要去读取某一个目录下面的文件内容 的。
+
+每一个目标就是一个中间件需要实现的功能, 所以后台项目中需要有三个中间件
+
+##### 4.2.4.2 步骤
+
+创建一个新的文件夹 koa-server , 这个文件夹就是后台项目的文件夹
+
+###### 4.2.4.2.1 项目准备
+
+- 安装包
+
+```bash
+    npm init -y
+    npm install koa
+```
+
+- 创建文件和目录结构
+
+  app.js 是后台服务器的入口文件
+
+  data 目录是用来存放所有模块的 json 文件数据
+
+  middleware 是用来存放所有的中间件代码
+
+  koa_response_data.js 是业务逻辑中间件
+
+  koa_response_duration.js 是计算服务器处理时长的中间件
+
+  koa_response_header.js 是用来专门设置响应头的中间件
+
+接着将各个模块的 json 数据文件复制到 data 的目录之下, 接着在 app.js 文件中写上代码如下：
+
+```js
+// 服务器的入口文件
+// 1.创建KOA的实例对象
+const Koa = require('koa')
+const app = new Koa()
+// 2.绑定中间件
+// 绑定第一层中间件
+// 绑定第二层中间件
+// 绑定第三层中间件
+// 3.绑定端口号 9898
+app.listen(9898)
+```
+
+###### 4.2.4.2.2 总耗时中间件
+
+- 第1层中间件
+
+  总耗时中间件的功能就是计算出服务器所有中间件的总耗时，应该位于第一层，因为第一层的中间件是最先处理请求的中间件，同时也是最后处理请求的中间件
+
+- 计算执行时间
+
+  第一次进入咱们中间件的时候，就记录一个开始的时间，当其他所有中间件都执行完之后，再记录下结束时间以后，将两者相减就得出总耗时
+
+- 设置响应头
+
+  将计算出来的结果,设置到响应头的 X-Response-Time 中, 单位是毫秒 ms
+
+具体代码如下：
+
+```js
+    // app.js 文件
+    // 绑定第一层中间件
+    const respDurationMiddleware = require('./middleware/koa_response_duration') app.use(respDurationMiddleware)
+
+
+    // koa_response_duration.js 文件
+    // 计算服务器消耗时长的中间件
+    module.exports = async (ctx, next) => {
+    // 记录开始时间
+    const start = Date.now()
+    // 让内层中间件得到执行
+    await next()
+    // 记录结束的时间
+    const end = Date.now()
+    // 设置响应头 X-Response-Time
+    const duration = end - start
+    // ctx.set 设置响应头
+    ctx.set('X-Response-Time', duration + 'ms') }
+```
+
+###### 4.2.4.2.3 响应头中间件
+
+- 第2层中间件
+
+  这个第2层中间件没有特定的要求
+
+- 获取mime类型
+
+  由于咱们所响应给前端浏览器当中的数据都是 json 格式的字符串，所以 mime 类型可以统一的给它写成 application/json , 当然这一块也是简化的处理，因为 mime 类型有几十几百种，我们没有必要在项目当中考虑那么多，所以这里简化处理一下
+
+- 设置响应头
+
+  响应头的key是 Content-Type ，它的值是 application/json , 顺便加上 charset=utf-8 告诉浏览器，我这部分响应的数据，它的类型是 application/json ，同时它的编码是 utf- 8
+
+具体代码如下：
+
+```js
+// app.js 文件
+// 绑定第二层中间件 const respHeaderMiddleware = require('./middleware/koa_response_header')
+app.use(respHeaderMiddleware)
+
+// koa_response_header.js 文件
+// 设置响应头的中间件
+module.exports = async (ctx, next) => {
+  const contentType = 'application/json; charset=utf-8'
+  ctx.set('Content-Type', contentType)
+  await next()
+}
+```
+
+###### 4.2.4.2.4 业务逻辑中间件
+
+- 第3层中间件
+
+  这个第3层中间件没有特定的要求
+
+- 读取文件内容
+
+```js
+// 获取 URL 请求路径
+const url = ctx.request.url
+
+// 根据URL请求路径,拼接出文件的绝对路径
+let filePath = url.replace('/api', '')
+filePath = '../data' + filePath + '.json'
+filePath = path.join(__dirname, filePath)
+```
+
+这个 filePath 就是需要读取文件的绝对路径
+
+读取这个文件的内容，使用 fs 模块中的 readFile 方法进行实现
+
+- 设置响应体
+
+```js
+ctx.response.body
+```
+
+具体代码如下：
+
+```js
+// app.js 文件
+// 绑定第三层中间件 const respDataMiddleware = require('./middleware/koa_response_data')
+app.use(respDataMiddleware)
+
+// koa_response_data.js 文件
+// 处理业务逻辑的中间件,读取某个json文件的数据
+const path = require('path')
+const fileUtils = require('../utils/file_utils')
+
+module.exports = async (ctx, next) => {
+  // 根据url
+  const url = ctx.request.url // /api/seller ../data/seller.json
+  let filePath = url.replace('/api', '') // /seller
+  filePath = '../data' + filePath + '.json' // ../data/seller.json
+  filePath = path.join(__dirname, filePath)
+  try {
+    const ret = await fileUtils.getFileJsonData(filePath)
+    ctx.response.body = ret
+  } catch (error) {
+    const errorMsg = {
+      message: '读取文件内容失败, 文件资源不存在',
+      status: 404,
+    }
+    ctx.response.body = JSON.stringify(errorMsg)
+  }
+  console.log(filePath)
+  await next()
+}
+
+// file_utils.js 文件
+// 读取文件的工具方法
+const fs = require('fs')
+
+module.exports.getFileJsonData = (filePath) => {
+  // 根据文件的路径, 读取文件的内容
+  return new Promise((resolve, reject) => {
+    fs.readFile(filePath, 'utf-8', (error, data) => {
+      if (error) {
+        // 读取文件失败
+        reject(error)
+      } else {
+        // 读取文件成功
+        resolve(data)
+      }
+    })
+  })
+}
+```
+
+###### 4.2.4.2.5 允许跨域
+
+- 设置响应头
+
+```js
+app.use(async (ctx, next) => {
+  ctx.set('Access-Control-Allow-Origin', '*')
+  ctx.set('Access-Control-Allow-Methods', 'OPTIONS, GET, PUT, POST, DELETE')
+  await next()
+})
+```
+
+### 4.3 前端部分
+
+#### 4.3.1 前端项目的准备
+
+##### 4.3.1.1 vue-cli 脚手架创建项目
+
+**vue-cli 脚手架安装**
+
+```bash
+    npm install -g @vue/cli
+```
+
+**创建工程项目**
+
+```bash
+    vue create screen
+```
+
+手动选择配置项如下图所示：
+
+![Web3研习社](https://s1.ax1x.com/2023/07/25/pCX5Izj.png)
+
+![Web3研习社](https://s1.ax1x.com/2023/07/25/pCX5TQs.png)
+
+![Web3研习社](https://s1.ax1x.com/2023/07/25/pCX5HLq.png)
+
+![Web3研习社](https://s1.ax1x.com/2023/07/25/pCX5LwV.png)
+
+![Web3研习社](https://s1.ax1x.com/2023/07/25/pCXISSJ.png)
+
+![Web3研习社](https://s1.ax1x.com/2023/07/25/pCXIpl9.png)
+
+![Web3研习社](https://s1.ax1x.com/2023/07/25/pCXICO1.png)
+
+![Web3研习社](https://s1.ax1x.com/2023/07/25/pCXIiex.png)
+
+![Web3研习社](https://s1.imagehub.cc/images/2023/07/25/b13.png)
+
+![Web3研习社](https://s1.imagehub.cc/images/2023/07/25/b14.png)
+
+安装成功执行以下命令：
+
+```bash
+    cd screen
+    npm run serve
+```
+
+**删除无关代码**
+
+- 修改 App.vue 中的代码,将布局和样式删除, 变成如下代码：
+
+```vue
+<template>
+  <div id="app">
+    <!-- 路由占位符 -->
+    <router-view />
+  </div>
+</template>
+
+<style lang="less"></style>
+```
+
+- 删除 components/HelloWorld.vue 这个文件
+- 删除 views/About.vue 和 views/Home.vue 这两个文件
+- 修改 router/index.js 中的代码,去除路由配置和 Home 组件导入的代码
+
+```vue
+import Vue from 'vue' import VueRouter from 'vue-router' Vue.use(VueRouter) const routes = [ { path:
+'/', redirect: '/screen' }, { path: '/screen', component: () => import('@/views/screenPage') } ]
+const router = new VueRouter({ mode: 'history', base: process.env.BASE_URL, routes }) export default
+router
+```
+
+##### 4.3.1.2 项目基本配置
+
+在项目根目录下创建 vue.config.js 文件，新增以下代码：
+
+```js
+// 使用vue-cli创建出来的vue工程, Webpack的配置是被隐藏起来了的
+// 如果想覆盖Webpack中的默认配置,需要在项目的根路径下增加vue.config.js文件
+module.exports = {
+  devServer: {
+    port: 8999, // 端口号配置
+    // open: true // 自动打开浏览器
+  },
+  productionSourceMap: false, // 生产环境是否生成 sourceMap 文件
+  configureWebpack: (config) => {
+    if (process.env.NODE_ENV === 'production') {
+      // 为生产环境修改配置...
+      config.mode = 'production'
+      config['performance'] = {
+        //打包文件大小配置
+        maxEntrypointSize: 10000000,
+        maxAssetSize: 30000000,
+      }
+    }
+  },
+}
+```
+
+##### 4.3.1.3 全局echarts对象
+
+- 引入echarts文件
+
+在public/index.html文件中引入外部CDN文件echarts.min.js，如下图：
+
+![Web3研习社](https://s1.imagehub.cc/images/2023/07/25/b15.png)
+
+- 全局echarts挂载到Vue原型对象上并使用
+
+在src/main.js文件中挂载，代码如下：
+
+```js
+// 将全局的echarts对象挂载到Vue的原型对象上
+// 在别的组件中使用 this.$echarts
+Vue.prototype.$echarts = window.echarts
+```
+
+##### 4.3.1.4 axios的处理
+
+**安装axios包**
+
+```bash
+    npm install axios
+```
+
+**封装与使用axios**
+
+在 src/main.js 文件中配置 axios 并且挂载到Vue的原型对象上，代码如下：
+
+```js
+// 将axios挂载到Vue的原型对象上
+// 在别的组件中使用 this.$http
+Vue.prototype.$http = axios
+```
+
+#### 4.3.2 单独图表组件开发
+
+每个图表会单独进行开发，最后再将所有的图表合并到一个页面中，在单独开发每个图表的时候，一个图表会用一个单独的路径进行全屏展示，他们分别是：
+
+- 商家销售统计 http://localhost:8999/sellerPage
+- 销量趋势分析 http://localhost:8999/trendPage
+- 商家地图分布 http://localhost:8999/mapPage
+- 地区销量排行 http://localhost:8999/rankPage
+- 热销商品占比 http://localhost:8999/hotPage
+- 库存销量分析 http://localhost:8999/stockPage
+
+##### 4.3.2.1 商家销量统计
+
+最终效果如下图所示：
+
+![Web3研习社](https://s1.imagehub.cc/images/2023/07/25/b16.png)
+
+**组件结构设计**
+
+在 src/components/ 目录下建立 Seller.vue , 这个组件是真实展示图表的组件
+
+- 给外层div增加类样式 com-container
+- 建立一个显示图表的div元素
+- 给新增的这个div增加类样式 com-chart
+
+```vue
+<template>
+  <div class="com-container">
+    <div class="com-chart" ref="seller_ref"></div>
+  </div>
+</template>
+
+<script>
+export default {
+  data() {
+    return {}
+  },
+  methods: {},
+}
+</script>
+
+<style lang="less" scoped></style>
+```
+
+在 src/views/ 目录下建立 sellerPage.vue，这个组件是对应于路由 /seller 而展示的
+
+- 给外层div元素增加样式 com-page
+- 在 sellerPage 中引入 Seller 组件，并且注册和使用
+
+```vue
+<template>
+  <div class="com-page">
+    <Seller />
+  </div>
+</template>
+
+<script>
+import Seller from '@/components/Seller'
+
+export default {
+  components: {
+    Seller,
+  },
+  data() {
+    return {}
+  },
+  methods: {},
+}
+</script>
+
+<style lang="less" scoped></style>
+```
+
+增加路由规则, 在 src/router/index.js 文件新增如下代码：
+
+```js
+const routes = [
+  {
+    path: '/sellerPage',
+    component: () => import('@/views/sellerPage'),
+  },
+]
+```
+
+新建 src/assets/css/global.less 增加宽高样式
+
+原则就是将所有的容器的宽度和高度设置为占满父容器
+
+```css
+html,
+body,
+#app {
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+}
+
+.com-page,
+.com-container,
+.com-chart {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+canvas {
+  border-radius: 20px;
+}
+
+.com-container {
+  position: relative;
+}
+```
+
+在 main.js 中引入样式
+
+```js
+import './assets/css/global.less'
+```
+
+打开浏览器, 输入 http://localhost:8999/sellerPage 看Seller组件是否能够显示
+
+**图表Seller.vue基本功能实现**
+
+- 在mounted生命周期中初始化 echartsInstance 对象
+- 在mounted中获取服务器的数据
+- 将获取到的数据设置到图表上
+
+```vue
+<script>
+import { mapState } from 'vuex'
+import { getThemeValue } from '@/utils/theme_utils'
+export default {
+  data() {
+    return {
+      myChart: null, // echarts实例对象
+      allData: null, // 服务器获取的所有数据
+    }
+  },
+  mounted() {
+    this.initChart()
+    this.getData()
+  },
+  methods: {
+    // 初始化echartsInstance对象
+    initChart() {
+      this.myChart = this.$echarts.init(this.$refs.seller_ref, this.theme)
+    },
+    // 获取服务端的数据
+    async getData() {
+      const { data: ret } = await this.$http.get('seller')
+      // console.log("获取后端数据===", ret);
+      this.allData = ret
+      // 对数据排序
+      this.allData.sort((a, b) => {
+        return a.value - b.value
+      })
+      this.updateChart()
+    },
+    // 更新图表
+    updateChart() {
+      const sellerName = showData.map((item) => {
+        return item.name
+      })
+
+      const sellerValue = showData.map((item) => {
+        return item.value
+      })
+
+      const dataOption = {
+        xAxis: {
+          type: 'value',
+        },
+        yAxis: {
+          type: 'category',
+          data: sellerName,
+        },
+        series: [
+          {
+            type: 'bar',
+            data: sellerValue,
+          },
+        ],
+      }
+
+      this.myChart.setOption(dataOption)
+    },
+  },
+}
+</script>
+```
+
+拆分配置项option
+
+初始化配置项
+
+![Web3研习社](https://s1.imagehub.cc/images/2023/07/25/b17.png)
+
+拥有数据之后的配置项
+
+![Web3研习社](https://s1.imagehub.cc/images/2023/07/25/b18.png)
+
+**分页动画实现**
+
+- 数据的处理, 每5个元素显示一页
+
+数据的处理
+
+![Web3研习社](https://s1.imagehub.cc/images/2023/07/25/b19.png)
+
+![Web3研习社](https://s1.imagehub.cc/images/2023/07/25/b20.png)
+
+![Web3研习社](https://s1.imagehub.cc/images/2023/07/25/b21.png)
+
+动画的启动和停止
+
+![Web3研习社](https://s1.imagehub.cc/images/2023/07/25/b22.png)
+
+![Web3研习社](https://s1.imagehub.cc/images/2023/07/25/b23.png)
+
+![Web3研习社](https://s1.imagehub.cc/images/2023/07/25/b24.png)
+
+鼠标事件的处理
+
+![Web3研习社](https://s1.imagehub.cc/images/2023/07/25/b25.png)
+
+**UI效果调整**
+
+主题的指定，在初始化echarts实例对象的时候指定
+
+```vue
+// src/components/Seller.vue methods: { initChart() { this.myChart =
+this.$echarts.init(this.$refs.seller_ref, 'dark'); // 对图表对象进行鼠标事件的监听
+this.myChart.on("mouseover", () => { clearInterval(this.timer); }); this.myChart.on("mouseout", ()
+=> { this.startInterval(); }); } }
+```
+
+边框圆角设置
+
+```css
+//  src/assets/css/global.less
+    canvas {
+  border-radius: 20px;
+}
+```
+
+其他图标样式配置
+
+```js
+    // 标题的位置和颜色
+    const initOption = {
+        title: {
+          text: "▎ 商家销售统计",
+          textStyle: {
+            fontSize: 66,
+          },
+          left: 20,
+          top: 20,
+        }
+    }
+
+    // 坐标轴的大小
+    const initOption = {
+        grid: {
+          top: "20%",
+          left: "3%",
+          right: "6%",
+          bottom: "3%",
+          containLabel: true, // 距离包含坐标轴上的文字
+        }
+    }
+
+    // 工具提示和背景
+    const initOption = {
+        tooltip: {
+          trigger: "axis",
+          axisPointer: {
+            type: 'shadow'
+          },
+        }
+    }
+
+    // 文字显示和位置
+    const initOption = {
+      series: [
+        label: {
+          show: true,
+          position: "right",
+          textStyle: {
+            color: '#fff',
+          },
+        }
+      ]
+    }
+
+    // 柱宽度和柱圆角的实现
+    const initOption = {
+        series: [
+          {
+            barWidth: 66,
+                itemStyle: {
+                  barBorderRadius: [0, 33, 33, 0],
+                },
+            }
+         ]
+    }
+
+    // 柱颜色渐变的实现，线性渐变可以通过 LinearGradient 进行实现
+    // LinearGradient 需要传递5个参数, 前四个代表两个点的相对位置，第五个参数代表颜色变化的范围
+    // 0, 0, 1, 0 代表的是从左往右的方向
+    const initOption = {
+        series: [
+          {
+                itemStyle: {
+                  barBorderRadius: [0, 33, 33, 0],
+                  // 指明颜色渐变的方向
+                  // 指明不同百分比之下颜色的值
+                  color: {
+                    type: "linear",
+                    x: 0,
+                    y: 0,
+                    x2: 1,
+                    y2: 0,
+                    colorStops: [
+                      {
+                        offset: 0,
+                        color: "#5052EE", // 0% 处的颜色
+                      },
+                      {
+                        offset: 1,
+                        color: "#AB6EE5", // 100% 处的颜色
+                      },
+                    ],
+                    global: false, // 缺省为 false
+                  },
+                },
+            }
+         ]
+    }
+```
+
+**分辨率适配**
+
+- 对窗口大小变化的事件进行监听
+
+```vue
+mounted() { window.addEventListener("resize", this.screenAdapter); } destroyed() { //
+在组件销毁时，需将监听器注销 window.removeEventListener("resize", this.screenAdapter); },
+```
+
+- 获取图表容器的宽度计算字体大小
+
+```vue
+// 当浏览器的大小发生变化时，会调用的方法，来完成屏幕的适配 methods: { screenAdapter() { const
+titleFontSize = (this.$refs.seller_ref.offsetWidth / 100) * 3.6; } }
+```
+
+- 将字体大小的值设置给图表的某些区域
+
+```vue
+// 标题大小、背景大小、柱宽度、圆角大小 methods: { screenAdapter() { const titleFontSize =
+(this.$refs.seller_ref.offsetWidth / 100) * 3.6; const adapterOption = { title: { textStyle: {
+fontSize: titleFontSize, }, }, tooltip: { axisPointer: { lineStyle: { width: titleFontSize, }, }, },
+series: [ { barWidth: titleFontSize, itemStyle: { borderRadius: [0, titleFontSize / 2, titleFontSize
+/ 2, 0], }, }, ], }; this.myChart.setOption(adapterOption); // 手动调用图表对象的resize才能生效
+this.myChart.resize(); } }
+```
+
+##### 4.3.2.2 销量趋势分析
+
+最终效果如下图所示：
+
+![Web3研习社](https://s1.imagehub.cc/images/2023/07/25/b26.png)
+
+- 代码环境准备
+
+```vue
+// trendPage.vue // 针对于 /trendPage 这条路径而显示出来的 在这个组件中, 通过子组件注册的方式,
+要显示出Trend.vue这个组件
+<template>
+  <div class="com-page">
+    <Trend />
+  </div>
+</template>
+
+<script>
+import Trend from '@/components/Trend'
+
+export default {
+  components: {
+    Trend,
+  },
+  data() {
+    return {}
+  },
+  methods: {},
+}
+</script>
+
+<style lang="less" scoped></style>
+
+// Trend.vue
+<template>
+  <div class="com-container">
+    <div class="com-chart" ref="trend_ref"></div>
+  </div>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      myChart: null,
+      allData: null,
+    }
+  },
+  created() {},
+  mounted() {
+    this.initChart()
+    this.getData()
+    window.addEventListener('resize', this.screenAdapter)
+    this.screenAdapter()
+  },
+  destroyed() {
+    window.removeEventListener('resize', this.screenAdapter)
+  },
+  methods: {
+    initChart() {
+      this.myChart = this.$echarts.init(this.$refs.trend_ref, 'dark')
+      const initOption = {}
+      this.myChart.setOption(initOption)
+    },
+    async getData() {
+      const { data: ret } = await this.$http.get('trend')
+      this.allData = ret
+      this.updateChart()
+    },
+    updateChart() {
+      const dataOption = {}
+      this.myChart.setOption(dataOption)
+    },
+    screenAdapter() {
+      const adapterOption = {}
+      this.myChart.setOption(adapterOption)
+      this.myChart.resize()
+    },
+  },
+}
+</script>
+
+<style lang="less" scoped></style>
+
+// router/index.js const routes = [ { path: '/trendPage', component: () =>
+import('@/views/trendPage') } ]
+```
+
+- 图表基本功能的实现
+
+数据的获取
+
+```js
+    // 获取服务器的数据, 对this.allData进行赋值之后, 调用updateChart方法更新图表
+    async getData() {
+      const { data: ret } = await this.$http.get("trend");
+      this.allData = ret;
+      this.updateChart();
+    }
+```
+
+数据的处理
+
+```js
+    updateChart() {
+      // 类目轴数据
+      const timeArr = this.allData.common.month;
+      // y轴数据 series下的数据
+      // map代表地区销量趋势
+      // seller代表商家销量趋势
+      // commodity代表商品销量趋势
+      const valueArr = this.allData.map.data;
+      // 图表数据, 一个图表中显示5条折线图
+      const seriesArr = valueArr.map((item, index) => {
+        return {
+          name: item.name,
+          type: "line",
+          data: item.data,
+          smooth: true,
+          stack: 'map' // stack值相同, 可以形成堆叠图效果
+        };
+      });
+      // 图例数据
+      const legendArr = valueArr.map((item) => {
+        return item.name;
+      });
+      const dataOption = {
+        xAxis: {
+          data: timeArr,
+        },
+        legend: {
+          data: legendArr,
+        },
+        series: seriesArr,
+      };
+      this.myChart.setOption(dataOption);
+    }
+```
+
+初始化配置
+
+```js
+const initOption = {
+  xAxis: {
+    type: 'category',
+    boundaryGap: false,
+  },
+  yAxis: {
+    type: 'value',
+  },
+}
+```
+
+- UI效果调整
+
+主题的使用
+
+```js
+    initChart() {
+      this.myChart = this.$echarts.init(this.$refs.trend_ref, 'dark');
+    }
+```
+
+坐标轴大小和位置，工具提示，图例位置和形状
+
+```js
+const initOption = {
+  // 坐标轴大小和位置
+  grid: {
+    left: '3%',
+    top: '30%',
+    right: '4%',
+    bottom: '1%',
+    containLabel: true,
+  },
+  // 工具提示
+  tooltip: {
+    trigger: 'axis',
+  },
+  // 图例位置和形状
+  legend: {
+    left: 20,
+    top: '15%',
+    icon: 'circle',
+  },
+}
+```
+
+区域面积和颜色渐变的设置
+
+```js
+    updateChart() {
+          // 半透明颜色值
+          const colorArr1 = [
+            "rgba(73, 146, 255, .5)",
+            "rgba(124, 255, 178, .5)",
+            "rgba(253, 221, 96, .5)",
+            "rgba(255, 110, 118, .5)",
+            "rgba(88, 217, 249, .5)",
+          ];
+          // 全透明颜色值
+          const colorArr2 = [
+            "rgba(73, 146, 255, 0)",
+            "rgba(124, 255, 178, 0)",
+            "rgba(253, 221, 96, 0)",
+            "rgba(255, 110, 118, 0)",
+            "rgba(88, 217, 249, 0)",
+          ];
+          const seriesArr = valueArr.map((item, index) => {
+            return {
+              // 区域面积只需要给series的每一个对象增加一个 areaStyle 即可
+              areaStyle: {
+                // 颜色渐变可以通过 LinearGradient 进行设置, 颜色渐变的方向从上往下
+                color: new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                  {
+                    offset: 0,
+                    color: colorArr1[index],
+                  },
+                  {
+                    offset: 1,
+                    color: colorArr2[index],
+                  },
+                ]),
+              },
+            };
+          });
+        }
+```
+
+- 切换图表
+- 分辨率适配
+
+分辨率适配主要就是在 screenAdapter 方法中进行, 需要获取图表容器的宽度，计算出标题字体大小，将字体的大小赋值给 titleFontSize
+
+```vue
+<script>
+export default {
+  data() {
+    return {
+      titleFontSize: 0,
+    }
+  },
+  methods: {
+    screenAdapter() {
+      this.titleFontSize = (this.$refs.trend_ref.offsetWidth / 100) * 3.6
+    },
+  },
+}
+</script>
+```
+
+通过 titleFontSize 去设置给标题文字的大小和图例的大小
+
+标题文字的大小，增加计算属性comStyle并设置给对应的div，代码如下：
+
+```vue
+<template>
+  <div class="com-container">
+    <div class="title" :style="comStyle">
+      <span>{{ '▎ ' + showTitle }}</span>
+      <span
+        class="iconfont icon-arrow-down title-icon"
+        :style="comStyle"
+        @click="showChoice = !showChoice"
+      ></span>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      titleFontSize: 0,
+    }
+  },
+  computed: {
+    // 设置给标题的样式
+    comStyle() {
+      return {
+        fontSize: this.titleFontSize + 'px',
+      }
+    },
+  },
+}
+</script>
+```
+
+图例的大小
+
+```vue
+methods: { screenAdapter() { this.titleFontSize = (this.$refs.trend_ref.offsetWidth / 100) * 3.6;
+const adapterOption = { legend: { itemWidth: this.titleFontSize, itemHeight: this.titleFontSize,
+itemGap: this.titleFontSize, textStyle: { fontSize: this.titleFontSize / 2, }, }, };
+this.myChart.setOption(adapterOption); this.myChart.resize(); } }
+```
+
+##### 4.3.2.3 商家地图分布
+
+最终效果如下图所示：
+
+![Web3研习社](https://s1.imagehub.cc/images/2023/07/25/b27.png)
+
+> 如需获取更多资料及思维导图，可以关注作者公众号《懒人码农》，后台回复关键词“大屏”即可获取
+
+查看完整源代码，请移步到github访问👉：[https://github.com/jackchen0120/EC-Platform-Monitor](https://github.com/jackchen0120/EC-Platform-Monitor)
+
+##### 4.3.2.4 地区销量排行
+
+最终效果如下图所示：
+
+![Web3研习社](https://s1.imagehub.cc/images/2023/07/25/b28.png)
+
+##### 4.3.2.5 热销商品占比
+
+最终效果如下图所示：
+
+![Web3研习社](https://s1.imagehub.cc/images/2023/07/25/b29.png)
+
+##### 4.3.2.6 库存销量分析
+
+最终效果如下图所示：
+
+![Web3研习社](https://s1.imagehub.cc/images/2023/07/25/b30.png)
+
+#### 4.3.3 WebScoket的使用
+
+##### 4.3.3.1 后端代码
+
+**安装WebSocket包**
+
+```bash
+    npm install ws -S
+```
+
+**创建 service\\web_socket_service.js 文件**
+
+- 创建WebSocket实例对象
+
+```js
+const WebSocket = require('ws')
+// 创建websocket服务端的对象，绑定端口号为9998
+const wss = new WebSocket.Server({
+  port: 9998,
+})
+```
+
+- 监听事件
+
+```js
+wss.on('connection', (client) => {
+  console.log('有客户端连接...')
+  client.on('message', (msg) => {
+    console.log('客户端发送数据过来了')
+    // 发送数据给客户端
+    client.send('hello socket')
+  })
+})
+```
+
+- 在app.js中引入web_scoket_service.js这个文件，并调用listen方法
+
+```js
+const webSocketService = require('./service/web_socket_service')
+// 开启服务端的监听，监听客户端的连接
+// 当某一个客户端连接成功之后，就会对这个客户端进行message事件的监听
+webSocketService.listen()
+```
+
+- 约定好喝客户端之前数据交互的格式和含义
+
+客户端和服务端之间的数据交互采用 JSON 格式
+
+客户端发送数据给服务端的字段如下：
+
+```js
+    {
+      "action": "getData",
+      "socketType": "trendData",
+      "chartName": "trend",
+      "value": ""
+    }
+    // 或者
+    {
+      "action": "fullScreen",
+      "socketType": "fullScreen",
+      "chartName": "trend",
+      "value": true
+    }
+    // 或者
+    {
+      "action": "themeChange",
+      "socketType": "themeChange",
+      "chartName": "",
+      "value": "dark"
+    }
+```
+
+**action : 代表某项行为,可选值有**
+
+- getData 代表获取图表数据
+- fullScreen 代表产生了全屏事件
+- themeChange 代表产生了主题切换的事件
+
+**socketType : 代表业务模块类型, 这个值代表前端注册数据回调函数的标识, 可选值有:**
+
+- trendData
+- sellerData
+- mapData
+- rankData
+- hotData
+- stockData
+- fullScreen
+- themeChange
+
+**chartName : 代表图表名称, 如果是主题切换事件, 可不传此值, 可选值有:**
+
+- trend
+- seller
+- map
+- rank
+- hot
+- stock
+
+**value : 代表 具体的数据值, 在获取图表数据时, 可不传此值, 可选值有**
+
+- 如果是全屏事件, true 代表全屏, false 代表非全屏
+- 如果是主题切换事件, 可选值有 chalk 或者 vintage
+
+**服务端发送给客户端的数据如下:**
+
+```js
+    {
+        "action": "getData",
+        "socketType": "trendData",
+        "chartName": "trend",
+        "value": "",
+        "data": "从文件读取出来的json文件的内容"
+    }
+    // 或者
+    {
+        "action": "fullScreen",
+        "socketType": "fullScreen",
+        "chartName": "trend",
+        "value": true
+    }
+    // 或者
+     {
+        "action": "themeChange",
+        "socketType": "themeChange",
+        "chartName": "",
+        "value": "dark"
+    }
+```
+
+注意, 除了 action 为 getData 时, 服务器会在客户端发过来数据的基础之上, 增加 data 字段，其他的情况, 服务器会原封不动的将从某一个客户端发过来的数据转发给每一个处于连接状态 的客户端
+
+- 代码实现
+
+```js
+const path = require('path')
+const fileUtils = require('../utils/file_utils')
+const WebSocket = require('ws')
+// 创建websocket服务端的对象，绑定端口号为9998
+const wss = new WebSocket.Server({
+  port: 9998,
+})
+
+module.exports.listen = () => {
+  // 对客户端的连接事件进行监听
+  // client代表是客户端的连接socket对象
+  wss.on('connection', (client) => {
+    console.log('有客户端连接成功...')
+    // 对客户端的连接对象进行message事件的监听
+    // msg由客户端发送给服务端的数据
+    client.on('message', async (msg) => {
+      console.log('客户端发送数据给服务端===', msg)
+      let payload = JSON.parse(msg)
+      const action = payload.action
+      if (action === 'getData') {
+        let filePath = '../data/' + payload.chartName + '.json'
+        // trend seller map rank hot stock
+        // payload.chartName
+        filePath = path.join(__dirname, filePath)
+        const ret = await fileUtils.getFileJsonData(filePath)
+        // 需要在服务端获取到数据的基础之上，增加一个data的字段
+        // data所对应的值，就是某个json文件的内容
+        payload.data = ret
+        client.send(JSON.stringify(payload))
+      } else {
+        // 原封不动的将所接收到的数据转发给每一个处于连接状态的客户端
+        // wss.clients 所有客户端的连接
+        wss.clients.forEach((client) => {
+          client.send(msg)
+        })
+      }
+      // 服务端向客户端发送数据
+      // client.send('hello socket form backend');
+    })
+  })
+}
+```
+
+##### 4.3.3.2 前端代码
+
+- 定义单例，创建WebSocket实例对象
+
+创建scr/utils/socket_service.js文件，定义单例代码如下：
+
+```js
+export default class SocketService {
+  // 单例模式
+
+  static instance = null
+  static get Instance() {
+    if (!this.instance) {
+      this.instance = new SocketService()
+    }
+    return this.instance
+  }
+}
+```
+
+- 监听WebSocket事件
+
+定义connect函数，将创建的WebSocket赋值给实例属性，代码如下：
+
+```js
+    // 实例属性ws和服务端连接的socket对象
+    ws = null;
+
+    // 定义连接服务器的方法
+    connect () {
+        // 连接服务器
+        if (!window.WebSocket) {
+          return console.log('您的浏览器不支持websocket');
+        }
+        this.ws = new WebSocket(`ws://106.55.168.13:9998/ws/webSocket`);
+    }
+```
+
+监听事件
+
+```js
+    connect() {
+      if (!window.WebSocket) {
+        return console.log('您的浏览器不支持 WebSocket!')
+      }
+      this.ws = new WebSocket('ws://localhost:9998')
+      // 监听连接成功
+      this.ws.onopen = () => {
+        console.log('WebSocket 连接成功')
+      }
+      // 服务器连接不成功，服务器关闭了连接
+      this.ws.onclose = e => {
+        console.log('服务器关闭了连接')
+      }
+      // 监听接收消息
+      this.ws.onmessage = msg => {
+        console.log('WebSocket 接收到数据')
+      }
+    }
+```
+
+定义注册函数
+
+```js
+export default class SocketService {
+  // 业务类型和回调函数的对于关系
+  callBackMapping = {}
+  /*** socketType
+   * trendData sellerData mapData rankData hotData stockData
+   * fullScreen
+   * themeChange
+   * callBack
+   * 回调函数
+   */
+  registerCallBack(socketType, callBack) {
+    // 往 callBackMap中存放回调函数
+    this.callBackMapping[socketType] = callBack
+  }
+  unRegisterCallBack(socketType) {
+    this.callBackMapping[socketType] = null
+  }
+}
+```
+
+连接服务端
+
+```js
+    // 在 main.js 中连接服务器端
+    import SocketService from '@/utils/socket_service' SocketService.Instance.connect()
+
+    // 将 SocketService 实例对象挂载到 Vue 的原型对象上
+    Vue.prototype.$socket = SocketService.Instance
+```
+
+发送数据给服务端
+
+在 socket_service.js 中定义发送数据的方法
+
+```js
+export default class SocketService {
+  send(data) {
+    console.log('发送数据给服务器:')
+    this.ws.send(JSON.stringify(data))
+  }
+}
+```
+
+先修改 Trend.vue 文件，代码如下：
+
+```vue
+mounted() { // 当socket来数据的时候, 会调用getData这个函数
+this.$socket.registerCallBack('trendData', this.getData) // 往 socket 发送数据,
+目的是想让服务端传输销量趋势这个模块的数据 this.initChart(); // this.getData(); //
+发送数据给服务端，告诉服务端，前端现在需要数据 this.$socket.send({ action: "getData", socketType:
+"trendData", chartName: "trend", value: "" }) } // action的值不变，都是getData //
+socketType的可选值有：trendData,sellerData,mapData,rankData,hotData,stockData //
+chartName的可选值有: trend,seller,map,rank,hot,stock destroyed () {
+this.$socket.unRegisterCallBack('trendData') }
+```
+
+运行代码, 发现数据发不出去
+
+因为在刷新界面之后, 客户端和服务端的连接并不会立马连接成功, 在处于连接状态下就调用 send 是发送不成功的, 因此需要修改 service_socket.js 中的 send 方法进行容错处理
+
+```js
+    // 标识是否连接成功
+    connected = false;
+
+    // 记录重试的次数
+    sendRetryCount = 0;
+
+    // 发送数据的方法
+    send (data) {
+        // 判断现在是否有连接成功
+        if (this.connected) {
+          this.sendRetryCount = 0;
+          this.ws.send(JSON.stringify(data));
+        } else {
+          this.sendRetryCount++;
+          setTimeout(() => {
+            this.send(data);
+          }, this.sendRetryCount * 500)
+        }
+    }
+```
+
+在 onopen 时设置 connected 的值
+
+```js
+    // 定义连接服务器的方法
+    connect () {
+        // 连接成功的事件
+        this.ws.onopen = () => {
+          console.log('连接服务端成功');
+          this.connected = true;
+          this.connectRetryCount = 0;
+        }
+    }
+```
+
+在 socket_service.js 中修改接收到消息的代码处理
+
+```js
+    // 定义连接服务器的方法
+    connect () {
+        // 得到服务端发送过来的数据
+        this.ws.onmessage = msg => {
+          // console.log('从服务端获取到的数据===', msg);
+          // 真正服务端发送过来的原始数据时在msg中的data字段
+          const recvData = JSON.parse(msg.data);
+          const socketType = recvData.socketType;
+          // 判断回调函数是否存在
+          if (this.callBackMapping[socketType]) {
+            const action = recvData.action
+            if (action === 'getData') {
+              const realData = JSON.parse(recvData.data);
+              this.callBackMapping[socketType].call(this, realData);
+            } else if (action === 'fullScreen') {
+              this.callBackMapping[socketType].call(this, recvData);
+            } else if (action === 'themeChange') {
+              this.callBackMapping[socketType].call(this, recvData);
+            }
+          }
+        }
+    }
+```
+
+断开重连机制
+
+如果初始化连接服务端不成功, 或者连接成功了, 后来服务器关闭了, 这两种情况都会触发 onclose 事件,我们需要在这个事件中,进行重连
+
+```js
+    connect() {
+        // 监听连接成功
+        this.ws.onopen = () => {
+          // 连接成功之后, 重置重连次数
+          this.connectRetryCount = 0;
+        }
+        // 连接服务端失败
+        // 当连接成功之后，服务端关闭的情况
+        this.ws.onclose = () => {
+          console.log('连接服务端失败');
+          this.connected = false;
+          this.connectRetryCount++;
+          setTimeout(() => {
+            this.connect();
+          }, this.connectRetryCount * 500)
+        }
+    }
+```
+
+#### 4.3.4 组件合并
+
+- 创建screenPage.vue文件，并配置路由规则，代码如下：
+
+```vue
+// router/index.js import Vue from 'vue' import VueRouter from 'vue-router' Vue.use(VueRouter) const
+routes = [ { path: '/', redirect: '/screen' }, { path: '/screen', component: () =>
+import('@/views/screenPage') } ]
+```
+
+- 代码实现
+
+静态图片资源放在public/static/img目录之下，完整代码如下：
+
+```vue
+// screenPage.vue
+<template>
+  <div class="screen-container" :style="containerStyle">
+    <header class="screen-header">
+      <div>
+        <img :src="headerSrc" alt="" />
+      </div>
+      <span class="logo">
+        <img :src="logoSrc" alt="" />
+      </span>
+      <span class="title">电商平台数据大屏实时监控系统</span>
+      <div class="title-right">
+        <img :src="themeSrc" class="qiehuan" @click="handleChangeTheme" />
+        <span class="datetime">{{ timeValue }}</span>
+      </div>
+    </header>
+    <div class="screen-body">
+      <section class="screen-left">
+        <div id="left-top" :class="[fullScreenStatus.trend ? 'fullscreen' : '']">
+          <!-- 销量趋势图表 -->
+          <Trend ref="trend" />
+          <div class="resize">
+            <!-- icon-compress-alt -->
+            <span
+              @click="changeSize('trend')"
+              :class="[
+                'iconfont',
+                fullScreenStatus.trend ? 'icon-compress-alt' : 'icon-expand-alt',
+              ]"
+            ></span>
+          </div>
+        </div>
+        <div id="left-bottom" :class="[fullScreenStatus.seller ? 'fullscreen' : '']">
+          <!-- 商家销售金额图表 -->
+          <Seller ref="seller" />
+          <div class="resize">
+            <!-- icon-compress-alt -->
+            <span
+              @click="changeSize('seller')"
+              :class="[
+                'iconfont',
+                fullScreenStatus.seller ? 'icon-compress-alt' : 'icon-expand-alt',
+              ]"
+            ></span>
+          </div>
+        </div>
+      </section>
+      <section class="screen-middle">
+        <div id="middle-top" :class="[fullScreenStatus.map ? 'fullscreen' : '']">
+          <!-- 商家分布图表 -->
+          <Map ref="map" />
+          <div class="resize">
+            <!-- icon-compress-alt -->
+            <span
+              @click="changeSize('map')"
+              :class="['iconfont', fullScreenStatus.map ? 'icon-compress-alt' : 'icon-expand-alt']"
+            ></span>
+          </div>
+        </div>
+        <div id="middle-bottom" :class="[fullScreenStatus.rank ? 'fullscreen' : '']">
+          <!-- 地区销量排行图表 -->
+          <Rank ref="rank" />
+          <div class="resize">
+            <!-- icon-compress-alt -->
+            <span
+              @click="changeSize('rank')"
+              :class="['iconfont', fullScreenStatus.rank ? 'icon-compress-alt' : 'icon-expand-alt']"
+            ></span>
+          </div>
+        </div>
+      </section>
+      <section class="screen-right">
+        <div id="right-top" :class="[fullScreenStatus.hot ? 'fullscreen' : '']">
+          <!-- 热销商品占比图表 -->
+          <hot ref="hot" />
+          <div class="resize">
+            <!-- icon-compress-alt -->
+            <span
+              @click="changeSize('hot')"
+              :class="['iconfont', fullScreenStatus.hot ? 'icon-compress-alt' : 'icon-expand-alt']"
+            ></span>
+          </div>
+        </div>
+        <div id="right-bottom" :class="[fullScreenStatus.stock ? 'fullscreen' : '']">
+          <!-- 库存销量分析图表 -->
+          <Stock ref="stock" />
+          <div class="resize">
+            <!-- icon-compress-alt -->
+            <span
+              @click="changeSize('stock')"
+              :class="[
+                'iconfont',
+                fullScreenStatus.stock ? 'icon-compress-alt' : 'icon-expand-alt',
+              ]"
+            ></span>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+</template>
+
+<script>
+import Hot from '@/components/Hot.vue'
+import Map from '@/components/Map.vue'
+import Rank from '@/components/Rank.vue'
+import Seller from '@/components/Seller.vue'
+import Stock from '@/components/Stock.vue'
+import Trend from '@/components/Trend.vue'
+import { mapState } from 'vuex'
+import { getThemeValue } from '@/utils/theme_utils'
+export default {
+  components: {
+    Hot,
+    Map,
+    Rank,
+    Seller,
+    Stock,
+    Trend,
+  },
+  data() {
+    return {
+      // 定义每一个图表的全屏状态
+      fullScreenStatus: {
+        trend: false,
+        seller: false,
+        map: false,
+        rank: false,
+        hot: false,
+        stock: false,
+      },
+      timer: null,
+      timeValue: '',
+    }
+  },
+  created() {
+    // 注册接收到数据的回调函数
+    this.$socket.registerCallBack('fullScreen', this.recvData)
+    this.$socket.registerCallBack('themeChange', this.recvThemeChange)
+  },
+  destroyed() {
+    this.$socket.unRegisterCallBack('fullScreen')
+    this.$socket.unRegisterCallBack('themeChange')
+    clearInterval(this.timer)
+  },
+  mounted() {
+    this.displayTime()
+    if (this.timer) {
+      clearInterval(this.timer)
+    }
+    this.timer = setInterval(() => {
+      this.displayTime()
+    }, 1000)
+  },
+  methods: {
+    displayTime() {
+      //获取系统当前的年、月、日、小时、分钟、毫秒
+      let date, year, month, day, h, m, s
+      date = new Date()
+      year = date.getFullYear()
+      month = date.getMonth() + 1
+      day = date.getDate()
+      h = date.getHours()
+      m = date.getMinutes()
+      s = date.getSeconds()
+      month = month < 10 ? '0' + month : month
+      day = day < 10 ? '0' + day : day
+      h = h < 10 ? '0' + h : h
+      m = m < 10 ? '0' + m : m
+      s = s < 10 ? '0' + s : s
+      return (this.timeValue = year + '-' + month + '-' + day + '  ' + h + ':' + m + ':' + s)
+    },
+    changeSize(chartName) {
+      console.log(chartName)
+      // 将数据发送给服务端
+      const targetValue = !this.fullScreenStatus[chartName]
+      this.$socket.send({
+        action: 'fullScreen',
+        socketType: 'fullScreen',
+        chartName: chartName,
+        value: targetValue,
+      })
+    },
+    // 接收到全屏数据之后的处理
+    recvData(data) {
+      // 取出是哪一个图表需要进行切换
+      const chartName = data.chartName
+      // 取出, 切换成什么状态
+      const targetValue = data.value
+      this.fullScreenStatus[chartName] = targetValue
+      this.$nextTick(() => {
+        this.$refs[chartName].screenAdapter()
+      })
+    },
+    handleChangeTheme() {
+      // 修改VueX中数据
+      this.$socket.send({
+        action: 'themeChange',
+        socketType: 'themeChange',
+        chartName: '',
+        value: '',
+      })
+    },
+    recvThemeChange() {
+      this.$store.commit('changeTheme')
+    },
+  },
+  computed: {
+    logoSrc() {
+      return '/static/img/' + getThemeValue(this.theme).logoSrc
+    },
+    headerSrc() {
+      return '/static/img/' + getThemeValue(this.theme).headerBorderSrc
+    },
+    themeSrc() {
+      return '/static/img/' + getThemeValue(this.theme).themeSrc
+    },
+    containerStyle() {
+      return {
+        backgroundColor: getThemeValue(this.theme).backgroundColor,
+        color: getThemeValue(this.theme).titleColor,
+      }
+    },
+    ...mapState(['theme']),
+  },
+}
+</script>
+
+<style lang="less" scoped>
+// 全屏样式的定义
+.fullscreen {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  margin: 0 !important;
+  z-index: 9999;
+}
+
+.screen-container {
+  width: 100%;
+  height: 100%;
+  padding: 0 20px;
+  background-color: #2e2e2f;
+  color: #fff;
+  box-sizing: border-box;
+}
+.screen-header {
+  width: 100%;
+  font-size: 20px;
+  position: relative;
+  > div {
+    img {
+      width: 100%;
+    }
+  }
+  .title {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    font-size: 20px;
+    transform: translate(-50%, -50%);
+  }
+  .title-right {
+    display: flex;
+    align-items: center;
+    position: absolute;
+    right: 0px;
+    top: 50%;
+    transform: translateY(-80%);
+  }
+  .qiehuan {
+    width: 28px;
+    height: 21px;
+    cursor: pointer;
+  }
+  .datetime {
+    font-size: 15px;
+    margin-left: 10px;
+  }
+  .logo {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-80%);
+    img {
+      height: 35px;
+      width: 154px;
+    }
+  }
+}
+.screen-body {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  margin-top: 10px;
+  .screen-left {
+    height: 100%;
+    width: 27.6%;
+    #left-top {
+      height: 53%;
+      position: relative;
+    }
+    #left-bottom {
+      height: 31%;
+      margin-top: 25px;
+      position: relative;
+    }
+  }
+  .screen-middle {
+    height: 100%;
+    width: 41.5%;
+    margin-left: 1.6%;
+    margin-right: 1.6%;
+    #middle-top {
+      width: 100%;
+      height: 56%;
+      position: relative;
+    }
+    #middle-bottom {
+      margin-top: 25px;
+      width: 100%;
+      height: 28%;
+      position: relative;
+    }
+  }
+  .screen-right {
+    height: 100%;
+    width: 27.6%;
+    #right-top {
+      height: 46%;
+      position: relative;
+    }
+    #right-bottom {
+      height: 38%;
+      margin-top: 25px;
+      position: relative;
+    }
+  }
+}
+.resize {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  cursor: pointer;
+}
+</style>
+```
+
+#### 4.3.5 全屏切换
+
+- 全屏状态数据定义
+
+```vue
+export default { data() { return { // 定义每一个图表的全屏状态 fullScreenStatus: { trend: false,
+seller: false, map: false, rank: false, hot: false, stock: false, }, timer: null, timeValue: '', }
+}, }
+```
+
+- 全屏状态样式定义
+
+```vue
+<style lang="less" scoped>
+// 全屏样式的定义
+.fullscreen {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  margin: 0 !important;
+  z-index: 9999;
+}
+</style>
+```
+
+- class值得处理
+
+```html
+<div id="left-top" :class="[fullScreenStatus.trend ? 'fullscreen' : '']">
+  <!-- 销量趋势图表 -->
+  <Trend ref="trend" />
+  <div class="resize">
+    <!-- icon-compress-alt -->
+    <span
+      @click="changeSize('trend')"
+      :class="[
+          'iconfont',
+          fullScreenStatus.trend
+            ? 'icon-compress-alt'
+            : 'icon-expand-alt',
+        ]"
+    ></span>
+  </div>
+</div>
+```
+
+- 全屏点击事件的处理
+
+```vue
+export default { methods: { changeSize(chartName) { console.log(chartName) // 将数据发送给服务端
+const targetValue = !this.fullScreenStatus[chartName] this.$socket.send({ action: 'fullScreen',
+socketType: 'fullScreen', chartName: chartName, value: targetValue, }) }, }, }
+```
+
+- created时注册回调函数
+
+```vue
+export default { created() { // 注册接收到数据的回调函数 this.$socket.registerCallBack('fullScreen',
+this.recvData) this.$socket.registerCallBack('themeChange', this.recvThemeChange) }, }
+```
+
+- destoryed时取消回调函数
+
+```vue
+export default { destroyed() { this.$socket.unRegisterCallBack('fullScreen')
+this.$socket.unRegisterCallBack('themeChange') clearInterval(this.timer) }, }
+```
+
+- 得到数据的处理
+
+```vue
+export default { methods: { // 接收到全屏数据之后的处理 recvData(data) { //
+取出是哪一个图表需要进行切换 const chartName = data.chartName // 取出, 切换成什么状态 const
+targetValue = data.value this.fullScreenStatus[chartName] = targetValue this.$nextTick(() => {
+this.$refs[chartName].screenAdapter() }) }, }, }
+```
+
+- socket_service.js 代码如下：
+
+```js
+const action = recvData.action
+if (action === 'getData') {
+  const realData = JSON.parse(recvData.data)
+  this.callBackMapping[socketType].call(this, realData)
+} else if (action === 'fullScreen') {
+  this.callBackMapping[socketType].call(this, recvData)
+} else if (action === 'themeChange') {
+  this.callBackMapping[socketType].call(this, recvData)
+}
+```
+
+#### 4.3.6 主题切换
+
+- 当前主题数据的存储
+
+当前主题的数据, 会在多个组件中使用, 因此设置在 VueX 中是最合适的, 增加仓库数据 theme , 并增加一个 mutation 用来修改 theme
+
+```js
+// store/index.js
+import Vue from 'vue'
+import Vuex from 'vuex'
+
+Vue.use(Vuex)
+
+export default new Vuex.Store({
+  state: {
+    theme: 'dark',
+  },
+  mutations: {
+    changeTheme(state) {
+      if (state.theme === 'dark') {
+        state.theme = 'default'
+      } else {
+        state.theme = 'dark'
+      }
+    },
+  },
+  actions: {},
+  modules: {},
+})
+```
+
+- 点击切换主题按钮
+
+点击事件的响应
+
+```vue
+<template>
+  <div class="title-right">
+    <img :src="themeSrc" class="qiehuan" @click="handleChangeTheme" />
+    <span class="datetime">{{ timeValue }}</span>
+  </div>
+</template>
+```
+
+点击事件的处理
+
+```vue
+export default { methods: { handleChangeTheme() { // 修改VueX中数据 this.$socket.send({ action:
+"themeChange", socketType: "themeChange", chartName: "", value: "", }); } } }
+```
+
+- 监听主题的变化
+
+以 Seller.vue 为例, 进行主题数据变化的监听
+
+映射 store 中的 theme 作为当前组件的计算属性
+
+```vue
+import { mapState } from 'vuex' export default { computed: { ...mapState(['theme']); } }
+```
+
+监听theme的变化
+
+```vue
+export default { watch: { theme () { this.myChart.dispose(); // 销毁当前的图表 this.initChart(); //
+重新以最新的主题名称初始化图表对象 this.screenAdapter(); // 完成屏幕适配 this.updateChart(); //
+更新图表展示 } } }
+```
+
+主题的切换
+
+```vue
+export default { methods: { // 初始化echartsInstance对象 initChart() { this.myChart =
+this.$echarts.init(this.$refs.seller_ref, this.theme); } } }
+```
+
+通过这个步骤就可以实现每一个图表组件切换主题了，不过有部分样式需要另外调整
+
+- 主题样式适配
+
+创建utils/theme_utils.js文件
+
+定义两个主题下, 需要进行样式切换的样式数据, 并对外导出一个函数, 用于方便的通过主题名称得到对应主题的某些配置项
+
+```js
+const theme = {
+  dark: {
+    // 背景颜色
+    backgroundColor: '#3f3f46',
+    // 图表背景色
+    bgColor: '#100c2a',
+    // label文字颜色
+    labelColor: '#fff',
+    // 标题的文字颜色
+    titleColor: '#fff',
+    // 左上角logo的图标路径
+    logoSrc: 'logo_dark.png',
+    // 切换主题按钮的图片路径
+    themeSrc: 'qiehuan_dark.png',
+    // 页面顶部的边框图片
+    headerBorderSrc: 'header_border_dark.png',
+  },
+  default: {
+    // 背景颜色
+    backgroundColor: '#eee',
+    // 图表背景色
+    bgColor: '#fff',
+    // label文字颜色
+    labelColor: '#100c2a',
+    // 标题的文字颜色
+    titleColor: '#000',
+    // 左上角logo的图标路径
+    logoSrc: 'logo_light.png',
+    // 切换主题按钮的图片路径
+    themeSrc: 'qiehuan_light.png',
+    // 页面顶部的边框图片
+    headerBorderSrc: 'header_border_light.png',
+  },
+}
+
+export function getThemeValue(themeName) {
+  return theme[themeName]
+}
+```
+
+映射 VueX 中的 theme 数据作为该组件的计算属性
+
+```vue
+// screenPage.vue import { mapState } from 'vuex' export default { computed: {
+...mapState(['theme']) }
+```
+
+定义一些控制样式的计算属性
+
+```vue
+// screenPage.vue import { mapState } from "vuex"; import { getThemeValue } from
+"@/utils/theme_utils"; export default { computed: { logoSrc() { return "/static/img/" +
+getThemeValue(this.theme).logoSrc; }, headerSrc() { return "/static/img/" +
+getThemeValue(this.theme).headerBorderSrc; }, themeSrc() { return "/static/img/" +
+getThemeValue(this.theme).themeSrc; }, containerStyle() { return { backgroundColor:
+getThemeValue(this.theme).backgroundColor, color: getThemeValue(this.theme).titleColor, }; } } }, }
+```
+
+将计算属性应用到布局中
+
+```vue
+<template>
+  <div class="screen-container" :style="containerStyle">
+    <header class="screen-header">
+      <div>
+        <img :src="headerSrc" alt="" />
+      </div>
+      <span class="logo">
+        <img :src="logoSrc" alt="" />
+      </span>
+      <span class="title">电商平台数据大屏实时监控系统</span>
+      <div class="title-right">
+        <img :src="themeSrc" class="qiehuan" @click="handleChangeTheme" />
+        <span class="datetime">{{ timeValue }}</span>
+      </div>
+    </header>
+  </div>
+</template>
+```
+
+通过计算属性动态控制标题样式及下拉框选项
+
+```vue
+// trend.vue import { mapState } from "vuex"; import { getThemeValue } from "@/utils/theme_utils";
+export default { ...mapState(["theme"]), selectTypes() { if (!this.allData) { return []; } else {
+return this.allData.type.filter((item) => { return item.key !== this.choiceType; }); } },
+showTitle() { if (!this.allData) { return ""; } else { return this.allData[this.choiceType].title; }
+}, // 设置给标题的样式 comStyle() { return { fontSize: this.titleFontSize + "px", color:
+getThemeValue(this.theme).labelColor }; }, marginStyle() { return { marginLeft: this.titleFontSize +
+"px", backgroundColor: getThemeValue(this.theme).bgColor }; }, }
+```
+
+## 5. 写在最后
+
+- 升级Echarts新版本
+- 快速掌握KOA2后端框架开发API
+- 代码简洁优化及功能完善
+- Axios和WebSocket两种通信方式讲解
+- 适合进阶数据可视化的练手项目
+
+> 如果对你有些许帮助，欢迎赞赏、转发分享，感谢支持。如需获取更多实战项目经验或源码资源，请关注我的公众号：`「懒人码农」`，也可以加我微信`lazycode520`，一起学习一起进步。
+
+查看完整源代码，请移步到github访问👉：[https://github.com/jackchen0120/EC-Platform-Monitor](https://github.com/jackchen0120/EC-Platform-Monitor)

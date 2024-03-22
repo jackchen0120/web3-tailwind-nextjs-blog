@@ -1,0 +1,454 @@
+---
+title: 'threejs快速入门教程'
+date: '2024-03-22'
+lastmod: '2024-03-22'
+tags: ['入门教程', 'Web3D动画']
+draft: false
+summary: 'Remix Solidity IDE是一款基于浏览器的IDE，它用于开发智能合约，也是以太坊官方推荐的一款开发以太坊智能合约的IDE（集成开发环境），适合新手。'
+images: []
+---
+
+<TOCInline toc={props.toc} exclude="Introduction" />
+
+## 前言
+
+> 当你开始思考你应该如何学习WebGL和Three.js的时候，相信你至少对相关的关键词了解过了，希望通过WebGL或Three.js实现你想要的Web3D功能，也许你也会去思考通过WebGL或Three.js能不能实现你想要的功能，也许你是因为领导临时分配任务，还不太清楚WebGL和Three.js是什么，个人建议是不要做过多思考，先看看相关的具体技术教程，随着时间的推移你自然会明白Canvas、WebGL、Three.js等关键词指什么。
+
+Three.js是基于原生WebGL API和着色器封装得到的3D引擎，也就是一个JS库。通过原生WebGL直接编写程序，会比较麻烦，一般开发项目直接使用Three.js引擎。简单的项目一般也用不到底层WebGL知识，不过学习WebGL有助于深入理解Three.js，如果使用Three.js开发项目需要自定义着色器的时候，肯定也是要学习底层WebGL和着色器GLSL知识。
+
+总而言之，如果你想成为Web3D应用开发的大牛，学习WebGL肯定是必须的。
+
+## 什么是Web3D
+
+当今的互联网已经迈入了第三代，这被称为Web3.0，而Web3D正是Web3.0的其中一个技术分支。Web3D是指将三维图形技术应用于Web上的技术，它是将3D图形和Web技术结合起来的一个分支，可以使用户在Web上以更真实、更直观的方式浏览和操作虚拟场景。
+
+Web3D是一种利用Web技术创建和展示3D场景和模型的技术。Web3D技术让用户可以通过Web浏览器直接访问和浏览3D内容，无需安装任何额外的插件或软件。Web3D技术通常使用HTML、CSS、JavaScript等Web标准技术进行开发，并使用各种3D引擎和库来实现3D渲染、交互和动画等功能。
+
+Web3D技术的优势在于可以在不同平台和设备上运行，包括桌面、移动设备和虚拟现实设备等，用户可以随时随地访问3D内容。Web3D技术还可以帮助用户更好地展示和交互3D模型和场景，包括3D游戏、虚拟展览、3D酷炫官网、产品演示、建筑模型、元宇宙场景、智慧城市、智慧工厂、数字孪生、低代码3D平台等。
+
+目前，Web3D技术已经得到广泛应用，包括WebGL、Three.js、Babylon.js等3D引擎和库，以及A-Frame、PlayCanvas等Web3D框架。
+
+## 如何学习3D技术
+
+### WebGL和Three.js学习顺序
+
+如果你急于要实现一个Web3D功能，时间有限，也没有图形学基础，个人建议直接学习先Three.js即可，以后想深入掌握，可以学习原生WebGL和图形学相关知识。
+
+如果时间比较充足，又希望有更大的成长空间，学习底层原生WebGL肯定是必要的，可以WebGL和Threejs结合着学习，顺序也不是非常重要。
+
+### 前端工程师
+
+如果你是前端工程师，突然接触到Web3D应用开发，对于你来说，前端的生态肯定是非常熟悉了，如果不了解WebGL和3D应用开发这一块，这种情况下，需要学习的自然是底层WebGL知识和Three.js基础知识，还有实战中不同Web3D应用项目，如何去开发，程序员和3D美术之间又应该如何配合，需要去学习实战项目的开发流程。
+
+### 没有编程基础
+
+如果你首次接触WebGL或Three.js，没有任何编程基础，只要学习能力强，学习是没有问题的，很多时候学习能力比你的基础更为重要。
+
+没有编程基础首先要做的是建立编程的感觉，WebGL开发使用的是JavaScript语言，自然需要找一些基础的JavaScript语言教程学习一下，然后简单补充下HTML和CSS知识，再去学习Three.js课程。
+
+### 有编程基础-不了解前端
+
+部分初学者，有编程基础，但是不了解前端，这种情况下你肯定首先需要补充的是HTML、CSS、JavaScript等前端知识，然后在学习Threejs和WebGL。刚开始学习Threejs和WebGL对前端要求不高，稍微有点基础即可，但是如果为了开发项目，对前端的要求和普通前端一样，需要掌握JavaScript、HTML、CSS、http、reactjs、vuejs、nodejs等知识。
+
+### 语言基础必备
+
+- JavaScript 基础教程
+
+[《JavaScript 语言入门教程》](https://wangdoc.com/javascript/)
+
+- JavaScript ES6 教程
+
+[《ES6 标准入门》](https://wangdoc.com/es6/)
+
+- HTML 基础教程
+
+[《HTML 超文本标记语言入门教程》](https://www.runoob.com/html/html-tutorial.html)
+
+- CSS 基础教程
+
+[《CSS 层叠样式表入门教程》](https://www.runoob.com/css/css-tutorial.html)
+
+- TypeScript 基础教程
+
+[《TypeScript中文手册》](https://www.tslang.cn/docs/)
+
+[《TypeScript官方文档》](https://www.typescriptlang.org/zh/docs/handbook/typescript-from-scratch.html)
+
+- TypeScript 进阶教程
+
+[《深入理解 TypeScript》](https://jkchao.github.io/typescript-book-chinese/)
+
+## 准备工作
+
+- threejs官方文件包下载
+- 安装vscode代码编辑器
+- 安装nodejs本地静态服务器，如：live-server、http-server
+- 环境搭建（学习、开发）
+
+## 目录介绍（深入研究）
+
+Three.js是开源的，官方在Github上发布了资源，[https://github.com/mrdoob/three.js](https://github.com/mrdoob/three.js/) [👆](https://github.com/mrdoob/three.js/)
+
+![Web3研习社](https://s1.imagehub.cc/images/2024/03/22/9bdaf8d03377fa8355ac3048af073667.png)
+
+## 学习环境引入threejs库
+
+如果不是正式开发Web3D项目，只是学习threejs功能，完全没必要用webpack或vite搭建一个开发环境。
+
+学习使用的环境，只要创建一个.html文件，编写threejs代码，最后通过本地静态服务打开.html文件就行。
+
+```html
+<!-- .html文件引入threejs库，最好的方式是通过配置<script type="importmap">，
+实现学习环境.html文件和vue或react脚手架开发环境一样的写法。
+具体路径配置，根据你自己的文件目录设置-->
+<script type="importmap">
+  {
+    "imports": {
+      "three": "../build/three.module.js",
+      "three/addons/": "./jsm/"
+    }
+  }
+</script>
+<script type="module">
+  import * as THREE from 'three' // ES6 import方式引入
+  // 打印测试，是否引入成功
+  console.log(THREE)
+</script>
+```
+
+### VSCode配置threejs代码提示
+
+```bash
+# 安装依赖
+npm i -S @types/three
+
+# 根目录新建jsconfig.json空文件，然后在main.js文件编写threejs代码即可
+<script type="module" src="main.js"></script>
+```
+
+### 完整代码
+
+```html
+# index.html
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>创建第一个场景</title>
+    <style>
+      body {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- <div>hello world</div> -->
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "./three.module.js",
+          "three/addons/": "./"
+        }
+      }
+    </script>
+    <script type="module" src="main.js"></script>
+  </body>
+</html>
+```
+
+```js
+// main.js
+import * as THREE from 'three' // 导入核心模块
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js' // 导入控制器扩展库
+
+// 创建场景
+const scene = new THREE.Scene()
+scene.background = new THREE.Color(0x000000) // 设置场景背景色
+
+// 创建相机
+const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000)
+
+// 创建渲染器
+const renderer = new THREE.WebGLRenderer({
+  antialias: true, // 抗锯齿
+})
+renderer.setSize(window.innerWidth, window.innerHeight) // 设置渲染器尺寸
+document.body.appendChild(renderer.domElement) // 将canvas画布渲染到body元素中
+
+// 坐标轴辅助工具
+const axesHelper = new THREE.AxesHelper(5)
+scene.add(axesHelper)
+
+// 创建轨道控制器
+const controls = new OrbitControls(camera, renderer.domElement)
+
+// 纹理贴图
+const texture = new THREE.TextureLoader().load('./assets/logo1.png')
+
+// 创建立方体
+const geometry = new THREE.BoxGeometry(1, 1, 1)
+const material = new THREE.MeshBasicMaterial({
+  // color: 0x00ff00,
+  map: texture, // 贴图
+  side: THREE.DoubleSide,
+})
+const cube = new THREE.Mesh(geometry, material)
+scene.add(cube) // 把网格模型添加到三维场景中
+
+camera.position.z = 5 // 设置相机坐标系中的位置
+camera.lookAt(scene.position) // 设置相机方向(指向的场景对象)
+
+// 自适应浏览器窗口大小
+function onWindowResize() {
+  camera.aspect = window.innerWidth / window.innerHeight // 设置相机屏幕宽高比
+  camera.updateProjectionMatrix() // 更新摄像机投影矩阵,在任何参数被改变以后必须被调用
+  renderer.setSize(window.innerWidth, window.innerHeight)
+}
+window.addEventListener('resize', onWindowResize)
+
+// 创建帧动画
+function animate() {
+  requestAnimationFrame(animate) // 渲染下一帧就调用函数
+  cube.rotation.x += 0.01 // 物体旋转动画
+  controls.update() // 鼠标交互更新
+  renderer.render(scene, camera) // 执行渲染操作
+}
+animate()
+```
+
+## 开发环境引入threejs库
+
+你可以采用`Vue + threejs`或`React + threejs`技术栈，这很简单，threejs就是一个js库，直接通过npm命令行安装就行。
+
+npm安装特定版本或最新版本three.js（注意使用哪个版本，查文档就查对应版本）
+
+```bash
+# 比如安装特定版本v150
+yarn add three@0.150.0 -S
+# 或
+npm i three@0.150.0 -S
+
+# 安装最新版本
+yarn add three -S
+# 或
+npm i three -S
+```
+
+npm安装后，通过ES6语法引入three.js核心库，代码如下：
+
+```js
+// 引入three.js
+import * as THREE from 'three'
+```
+
+除了three.js核心库以外，在threejs文件包中examples/jsm目录下，你还可以看到各种不同功能的扩展库。
+
+```js
+// 扩展库引入
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
+```
+
+## 基础知识点
+
+- **场景**（Scene）：是物体、光源等元素的容器。
+- **相机**（Camera）：场景中的相机，可以通过操作相机的方式来改变观察者的位置和朝向，场景中只能添加一个，决定哪些物体将在屏幕上渲染。
+- **渲染器**（Renderer）：场景的渲染方式，如 WebGL/canvas2D/CSS3D。
+- 物体（Mesh）：包括二维物体（点、线、面）、三维物体，模型等。
+- 光源（Light）：场景中的光照，如果不添加光照场景将会是一片漆黑，包括全局光、平行光、点光源等。
+- 材质（Material）：材质就像是物体的皮肤，决定物体外表的样子，例如物体的颜色，看起来是否光滑，是否有贴图等等。
+- 加载器（Loader）：用于加载纹理、图片、模型、音频等资源。
+- 控制器（Control）：可通过键盘、鼠标控制相机的移动。
+
+## 程序结构
+
+![Web研习社](https://s1.imagehub.cc/images/2024/03/22/4a3c941bf2d330933796a37c2f925436.png)
+
+## 大体实现思路
+
+- 构建一个场景，也就是一个三维空间
+- 创建一个相机，也就是一个观察点，并且定义观察的位置和角度
+- 定义形状和材质，把他们合起来之后放到场景中
+- 使用指定的渲染器将整体渲染到屏幕上
+
+## 代码实现
+
+### 构建本地服务
+
+Vite 是一种新型前端构建工具，能够显著提升前端开发体验。Vite 需要 Node.js 版本 >= v12.0.0，然而，有些模板需要依赖更高的 Node 版本才能正常运行，当你的包管理器发出警告时，请注意升级你的 Node 版本。
+
+```bash
+yarn create vite@latest three-demo
+cd three-demo
+yarn
+yarn dev
+```
+
+![Web3研习社](https://s1.imagehub.cc/images/2024/03/22/c057b4f0d99759412702b9aaf641c0a2.png)
+
+在线体验DEMO：[https://stackblitz.com/edit/vitejs-vite-qgh38x?file=index.html&terminal=dev](https://stackblitz.com/edit/vitejs-vite-qgh38x?file=index.html&terminal=dev)
+
+### 搭建3D场景步骤
+
+#### 引入threejs核心库
+
+```js
+// 引入核心库
+import * as THREE from 'three'
+```
+
+#### 创建场景
+
+```js
+//  创建场景对象Scene
+const scene = useRef(new THREE.Scene()).current
+```
+
+#### 创建相机
+
+```js
+// 创建透视相机对象，带四个参数
+const camera = useRef(
+  new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000)
+).current
+camera.position.set(-30, 40, 30) // 设置相机位置
+camera.lookAt(scene.position) // 设置相机方向（指向场景对象）
+camera.updateProjectionMatrix() // 更新相机投影矩阵,在任何参数被改变以后必须被调用
+```
+
+#### 创建渲染器
+
+```js
+// 创建渲染器对象，参数：antialias 是否执行抗锯齿。默认为false
+const renderer = useRef(new THREE.WebGLRenderer({ antialias: true })).current
+renderer.setClearColor(0xeeeeee, 1) // 设置背景颜色和透明度
+renderer.setSize(window.innerWidth, window.innerHeight) // 设置渲染器的宽高
+```
+
+#### 创建光源对象
+
+```js
+const lights = useRef([]).current // 创建 lights 空数组
+
+// 太阳光
+// const dirLight = new THREE.DirectionalLight("#fff", 0.5)
+// dirLight.position.set(100, 200, 200)
+// 环境光
+// const ambientLight = new THREE.AmbientLight("#fff", 0.3)
+// 点光源
+// const pointLight = new THREE.PointLight("#fff", 1, 8)
+// pointLight.position.set(0, 5, 0) // 设置灯光xyz坐标位置
+// 聚光灯
+const spotLight = new THREE.SpotLight(0xffffff)
+spotLight.position.set(-30, 60, -10)
+spotLight.castShadow = true // 开启投射阴影
+
+scene.add(spotLight) // 将灯光添加到场景中
+lights.push(spotLight)
+```
+
+#### 创建矩形平面
+
+```js
+// 矩形平面
+const plane = useRef(null)
+const planeGeometry = new THREE.PlaneGeometry(60, 20)
+const planeMaterial = new THREE.MeshLambertMaterial({ color: 0xcccccc, side: THREE.DoubleSide }) // Lambert网格材质-漫反射
+plane.current = new THREE.Mesh(planeGeometry, planeMaterial) // 网格模型
+plane.current.receiveShadow = true // 在光照下接受其它模型的投影效果
+plane.current.rotation.x = -0.5 * Math.PI
+plane.current.position.set(15, 0, 0)
+scene.add(plane.current)
+```
+
+#### 创建几何体
+
+```js
+// 创建立方体
+const cube = useRef(null)
+const cubeGeometry = new THREE.BoxGeometry(4, 4, 4)
+const cubeMatertail = new THREE.MeshLambertMaterial({ color: 0xff0000, wireframe: false })
+cube.current = new THREE.Mesh(cubeGeometry, cubeMatertail)
+cube.current.castShadow = true
+cube.current.position.set(2, 2, 2)
+scene.add(cube.current)
+```
+
+#### 创建帧动画
+
+```js
+const id = useRef(null)
+const animate = useCallback(() => {
+  id.current = window.requestAnimationFrame(animate)
+  // controls.update() // 更新控制器
+  renderer.render(scene, camera) // 用相机渲染一个场景
+}, [camera, scene])
+
+useEffect(() => {
+  canvasRef.current?.appendChild(renderer.domElement) // 将canvas画布插入到html元素中
+  // initMesh()
+  animate()
+  return () => {
+    window.cancelAnimationFrame(id.current) // 销毁渲染动画
+    // meshes.forEach((item) => {
+    //   // 销毁材质、几何体、渲染器、场景
+    //   scene.remove(item)
+    //   item.geometry.dispose()
+    //   item.material.dispose()
+    // })
+  }
+}, [animate, renderer, scene])
+```
+
+#### 引入控制器
+
+可以使用鼠标对场景进行操作，比如旋转场景，移动场景，缩放场景。定义一个轨道控制器，要想使轨道控制器生效，必须循环渲染场景requestAnimationFrame，也就是在动画循环里调用controls.update()方法。
+
+```js
+// 引入轨道控制器JS库
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls"
+
+// 创建控制器
+const controls = new OrbitControls(camera, renderer.domElement)
+
+// 更新帧动画
+const animate = useCallback(() => {
+  ...
+  controls.update() // 更新控制器
+}, [])
+```
+
+#### 坐标系辅助工具
+
+```js
+// 辅助工具右手坐标系：红色-x轴，绿色-y轴，蓝色-z轴
+const axes = new THREE.AxesHelper(20)
+scene.add(axes)
+```
+
+## 配套工具&资源
+
+- 3D模型下载：[https://sketchfab.com/](https://sketchfab.com/)
+- 骨骼自动绑定：[https://www.mixamo.com/](https://www.mixamo.com/)
+- 360°全景图裁切工具（收费）：[https://www.ptgui.com/download.html?ps=main](https://www.ptgui.com/download.html?ps=main)
+- 天空盒切割工具：[https://matheowis.github.io/HDRI-to-CubeMap/](https://matheowis.github.io/HDRI-to-CubeMap/)
+- 超全GSAP动画库：[https://greensock.com/](https://greensock.com/)
+- three官方文档：[https://threejs.org/docs/index.html#manual/zh/introduction/Creating-a-scene](https://threejs.org/docs/index.html#manual/zh/introduction/Creating-a-scene)
+- 在线免费教程：[http://www.webgl3d.cn/Three.js/](http://www.webgl3d.cn/Three.js/)
+- cannon 物理引擎：[https://github.com/pmndrs/cannon-es](https://github.com/pmndrs/cannon-es)
+- Physijs 物理引擎：[https://github.com/chandlerprall/Physijs](https://github.com/chandlerprall/Physijs)
+- tween.js 创建补间动画（控制机械、游戏角色运动）：[https://github.com/tweenjs/tween.js/](https://github.com/tweenjs/tween.js/)
+- dat.gui 轻量级控制器：[https://github.com/dataarts/dat.gui](https://github.com/dataarts/dat.gui)
+- stats.js 性能监控器（webgl渲染性能）：[https://github.com/mrdoob/stats.js](https://github.com/mrdoob/stats.js)
+- 3D素材网-1：[https://www.poliigon.com/textures](https://www.poliigon.com/textures)
+- 3D素材网-2：[https://www.aigei.com/](https://www.aigei.com/)
+- 3D素材网-3（10次/天免费下载）：[https://www.3dsmj.com/](https://www.3dsmj.com/)
+
+## 结语
+
+本文内容是我利用业余时间学习threejs技术之后的一些笔记及总结输出。如果觉得对你有所帮助，请点赞支持，我会继续努力，或许哪天能用得上啦～😃
+
+后续会不定期输出Web3D技术文章**进阶篇**、**企业实战篇**、**3D建模篇**等等，欢迎志同道合的大佬们一起交流学习。

@@ -18,7 +18,7 @@ const Greetings = () => {
 
   React.useEffect(() => {
     const options = {
-      strings: ['专注Web3技术、应用与创新的学习与交流分享', '人生不止于此......'],
+      strings: ['一站式免费学习Web3技术、应用与创新的交流与分享平台', '人生不止于此......'],
       typeSpeed: 50,
       backSpeed: 50,
       loop: true,
