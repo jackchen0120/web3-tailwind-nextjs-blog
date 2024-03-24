@@ -5,7 +5,7 @@ lastmod: '2024-03-22'
 tags: ['入门教程', '数据可视化']
 draft: false
 summary: '假期重学了新版Echarts，一个基于JavaScript的开源可视化图表库，收集参考了很多网上资料，最终选择电商平台作为练手项目。'
-images: []
+images: ['/static/images/dataV_2.jpg']
 ---
 
 <TOCInline toc={props.toc} exclude="Introduction" />
@@ -20,7 +20,7 @@ images: []
 
 ## 3. 实战篇（上下两部）
 
-[Vue+Echarts构建可视化大数据平台实战项目分享](index.html#manual/Vue-echarts)
+[Vue+Echarts构建可视化大数据平台实战项目分享](/blog/induction-tutorial/vue-echarts-prev-section)
 
 ## 4. 进阶篇
 
@@ -30,11 +30,11 @@ images: []
 
 附上详细的思维导图如下：
 
-![Web3研习社](https://s1.ax1x.com/2023/07/25/pCX5cLt.png)
+![Web3研习社](https://s1.imagehub.cc/images/2024/03/23/d81e2b0175f0bd7bbb2aebb27039019b.png)
 
 分享之前，我们先来了解一下新版 Echarts 5.x，都有哪些变化，如下图：
 
-![Web3研习社](https://s1.ax1x.com/2023/07/25/pCX52eP.png)
+![Web3研习社](https://s1.imagehub.cc/images/2024/03/23/c68423eb60514f91be66b3dd9928c31d.png)
 
 ### 4.2 后端部分
 
@@ -43,12 +43,12 @@ images: []
 - 基于 Node.js 平台的Web服务器框架
 - 由 Express 原班人马打造，Express、Koa、Koa2 都是 Web 服务器的框架，他们之间的区别如下图：
 
-![Web3研习社](https://s1.ax1x.com/2023/07/25/pCX5Wo8.png)
+![Web3研习社](https://s1.imagehub.cc/images/2024/03/23/a9591694897f90fbfa7fd63ec87fdf39.png)
 
 - 环境依赖 Node v7.6.0 及以上 由于 Koa2 它是支持 async 和 await ，所以它对 Node 的版本是有要求的，它要求 Node 的版本至少是在7.6级以上,因为语法糖 async和await 是在 Node7.6 版本之后出现才支持
 - 洋葱模型的中间件 如下图所示, 对于服务器而言，它其实就是来处理一个又一个的请求， Web 服务器接收由浏览器发 过来的一个又一个请求之后，它形成一个又一个的响应返回给浏览器. 而请求到达我们的服务器是 需要经过程序处理的,程序处理完之后才会形成响应，返回给浏览器，我们服务器处理请求的这一 块程序，在 Koa2 的世界当中就把它称之为中间件
 
-![Web3研习社](https://s1.ax1x.com/2023/07/25/pCX5hFS.png)
+![Web3研习社](https://s1.imagehub.cc/images/2024/03/23/1581a1b5e90f24fa1d9a2829f5c78b32.png)
 
 这种中间件可能还不仅仅只有一个，可能会存在多个，比如上图所示, 它就存在三层中间件，这三 层中间件在处理请求的过程以及它调用的顺序为:
 
@@ -65,20 +65,20 @@ images: []
 ##### 4.2.2.1 检查node版本，Koa2的使用要求node版本在7.6以上
 
 ```bash
-    node -v
+node -v
 ```
 
 ##### 4.2.2.2 安装 Koa2
 
 ```bash
-    npm init -y
-    npm install koa
+npm init -y
+npm install koa
 ```
 
 如果下载特别慢，可以将npm的下载源换成国内的下载源，命令如下：
 
 ```bash
-    npm set registry https://registry.npm.taobao.org/
+npm set registry https://registry.npm.taobao.org/
 ```
 
 ##### 4.2.2.3 编写入口文件app.js
@@ -113,7 +113,7 @@ app.listen(9898)
 - 启动服务器
 
 ```bash
-    node app.js
+node app.js
 ```
 
 然后在浏览器中输入 http://localhost:9898/ 你将会看到浏览器中出现 Hello Echarts 的字符串, 并且在服务器的终端中, 也能看到请求的 url
@@ -165,8 +165,8 @@ app.use(async (ctx, next) => {
 - 安装包
 
 ```bash
-    npm init -y
-    npm install koa
+npm init -y
+npm install koa
 ```
 
 - 创建文件和目录结构
@@ -215,24 +215,24 @@ app.listen(9898)
 具体代码如下：
 
 ```js
-    // app.js 文件
-    // 绑定第一层中间件
-    const respDurationMiddleware = require('./middleware/koa_response_duration') app.use(respDurationMiddleware)
+// app.js 文件
+// 绑定第一层中间件
+const respDurationMiddleware = require('./middleware/koa_response_duration') app.use(respDurationMiddleware)
 
 
-    // koa_response_duration.js 文件
-    // 计算服务器消耗时长的中间件
-    module.exports = async (ctx, next) => {
-    // 记录开始时间
-    const start = Date.now()
-    // 让内层中间件得到执行
-    await next()
-    // 记录结束的时间
-    const end = Date.now()
-    // 设置响应头 X-Response-Time
-    const duration = end - start
-    // ctx.set 设置响应头
-    ctx.set('X-Response-Time', duration + 'ms') }
+// koa_response_duration.js 文件
+// 计算服务器消耗时长的中间件
+module.exports = async (ctx, next) => {
+// 记录开始时间
+const start = Date.now()
+// 让内层中间件得到执行
+await next()
+// 记录结束的时间
+const end = Date.now()
+// 设置响应头 X-Response-Time
+const duration = end - start
+// ctx.set 设置响应头
+ctx.set('X-Response-Time', duration + 'ms') }
 ```
 
 ###### 4.2.4.2.3 响应头中间件
@@ -366,32 +366,32 @@ app.use(async (ctx, next) => {
 **vue-cli 脚手架安装**
 
 ```bash
-    npm install -g @vue/cli
+npm install -g @vue/cli
 ```
 
 **创建工程项目**
 
 ```bash
-    vue create screen
+vue create screen
 ```
 
 手动选择配置项如下图所示：
 
-![Web3研习社](https://s1.ax1x.com/2023/07/25/pCX5Izj.png)
+![Web3研习社](https://s1.imagehub.cc/images/2024/03/23/04e2baad8755eb7dbfd88a583969be1c.png)
 
-![Web3研习社](https://s1.ax1x.com/2023/07/25/pCX5TQs.png)
+![Web3研习社](https://s1.imagehub.cc/images/2024/03/23/a1face933e9bc8e0e032dec9dd83d7bc.png)
 
-![Web3研习社](https://s1.ax1x.com/2023/07/25/pCX5HLq.png)
+![Web3研习社](https://s1.imagehub.cc/images/2024/03/23/3f19f4e0ff4958734a8d30f3ba051d91.png)
 
-![Web3研习社](https://s1.ax1x.com/2023/07/25/pCX5LwV.png)
+![Web3研习社](https://s1.imagehub.cc/images/2024/03/23/2152d5e009db80522e7140760ffe26a7.png)
 
-![Web3研习社](https://s1.ax1x.com/2023/07/25/pCXISSJ.png)
+![Web3研习社](https://s1.imagehub.cc/images/2024/03/23/57503039720c7a1dc39f2ab8d5a0f4f1.png)
 
-![Web3研习社](https://s1.ax1x.com/2023/07/25/pCXIpl9.png)
+![Web3研习社](https://s1.imagehub.cc/images/2024/03/23/12cda2a44bfd47610798184df4cf28ec.png)
 
-![Web3研习社](https://s1.ax1x.com/2023/07/25/pCXICO1.png)
+![Web3研习社](https://s1.imagehub.cc/images/2024/03/23/d908f1c0aea6c65356c6d8e331f4767d.png)
 
-![Web3研习社](https://s1.ax1x.com/2023/07/25/pCXIiex.png)
+![Web3研习社](https://s1.imagehub.cc/images/2024/03/23/ea340d0374c1d1c010a36c82ab849958.png)
 
 ![Web3研习社](https://s1.imagehub.cc/images/2023/07/25/b13.png)
 
@@ -400,15 +400,15 @@ app.use(async (ctx, next) => {
 安装成功执行以下命令：
 
 ```bash
-    cd screen
-    npm run serve
+cd screen
+npm run serve
 ```
 
 **删除无关代码**
 
 - 修改 App.vue 中的代码,将布局和样式删除, 变成如下代码：
 
-```vue
+```html
 <template>
   <div id="app">
     <!-- 路由占位符 -->
@@ -423,11 +423,30 @@ app.use(async (ctx, next) => {
 - 删除 views/About.vue 和 views/Home.vue 这两个文件
 - 修改 router/index.js 中的代码,去除路由配置和 Home 组件导入的代码
 
-```vue
-import Vue from 'vue' import VueRouter from 'vue-router' Vue.use(VueRouter) const routes = [ { path:
-'/', redirect: '/screen' }, { path: '/screen', component: () => import('@/views/screenPage') } ]
-const router = new VueRouter({ mode: 'history', base: process.env.BASE_URL, routes }) export default
-router
+```js
+import Vue from 'vue'
+import VueRouter from 'vue-router'
+
+Vue.use(VueRouter)
+
+const routes = [
+  {
+    path: '/',
+    redirect: '/screen',
+  },
+  {
+    path: '/screen',
+    component: () => import('@/views/screenPage'),
+  },
+]
+
+const router = new VueRouter({
+  mode: 'history',
+  base: process.env.BASE_URL,
+  routes,
+})
+
+export default router
 ```
 
 ##### 4.3.1.2 项目基本配置
@@ -480,7 +499,7 @@ Vue.prototype.$echarts = window.echarts
 **安装axios包**
 
 ```bash
-    npm install axios
+npm install axios
 ```
 
 **封装与使用axios**
@@ -518,7 +537,7 @@ Vue.prototype.$http = axios
 - 建立一个显示图表的div元素
 - 给新增的这个div增加类样式 com-chart
 
-```vue
+```html
 <template>
   <div class="com-container">
     <div class="com-chart" ref="seller_ref"></div>
@@ -526,12 +545,12 @@ Vue.prototype.$http = axios
 </template>
 
 <script>
-export default {
-  data() {
-    return {}
-  },
-  methods: {},
-}
+  export default {
+    data() {
+      return {}
+    },
+    methods: {},
+  }
 </script>
 
 <style lang="less" scoped></style>
@@ -542,7 +561,7 @@ export default {
 - 给外层div元素增加样式 com-page
 - 在 sellerPage 中引入 Seller 组件，并且注册和使用
 
-```vue
+```html
 <template>
   <div class="com-page">
     <Seller />
@@ -550,17 +569,17 @@ export default {
 </template>
 
 <script>
-import Seller from '@/components/Seller'
+  import Seller from '@/components/Seller'
 
-export default {
-  components: {
-    Seller,
-  },
-  data() {
-    return {}
-  },
-  methods: {},
-}
+  export default {
+    components: {
+      Seller,
+    },
+    data() {
+      return {}
+    },
+    methods: {},
+  }
 </script>
 
 <style lang="less" scoped></style>
@@ -623,67 +642,67 @@ import './assets/css/global.less'
 - 在mounted中获取服务器的数据
 - 将获取到的数据设置到图表上
 
-```vue
+```html
 <script>
-import { mapState } from 'vuex'
-import { getThemeValue } from '@/utils/theme_utils'
-export default {
-  data() {
-    return {
-      myChart: null, // echarts实例对象
-      allData: null, // 服务器获取的所有数据
-    }
-  },
-  mounted() {
-    this.initChart()
-    this.getData()
-  },
-  methods: {
-    // 初始化echartsInstance对象
-    initChart() {
-      this.myChart = this.$echarts.init(this.$refs.seller_ref, this.theme)
-    },
-    // 获取服务端的数据
-    async getData() {
-      const { data: ret } = await this.$http.get('seller')
-      // console.log("获取后端数据===", ret);
-      this.allData = ret
-      // 对数据排序
-      this.allData.sort((a, b) => {
-        return a.value - b.value
-      })
-      this.updateChart()
-    },
-    // 更新图表
-    updateChart() {
-      const sellerName = showData.map((item) => {
-        return item.name
-      })
-
-      const sellerValue = showData.map((item) => {
-        return item.value
-      })
-
-      const dataOption = {
-        xAxis: {
-          type: 'value',
-        },
-        yAxis: {
-          type: 'category',
-          data: sellerName,
-        },
-        series: [
-          {
-            type: 'bar',
-            data: sellerValue,
-          },
-        ],
+  import { mapState } from 'vuex'
+  import { getThemeValue } from '@/utils/theme_utils'
+  export default {
+    data() {
+      return {
+        myChart: null, // echarts实例对象
+        allData: null, // 服务器获取的所有数据
       }
-
-      this.myChart.setOption(dataOption)
     },
-  },
-}
+    mounted() {
+      this.initChart()
+      this.getData()
+    },
+    methods: {
+      // 初始化echartsInstance对象
+      initChart() {
+        this.myChart = this.$echarts.init(this.$refs.seller_ref, this.theme)
+      },
+      // 获取服务端的数据
+      async getData() {
+        const { data: ret } = await this.$http.get('seller')
+        // console.log("获取后端数据===", ret);
+        this.allData = ret
+        // 对数据排序
+        this.allData.sort((a, b) => {
+          return a.value - b.value
+        })
+        this.updateChart()
+      },
+      // 更新图表
+      updateChart() {
+        const sellerName = showData.map((item) => {
+          return item.name
+        })
+
+        const sellerValue = showData.map((item) => {
+          return item.value
+        })
+
+        const dataOption = {
+          xAxis: {
+            type: 'value',
+          },
+          yAxis: {
+            type: 'category',
+            data: sellerName,
+          },
+          series: [
+            {
+              type: 'bar',
+              data: sellerValue,
+            },
+          ],
+        }
+
+        this.myChart.setOption(dataOption)
+      },
+    },
+  }
 </script>
 ```
 
@@ -725,18 +744,27 @@ export default {
 
 主题的指定，在初始化echarts实例对象的时候指定
 
-```vue
-// src/components/Seller.vue methods: { initChart() { this.myChart =
-this.$echarts.init(this.$refs.seller_ref, 'dark'); // 对图表对象进行鼠标事件的监听
-this.myChart.on("mouseover", () => { clearInterval(this.timer); }); this.myChart.on("mouseout", ()
-=> { this.startInterval(); }); } }
+```js
+// src/components/Seller.vue
+methods: {
+    initChart() {
+      this.myChart = this.$echarts.init(this.$refs.seller_ref, 'dark');
+      // 对图表对象进行鼠标事件的监听
+      this.myChart.on("mouseover", () => {
+        clearInterval(this.timer);
+      });
+      this.myChart.on("mouseout", () => {
+        this.startInterval();
+      });
+    }
+}
 ```
 
 边框圆角设置
 
-```css
+```less
 //  src/assets/css/global.less
-    canvas {
+canvas {
   border-radius: 20px;
 }
 ```
@@ -840,27 +868,62 @@ this.myChart.on("mouseover", () => { clearInterval(this.timer); }); this.myChart
 
 - 对窗口大小变化的事件进行监听
 
-```vue
-mounted() { window.addEventListener("resize", this.screenAdapter); } destroyed() { //
-在组件销毁时，需将监听器注销 window.removeEventListener("resize", this.screenAdapter); },
+```js
+mounted() {
+    window.addEventListener("resize", this.screenAdapter);
+}
+
+destroyed() {
+    // 在组件销毁时，需将监听器注销
+    window.removeEventListener("resize", this.screenAdapter);
+}
 ```
 
 - 获取图表容器的宽度计算字体大小
 
-```vue
-// 当浏览器的大小发生变化时，会调用的方法，来完成屏幕的适配 methods: { screenAdapter() { const
-titleFontSize = (this.$refs.seller_ref.offsetWidth / 100) * 3.6; } }
+```js
+// 当浏览器的大小发生变化时，会调用的方法，来完成屏幕的适配
+methods: {
+    screenAdapter() {
+      const titleFontSize = (this.$refs.seller_ref.offsetWidth / 100) * 3.6;
+    }
+}
 ```
 
 - 将字体大小的值设置给图表的某些区域
 
-```vue
-// 标题大小、背景大小、柱宽度、圆角大小 methods: { screenAdapter() { const titleFontSize =
-(this.$refs.seller_ref.offsetWidth / 100) * 3.6; const adapterOption = { title: { textStyle: {
-fontSize: titleFontSize, }, }, tooltip: { axisPointer: { lineStyle: { width: titleFontSize, }, }, },
-series: [ { barWidth: titleFontSize, itemStyle: { borderRadius: [0, titleFontSize / 2, titleFontSize
-/ 2, 0], }, }, ], }; this.myChart.setOption(adapterOption); // 手动调用图表对象的resize才能生效
-this.myChart.resize(); } }
+```js
+// 标题大小、背景大小、柱宽度、圆角大小
+methods: {
+    screenAdapter() {
+      const titleFontSize = (this.$refs.seller_ref.offsetWidth / 100) * 3.6;
+      const adapterOption = {
+        title: {
+          textStyle: {
+            fontSize: titleFontSize,
+          },
+        },
+        tooltip: {
+          axisPointer: {
+            lineStyle: {
+              width: titleFontSize,
+            },
+          },
+        },
+        series: [
+          {
+            barWidth: titleFontSize,
+            itemStyle: {
+              borderRadius: [0, titleFontSize / 2, titleFontSize / 2, 0],
+            },
+          },
+        ],
+      };
+      this.myChart.setOption(adapterOption);
+      // 手动调用图表对象的resize才能生效
+      this.myChart.resize();
+    }
+}
 ```
 
 ##### 4.3.2.2 销量趋势分析
@@ -871,7 +934,7 @@ this.myChart.resize(); } }
 
 - 代码环境准备
 
-```vue
+```html
 // trendPage.vue // 针对于 /trendPage 这条路径而显示出来的 在这个组件中, 通过子组件注册的方式,
 要显示出Trend.vue这个组件
 <template>
@@ -881,21 +944,23 @@ this.myChart.resize(); } }
 </template>
 
 <script>
-import Trend from '@/components/Trend'
+  import Trend from '@/components/Trend'
 
-export default {
-  components: {
-    Trend,
-  },
-  data() {
-    return {}
-  },
-  methods: {},
-}
+  export default {
+    components: {
+      Trend,
+    },
+    data() {
+      return {}
+    },
+    methods: {},
+  }
 </script>
 
 <style lang="less" scoped></style>
+```
 
+```html
 // Trend.vue
 <template>
   <div class="com-container">
@@ -904,51 +969,58 @@ export default {
 </template>
 
 <script>
-export default {
-  data() {
-    return {
-      myChart: null,
-      allData: null,
-    }
-  },
-  created() {},
-  mounted() {
-    this.initChart()
-    this.getData()
-    window.addEventListener('resize', this.screenAdapter)
-    this.screenAdapter()
-  },
-  destroyed() {
-    window.removeEventListener('resize', this.screenAdapter)
-  },
-  methods: {
-    initChart() {
-      this.myChart = this.$echarts.init(this.$refs.trend_ref, 'dark')
-      const initOption = {}
-      this.myChart.setOption(initOption)
+  export default {
+    data() {
+      return {
+        myChart: null,
+        allData: null,
+      }
     },
-    async getData() {
-      const { data: ret } = await this.$http.get('trend')
-      this.allData = ret
-      this.updateChart()
+    created() {},
+    mounted() {
+      this.initChart()
+      this.getData()
+      window.addEventListener('resize', this.screenAdapter)
+      this.screenAdapter()
     },
-    updateChart() {
-      const dataOption = {}
-      this.myChart.setOption(dataOption)
+    destroyed() {
+      window.removeEventListener('resize', this.screenAdapter)
     },
-    screenAdapter() {
-      const adapterOption = {}
-      this.myChart.setOption(adapterOption)
-      this.myChart.resize()
+    methods: {
+      initChart() {
+        this.myChart = this.$echarts.init(this.$refs.trend_ref, 'dark')
+        const initOption = {}
+        this.myChart.setOption(initOption)
+      },
+      async getData() {
+        const { data: ret } = await this.$http.get('trend')
+        this.allData = ret
+        this.updateChart()
+      },
+      updateChart() {
+        const dataOption = {}
+        this.myChart.setOption(dataOption)
+      },
+      screenAdapter() {
+        const adapterOption = {}
+        this.myChart.setOption(adapterOption)
+        this.myChart.resize()
+      },
     },
-  },
-}
+  }
 </script>
 
 <style lang="less" scoped></style>
+```
 
-// router/index.js const routes = [ { path: '/trendPage', component: () =>
-import('@/views/trendPage') } ]
+```js
+// router/index.js
+const routes = [
+  {
+    path: '/trendPage',
+    component: () => import('@/views/trendPage'),
+  },
+]
 ```
 
 - 图表基本功能的实现
@@ -1097,20 +1169,20 @@ const initOption = {
 
 分辨率适配主要就是在 screenAdapter 方法中进行, 需要获取图表容器的宽度，计算出标题字体大小，将字体的大小赋值给 titleFontSize
 
-```vue
+```html
 <script>
-export default {
-  data() {
-    return {
-      titleFontSize: 0,
-    }
-  },
-  methods: {
-    screenAdapter() {
-      this.titleFontSize = (this.$refs.trend_ref.offsetWidth / 100) * 3.6
+  export default {
+    data() {
+      return {
+        titleFontSize: 0,
+      }
     },
-  },
-}
+    methods: {
+      screenAdapter() {
+        this.titleFontSize = (this.$refs.trend_ref.offsetWidth / 100) * 3.6
+      },
+    },
+  }
 </script>
 ```
 
@@ -1118,7 +1190,7 @@ export default {
 
 标题文字的大小，增加计算属性comStyle并设置给对应的div，代码如下：
 
-```vue
+```html
 <template>
   <div class="com-container">
     <div class="title" :style="comStyle">
@@ -1133,31 +1205,44 @@ export default {
 </template>
 
 <script>
-export default {
-  data() {
-    return {
-      titleFontSize: 0,
-    }
-  },
-  computed: {
-    // 设置给标题的样式
-    comStyle() {
+  export default {
+    data() {
       return {
-        fontSize: this.titleFontSize + 'px',
+        titleFontSize: 0,
       }
     },
-  },
-}
+    computed: {
+      // 设置给标题的样式
+      comStyle() {
+        return {
+          fontSize: this.titleFontSize + 'px',
+        }
+      },
+    },
+  }
 </script>
 ```
 
 图例的大小
 
-```vue
-methods: { screenAdapter() { this.titleFontSize = (this.$refs.trend_ref.offsetWidth / 100) * 3.6;
-const adapterOption = { legend: { itemWidth: this.titleFontSize, itemHeight: this.titleFontSize,
-itemGap: this.titleFontSize, textStyle: { fontSize: this.titleFontSize / 2, }, }, };
-this.myChart.setOption(adapterOption); this.myChart.resize(); } }
+```js
+methods: {
+    screenAdapter() {
+      this.titleFontSize = (this.$refs.trend_ref.offsetWidth / 100) * 3.6;
+      const adapterOption = {
+        legend: {
+          itemWidth: this.titleFontSize,
+          itemHeight: this.titleFontSize,
+          itemGap: this.titleFontSize,
+          textStyle: {
+            fontSize: this.titleFontSize / 2,
+          },
+        },
+      };
+      this.myChart.setOption(adapterOption);
+      this.myChart.resize();
+    }
+}
 ```
 
 ##### 4.3.2.3 商家地图分布
@@ -1475,15 +1560,28 @@ export default class SocketService {
 
 先修改 Trend.vue 文件，代码如下：
 
-```vue
-mounted() { // 当socket来数据的时候, 会调用getData这个函数
-this.$socket.registerCallBack('trendData', this.getData) // 往 socket 发送数据,
-目的是想让服务端传输销量趋势这个模块的数据 this.initChart(); // this.getData(); //
-发送数据给服务端，告诉服务端，前端现在需要数据 this.$socket.send({ action: "getData", socketType:
-"trendData", chartName: "trend", value: "" }) } // action的值不变，都是getData //
-socketType的可选值有：trendData,sellerData,mapData,rankData,hotData,stockData //
-chartName的可选值有: trend,seller,map,rank,hot,stock destroyed () {
-this.$socket.unRegisterCallBack('trendData') }
+```js
+mounted() {
+    // 当socket来数据的时候, 会调用getData这个函数
+    this.$socket.registerCallBack('trendData', this.getData)
+    // 往 socket 发送数据, 目的是想让服务端传输销量趋势这个模块的数据
+    this.initChart();
+    // this.getData();
+    // 发送数据给服务端，告诉服务端，前端现在需要数据
+    this.$socket.send({
+      action: "getData",
+      socketType: "trendData",
+      chartName: "trend",
+      value: ""
+    })
+}
+// action的值不变，都是getData
+// socketType的可选值有：trendData,sellerData,mapData,rankData,hotData,stockData
+// chartName的可选值有: trend,seller,map,rank,hot,stock
+
+destroyed () {
+    this.$socket.unRegisterCallBack('trendData')
+}
 ```
 
 运行代码, 发现数据发不出去
@@ -1581,17 +1679,30 @@ this.$socket.unRegisterCallBack('trendData') }
 
 - 创建screenPage.vue文件，并配置路由规则，代码如下：
 
-```vue
-// router/index.js import Vue from 'vue' import VueRouter from 'vue-router' Vue.use(VueRouter) const
-routes = [ { path: '/', redirect: '/screen' }, { path: '/screen', component: () =>
-import('@/views/screenPage') } ]
+```js
+// router/index.js
+import Vue from 'vue'
+import VueRouter from 'vue-router'
+
+Vue.use(VueRouter)
+
+const routes = [
+  {
+    path: '/',
+    redirect: '/screen',
+  },
+  {
+    path: '/screen',
+    component: () => import('@/views/screenPage'),
+  },
+]
 ```
 
 - 代码实现
 
 静态图片资源放在public/static/img目录之下，完整代码如下：
 
-```vue
+```html
 // screenPage.vue
 <template>
   <div class="screen-container" :style="containerStyle">
@@ -1642,7 +1753,7 @@ import('@/views/screenPage') } ]
       <section class="screen-middle">
         <div id="middle-top" :class="[fullScreenStatus.map ? 'fullscreen' : '']">
           <!-- 商家分布图表 -->
-          <Map ref="map" />
+          <map ref="map" />
           <div class="resize">
             <!-- icon-compress-alt -->
             <span
@@ -1695,23 +1806,259 @@ import('@/views/screenPage') } ]
 </template>
 
 <script>
-import Hot from '@/components/Hot.vue'
-import Map from '@/components/Map.vue'
-import Rank from '@/components/Rank.vue'
-import Seller from '@/components/Seller.vue'
-import Stock from '@/components/Stock.vue'
-import Trend from '@/components/Trend.vue'
-import { mapState } from 'vuex'
-import { getThemeValue } from '@/utils/theme_utils'
+  import Hot from '@/components/Hot.vue'
+  import Map from '@/components/Map.vue'
+  import Rank from '@/components/Rank.vue'
+  import Seller from '@/components/Seller.vue'
+  import Stock from '@/components/Stock.vue'
+  import Trend from '@/components/Trend.vue'
+  import { mapState } from 'vuex'
+  import { getThemeValue } from '@/utils/theme_utils'
+  export default {
+    components: {
+      Hot,
+      Map,
+      Rank,
+      Seller,
+      Stock,
+      Trend,
+    },
+    data() {
+      return {
+        // 定义每一个图表的全屏状态
+        fullScreenStatus: {
+          trend: false,
+          seller: false,
+          map: false,
+          rank: false,
+          hot: false,
+          stock: false,
+        },
+        timer: null,
+        timeValue: '',
+      }
+    },
+    created() {
+      // 注册接收到数据的回调函数
+      this.$socket.registerCallBack('fullScreen', this.recvData)
+      this.$socket.registerCallBack('themeChange', this.recvThemeChange)
+    },
+    destroyed() {
+      this.$socket.unRegisterCallBack('fullScreen')
+      this.$socket.unRegisterCallBack('themeChange')
+      clearInterval(this.timer)
+    },
+    mounted() {
+      this.displayTime()
+      if (this.timer) {
+        clearInterval(this.timer)
+      }
+      this.timer = setInterval(() => {
+        this.displayTime()
+      }, 1000)
+    },
+    methods: {
+      displayTime() {
+        //获取系统当前的年、月、日、小时、分钟、毫秒
+        let date, year, month, day, h, m, s
+        date = new Date()
+        year = date.getFullYear()
+        month = date.getMonth() + 1
+        day = date.getDate()
+        h = date.getHours()
+        m = date.getMinutes()
+        s = date.getSeconds()
+        month = month < 10 ? '0' + month : month
+        day = day < 10 ? '0' + day : day
+        h = h < 10 ? '0' + h : h
+        m = m < 10 ? '0' + m : m
+        s = s < 10 ? '0' + s : s
+        return (this.timeValue = year + '-' + month + '-' + day + '  ' + h + ':' + m + ':' + s)
+      },
+      changeSize(chartName) {
+        console.log(chartName)
+        // 将数据发送给服务端
+        const targetValue = !this.fullScreenStatus[chartName]
+        this.$socket.send({
+          action: 'fullScreen',
+          socketType: 'fullScreen',
+          chartName: chartName,
+          value: targetValue,
+        })
+      },
+      // 接收到全屏数据之后的处理
+      recvData(data) {
+        // 取出是哪一个图表需要进行切换
+        const chartName = data.chartName
+        // 取出, 切换成什么状态
+        const targetValue = data.value
+        this.fullScreenStatus[chartName] = targetValue
+        this.$nextTick(() => {
+          this.$refs[chartName].screenAdapter()
+        })
+      },
+      handleChangeTheme() {
+        // 修改VueX中数据
+        this.$socket.send({
+          action: 'themeChange',
+          socketType: 'themeChange',
+          chartName: '',
+          value: '',
+        })
+      },
+      recvThemeChange() {
+        this.$store.commit('changeTheme')
+      },
+    },
+    computed: {
+      logoSrc() {
+        return '/static/img/' + getThemeValue(this.theme).logoSrc
+      },
+      headerSrc() {
+        return '/static/img/' + getThemeValue(this.theme).headerBorderSrc
+      },
+      themeSrc() {
+        return '/static/img/' + getThemeValue(this.theme).themeSrc
+      },
+      containerStyle() {
+        return {
+          backgroundColor: getThemeValue(this.theme).backgroundColor,
+          color: getThemeValue(this.theme).titleColor,
+        }
+      },
+      ...mapState(['theme']),
+    },
+  }
+</script>
+
+<style lang="less" scoped>
+  // 全屏样式的定义
+  .fullscreen {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    margin: 0 !important;
+    z-index: 9999;
+  }
+
+  .screen-container {
+    width: 100%;
+    height: 100%;
+    padding: 0 20px;
+    background-color: #2e2e2f;
+    color: #fff;
+    box-sizing: border-box;
+  }
+  .screen-header {
+    width: 100%;
+    font-size: 20px;
+    position: relative;
+    > div {
+      img {
+        width: 100%;
+      }
+    }
+    .title {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      font-size: 20px;
+      transform: translate(-50%, -50%);
+    }
+    .title-right {
+      display: flex;
+      align-items: center;
+      position: absolute;
+      right: 0px;
+      top: 50%;
+      transform: translateY(-80%);
+    }
+    .qiehuan {
+      width: 28px;
+      height: 21px;
+      cursor: pointer;
+    }
+    .datetime {
+      font-size: 15px;
+      margin-left: 10px;
+    }
+    .logo {
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-80%);
+      img {
+        height: 35px;
+        width: 154px;
+      }
+    }
+  }
+  .screen-body {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    margin-top: 10px;
+    .screen-left {
+      height: 100%;
+      width: 27.6%;
+      #left-top {
+        height: 53%;
+        position: relative;
+      }
+      #left-bottom {
+        height: 31%;
+        margin-top: 25px;
+        position: relative;
+      }
+    }
+    .screen-middle {
+      height: 100%;
+      width: 41.5%;
+      margin-left: 1.6%;
+      margin-right: 1.6%;
+      #middle-top {
+        width: 100%;
+        height: 56%;
+        position: relative;
+      }
+      #middle-bottom {
+        margin-top: 25px;
+        width: 100%;
+        height: 28%;
+        position: relative;
+      }
+    }
+    .screen-right {
+      height: 100%;
+      width: 27.6%;
+      #right-top {
+        height: 46%;
+        position: relative;
+      }
+      #right-bottom {
+        height: 38%;
+        margin-top: 25px;
+        position: relative;
+      }
+    }
+  }
+  .resize {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    cursor: pointer;
+  }
+</style>
+```
+
+#### 4.3.5 全屏切换
+
+- 全屏状态数据定义
+
+```js
 export default {
-  components: {
-    Hot,
-    Map,
-    Rank,
-    Seller,
-    Stock,
-    Trend,
-  },
   data() {
     return {
       // 定义每一个图表的全屏状态
@@ -1727,245 +2074,23 @@ export default {
       timeValue: '',
     }
   },
-  created() {
-    // 注册接收到数据的回调函数
-    this.$socket.registerCallBack('fullScreen', this.recvData)
-    this.$socket.registerCallBack('themeChange', this.recvThemeChange)
-  },
-  destroyed() {
-    this.$socket.unRegisterCallBack('fullScreen')
-    this.$socket.unRegisterCallBack('themeChange')
-    clearInterval(this.timer)
-  },
-  mounted() {
-    this.displayTime()
-    if (this.timer) {
-      clearInterval(this.timer)
-    }
-    this.timer = setInterval(() => {
-      this.displayTime()
-    }, 1000)
-  },
-  methods: {
-    displayTime() {
-      //获取系统当前的年、月、日、小时、分钟、毫秒
-      let date, year, month, day, h, m, s
-      date = new Date()
-      year = date.getFullYear()
-      month = date.getMonth() + 1
-      day = date.getDate()
-      h = date.getHours()
-      m = date.getMinutes()
-      s = date.getSeconds()
-      month = month < 10 ? '0' + month : month
-      day = day < 10 ? '0' + day : day
-      h = h < 10 ? '0' + h : h
-      m = m < 10 ? '0' + m : m
-      s = s < 10 ? '0' + s : s
-      return (this.timeValue = year + '-' + month + '-' + day + '  ' + h + ':' + m + ':' + s)
-    },
-    changeSize(chartName) {
-      console.log(chartName)
-      // 将数据发送给服务端
-      const targetValue = !this.fullScreenStatus[chartName]
-      this.$socket.send({
-        action: 'fullScreen',
-        socketType: 'fullScreen',
-        chartName: chartName,
-        value: targetValue,
-      })
-    },
-    // 接收到全屏数据之后的处理
-    recvData(data) {
-      // 取出是哪一个图表需要进行切换
-      const chartName = data.chartName
-      // 取出, 切换成什么状态
-      const targetValue = data.value
-      this.fullScreenStatus[chartName] = targetValue
-      this.$nextTick(() => {
-        this.$refs[chartName].screenAdapter()
-      })
-    },
-    handleChangeTheme() {
-      // 修改VueX中数据
-      this.$socket.send({
-        action: 'themeChange',
-        socketType: 'themeChange',
-        chartName: '',
-        value: '',
-      })
-    },
-    recvThemeChange() {
-      this.$store.commit('changeTheme')
-    },
-  },
-  computed: {
-    logoSrc() {
-      return '/static/img/' + getThemeValue(this.theme).logoSrc
-    },
-    headerSrc() {
-      return '/static/img/' + getThemeValue(this.theme).headerBorderSrc
-    },
-    themeSrc() {
-      return '/static/img/' + getThemeValue(this.theme).themeSrc
-    },
-    containerStyle() {
-      return {
-        backgroundColor: getThemeValue(this.theme).backgroundColor,
-        color: getThemeValue(this.theme).titleColor,
-      }
-    },
-    ...mapState(['theme']),
-  },
 }
-</script>
-
-<style lang="less" scoped>
-// 全屏样式的定义
-.fullscreen {
-  position: fixed !important;
-  top: 0 !important;
-  left: 0 !important;
-  width: 100% !important;
-  height: 100% !important;
-  margin: 0 !important;
-  z-index: 9999;
-}
-
-.screen-container {
-  width: 100%;
-  height: 100%;
-  padding: 0 20px;
-  background-color: #2e2e2f;
-  color: #fff;
-  box-sizing: border-box;
-}
-.screen-header {
-  width: 100%;
-  font-size: 20px;
-  position: relative;
-  > div {
-    img {
-      width: 100%;
-    }
-  }
-  .title {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    font-size: 20px;
-    transform: translate(-50%, -50%);
-  }
-  .title-right {
-    display: flex;
-    align-items: center;
-    position: absolute;
-    right: 0px;
-    top: 50%;
-    transform: translateY(-80%);
-  }
-  .qiehuan {
-    width: 28px;
-    height: 21px;
-    cursor: pointer;
-  }
-  .datetime {
-    font-size: 15px;
-    margin-left: 10px;
-  }
-  .logo {
-    position: absolute;
-    left: 0;
-    top: 50%;
-    transform: translateY(-80%);
-    img {
-      height: 35px;
-      width: 154px;
-    }
-  }
-}
-.screen-body {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  margin-top: 10px;
-  .screen-left {
-    height: 100%;
-    width: 27.6%;
-    #left-top {
-      height: 53%;
-      position: relative;
-    }
-    #left-bottom {
-      height: 31%;
-      margin-top: 25px;
-      position: relative;
-    }
-  }
-  .screen-middle {
-    height: 100%;
-    width: 41.5%;
-    margin-left: 1.6%;
-    margin-right: 1.6%;
-    #middle-top {
-      width: 100%;
-      height: 56%;
-      position: relative;
-    }
-    #middle-bottom {
-      margin-top: 25px;
-      width: 100%;
-      height: 28%;
-      position: relative;
-    }
-  }
-  .screen-right {
-    height: 100%;
-    width: 27.6%;
-    #right-top {
-      height: 46%;
-      position: relative;
-    }
-    #right-bottom {
-      height: 38%;
-      margin-top: 25px;
-      position: relative;
-    }
-  }
-}
-.resize {
-  position: absolute;
-  right: 20px;
-  top: 20px;
-  cursor: pointer;
-}
-</style>
-```
-
-#### 4.3.5 全屏切换
-
-- 全屏状态数据定义
-
-```vue
-export default { data() { return { // 定义每一个图表的全屏状态 fullScreenStatus: { trend: false,
-seller: false, map: false, rank: false, hot: false, stock: false, }, timer: null, timeValue: '', }
-}, }
 ```
 
 - 全屏状态样式定义
 
-```vue
+```html
 <style lang="less" scoped>
-// 全屏样式的定义
-.fullscreen {
-  position: fixed !important;
-  top: 0 !important;
-  left: 0 !important;
-  width: 100% !important;
-  height: 100% !important;
-  margin: 0 !important;
-  z-index: 9999;
-}
+  // 全屏样式的定义
+  .fullscreen {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    margin: 0 !important;
+    z-index: 9999;
+  }
 </style>
 ```
 
@@ -1992,33 +2117,66 @@ seller: false, map: false, rank: false, hot: false, stock: false, }, timer: null
 
 - 全屏点击事件的处理
 
-```vue
-export default { methods: { changeSize(chartName) { console.log(chartName) // 将数据发送给服务端
-const targetValue = !this.fullScreenStatus[chartName] this.$socket.send({ action: 'fullScreen',
-socketType: 'fullScreen', chartName: chartName, value: targetValue, }) }, }, }
+```js
+export default {
+  methods: {
+    changeSize(chartName) {
+      console.log(chartName)
+      // 将数据发送给服务端
+      const targetValue = !this.fullScreenStatus[chartName]
+      this.$socket.send({
+        action: 'fullScreen',
+        socketType: 'fullScreen',
+        chartName: chartName,
+        value: targetValue,
+      })
+    },
+  },
+}
 ```
 
 - created时注册回调函数
 
-```vue
-export default { created() { // 注册接收到数据的回调函数 this.$socket.registerCallBack('fullScreen',
-this.recvData) this.$socket.registerCallBack('themeChange', this.recvThemeChange) }, }
+```js
+export default {
+  created() {
+    // 注册接收到数据的回调函数
+    this.$socket.registerCallBack('fullScreen', this.recvData)
+    this.$socket.registerCallBack('themeChange', this.recvThemeChange)
+  },
+}
 ```
 
 - destoryed时取消回调函数
 
-```vue
-export default { destroyed() { this.$socket.unRegisterCallBack('fullScreen')
-this.$socket.unRegisterCallBack('themeChange') clearInterval(this.timer) }, }
+```js
+export default {
+  destroyed() {
+    this.$socket.unRegisterCallBack('fullScreen')
+    this.$socket.unRegisterCallBack('themeChange')
+    clearInterval(this.timer)
+  },
+}
 ```
 
 - 得到数据的处理
 
-```vue
-export default { methods: { // 接收到全屏数据之后的处理 recvData(data) { //
-取出是哪一个图表需要进行切换 const chartName = data.chartName // 取出, 切换成什么状态 const
-targetValue = data.value this.fullScreenStatus[chartName] = targetValue this.$nextTick(() => {
-this.$refs[chartName].screenAdapter() }) }, }, }
+```js
+export default {
+  methods: {
+    // 接收到全屏数据之后的处理
+    recvData(data) {
+      // 取出是哪一个图表需要进行切换
+      const chartName = data.chartName
+      // 取出, 切换成什么状态
+      const targetValue = data.value
+      this.fullScreenStatus[chartName] = targetValue
+      this.$nextTick(() => {
+        this.$refs[chartName].screenAdapter()
+      })
+    },
+  },
+}
 ```
 
 - socket_service.js 代码如下：
@@ -2070,7 +2228,7 @@ export default new Vuex.Store({
 
 点击事件的响应
 
-```vue
+```js
 <template>
   <div class="title-right">
     <img :src="themeSrc" class="qiehuan" @click="handleChangeTheme" />
@@ -2081,9 +2239,20 @@ export default new Vuex.Store({
 
 点击事件的处理
 
-```vue
-export default { methods: { handleChangeTheme() { // 修改VueX中数据 this.$socket.send({ action:
-"themeChange", socketType: "themeChange", chartName: "", value: "", }); } } }
+```js
+export default {
+  methods: {
+    handleChangeTheme() {
+      // 修改VueX中数据
+      this.$socket.send({
+        action: 'themeChange',
+        socketType: 'themeChange',
+        chartName: '',
+        value: '',
+      })
+    },
+  },
+}
 ```
 
 - 监听主题的变化
@@ -2092,23 +2261,41 @@ export default { methods: { handleChangeTheme() { // 修改VueX中数据 this.$s
 
 映射 store 中的 theme 作为当前组件的计算属性
 
-```vue
-import { mapState } from 'vuex' export default { computed: { ...mapState(['theme']); } }
+```js
+import { mapState } from 'vuex'
+export default {
+    computed: {
+        ...mapState(['theme']);
+    }
+}
 ```
 
 监听theme的变化
 
-```vue
-export default { watch: { theme () { this.myChart.dispose(); // 销毁当前的图表 this.initChart(); //
-重新以最新的主题名称初始化图表对象 this.screenAdapter(); // 完成屏幕适配 this.updateChart(); //
-更新图表展示 } } }
+```js
+export default {
+  watch: {
+    theme() {
+      this.myChart.dispose() // 销毁当前的图表
+      this.initChart() // 重新以最新的主题名称初始化图表对象
+      this.screenAdapter() // 完成屏幕适配
+      this.updateChart() // 更新图表展示
+    },
+  },
+}
 ```
 
 主题的切换
 
-```vue
-export default { methods: { // 初始化echartsInstance对象 initChart() { this.myChart =
-this.$echarts.init(this.$refs.seller_ref, this.theme); } } }
+```js
+export default {
+  methods: {
+    // 初始化echartsInstance对象
+    initChart() {
+      this.myChart = this.$echarts.init(this.$refs.seller_ref, this.theme)
+    },
+  },
+}
 ```
 
 通过这个步骤就可以实现每一个图表组件切换主题了，不过有部分样式需要另外调整
@@ -2162,25 +2349,46 @@ export function getThemeValue(themeName) {
 
 映射 VueX 中的 theme 数据作为该组件的计算属性
 
-```vue
-// screenPage.vue import { mapState } from 'vuex' export default { computed: {
-...mapState(['theme']) }
+```js
+// screenPage.vue
+import { mapState } from 'vuex'
+export default {
+computed: {
+    ...mapState(['theme'])
+}
 ```
 
 定义一些控制样式的计算属性
 
-```vue
-// screenPage.vue import { mapState } from "vuex"; import { getThemeValue } from
-"@/utils/theme_utils"; export default { computed: { logoSrc() { return "/static/img/" +
-getThemeValue(this.theme).logoSrc; }, headerSrc() { return "/static/img/" +
-getThemeValue(this.theme).headerBorderSrc; }, themeSrc() { return "/static/img/" +
-getThemeValue(this.theme).themeSrc; }, containerStyle() { return { backgroundColor:
-getThemeValue(this.theme).backgroundColor, color: getThemeValue(this.theme).titleColor, }; } } }, }
+```js
+// screenPage.vue
+import { mapState } from "vuex";
+import { getThemeValue } from "@/utils/theme_utils";
+export default {
+    computed: {
+        logoSrc() {
+          return "/static/img/" + getThemeValue(this.theme).logoSrc;
+        },
+        headerSrc() {
+          return "/static/img/" + getThemeValue(this.theme).headerBorderSrc;
+        },
+        themeSrc() {
+          return "/static/img/" + getThemeValue(this.theme).themeSrc;
+        },
+        containerStyle() {
+          return {
+            backgroundColor: getThemeValue(this.theme).backgroundColor,
+            color: getThemeValue(this.theme).titleColor,
+          };
+        }
+     }
+  },
+}
 ```
 
 将计算属性应用到布局中
 
-```vue
+```js
 <template>
   <div class="screen-container" :style="containerStyle">
     <header class="screen-header">
@@ -2202,14 +2410,42 @@ getThemeValue(this.theme).backgroundColor, color: getThemeValue(this.theme).titl
 
 通过计算属性动态控制标题样式及下拉框选项
 
-```vue
-// trend.vue import { mapState } from "vuex"; import { getThemeValue } from "@/utils/theme_utils";
-export default { ...mapState(["theme"]), selectTypes() { if (!this.allData) { return []; } else {
-return this.allData.type.filter((item) => { return item.key !== this.choiceType; }); } },
-showTitle() { if (!this.allData) { return ""; } else { return this.allData[this.choiceType].title; }
-}, // 设置给标题的样式 comStyle() { return { fontSize: this.titleFontSize + "px", color:
-getThemeValue(this.theme).labelColor }; }, marginStyle() { return { marginLeft: this.titleFontSize +
-"px", backgroundColor: getThemeValue(this.theme).bgColor }; }, }
+```js
+// trend.vue
+import { mapState } from 'vuex'
+import { getThemeValue } from '@/utils/theme_utils'
+export default {
+  ...mapState(['theme']),
+  selectTypes() {
+    if (!this.allData) {
+      return []
+    } else {
+      return this.allData.type.filter((item) => {
+        return item.key !== this.choiceType
+      })
+    }
+  },
+  showTitle() {
+    if (!this.allData) {
+      return ''
+    } else {
+      return this.allData[this.choiceType].title
+    }
+  },
+  // 设置给标题的样式
+  comStyle() {
+    return {
+      fontSize: this.titleFontSize + 'px',
+      color: getThemeValue(this.theme).labelColor,
+    }
+  },
+  marginStyle() {
+    return {
+      marginLeft: this.titleFontSize + 'px',
+      backgroundColor: getThemeValue(this.theme).bgColor,
+    }
+  },
+}
 ```
 
 ## 5. 写在最后

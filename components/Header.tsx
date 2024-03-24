@@ -3,7 +3,7 @@
  * @author: Jack Chen @懒人码农
  * @Date: 2024-03-05 20:30:07
  * @LastEditors: Jack Chen
- * @LastEditTime: 2024-03-12 23:34:32
+ * @LastEditTime: 2024-03-25 01:31:36
  */
 import siteMetadata from '@/data/siteMetadata'
 import headerNavLinks from '@/data/headerNavLinks'
@@ -19,7 +19,7 @@ const Header = () => {
       <div>
         <Link href="/" aria-label={siteMetadata.headerTitle}>
           <div className="flex items-center justify-between">
-            <div className="animate-wave mr-1">
+            <div className="mr-1 animate-wave">
               <Logo />
             </div>
             {typeof siteMetadata.headerTitle === 'string' ? (

@@ -119,7 +119,7 @@ export default function ListLayout({
           </div>
         </div>
         <ul className="divide-y divide-gray-200 dark:divide-gray-700">
-          {!filteredBlogPosts.length && '没有找到文章.'}
+          {!filteredBlogPosts.length && <h1 className="pt-5 text-center">木有发现文章...</h1>}
           {displayPosts.map((post) => {
             const { path, date, title, summary, tags, images } = post
             return (

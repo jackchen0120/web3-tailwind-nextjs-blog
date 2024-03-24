@@ -1,0 +1,810 @@
+---
+title: 'Vue+Echarts构建可视化大数据平台实战项目（下篇）'
+date: '2024-03-23'
+lastmod: '2024-03-23'
+tags: ['入门教程', '数据可视化']
+draft: false
+summary: '一个基于Vue前端框架和第三方图表库Echarts构建的可视化大数据平台，通过vue项目构建、指令的灵活运用、组件封装、组件之间通信，使内部图表组件库可实现自由替换和组合。'
+images: ['/static/images/brand.jpg']
+---
+
+<TOCInline toc={props.toc} exclude="Introduction" />
+
+## 回顾
+
+作者用心写作，请动动你可爱的小手`点亮大拇指`。你的鼓励是作者继续创作的动力...
+
+前端的学习，不能仅仅依靠知识点的学习，实战项目的操作可以帮助我们整理知识点以及提高编程能力，更有助于学习和实践，最重要的是提高自己的项目经验，对于找工作而言有着大大的帮助。
+
+> 阅读本篇文章之前，可以先看看[上一篇](/blog/induction-tutorial/vue-echarts-prev-section)分享的内容，主要讲大数据可视化的由来，与前端的渊源，主题风格设计，选择比较流行的可视化第三方库。
+
+一个基于Vue前端框架和第三方图表库Echarts构建的可视化大数据平台，通过vue项目构建、指令的灵活运用、组件封装、组件之间通信，使内部图表组件库可实现自由替换和组合。以及一些功能模块的设计及代码实现。
+
+老规矩先上效果图（可视化酷屏展示公司品牌），后面会讲这个实例。
+
+![Web3研习社](https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2020/7/1/1730b13f8ae779f6~tplv-t2oaga2asx-zoom-in-crop-mark:4536:0:0:0.awebp)
+
+线上体验：[https://jackchen0120.github.io/vueDataV/#/brand](https://jackchen0120.github.io/vueDataV/#/brand)
+
+下面接着继续分享上一篇未讲完的内容。
+
+## 自定义全局模态框
+
+先看效果图：
+
+![Web3研习社](https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2020/7/1/1730afca845b9700~tplv-t2oaga2asx-zoom-in-crop-mark:4536:0:0:0.awebp)
+
+自定义模态框已注册全局小组件在/components/modal目录文件，代码如下（含注解）：
+
+```html
+<template>
+  <transition name="fade">
+    <div class="modal-backdrop" v-if="visible">
+      <div class="modal">
+        <div class="modal-header">
+          {{ title }}
+          <i class="iconfont icon-close close" @click="close"></i>
+        </div>
+        <div class="modal-body">{{ content }}</div>
+        <div class="modal-footer">
+          <button type="button" class="btn-close" @click="close" v-if="showCancle">
+            {{cancleText ? cancleText : '取消'}}
+          </button>
+          <button type="button" class="btn-confirm" @click="confirm">
+            {{confirmText ? confirmText : '确定'}}
+          </button>
+        </div>
+      </div>
+    </div>
+  </transition>
+</template>
+
+<script>
+  export default {
+    name: 'Modal',
+    props: {
+      // modal标题
+      title: {
+        type: String,
+        default: '提示',
+      },
+      // modal内容
+      content: {
+        type: String,
+        default: '',
+      },
+      // 是否显示
+      visible: {
+        type: Boolean,
+        default: false,
+      },
+      // 是否显示取消按钮
+      showCancle: {
+        type: Boolean,
+        default: true,
+      },
+      // 确认按钮文字
+      confirmText: {
+        type: String,
+        default: '确认',
+      },
+      // 取消按钮文字
+      cancleText: {
+        type: String,
+        default: '取消',
+      },
+    },
+    watch: {
+      visible(curVal) {
+        // 监听visible值的变化
+        console.log(curVal)
+      },
+    },
+    methods: {
+      // 关闭按钮事件
+      close() {
+        this.$emit('update:visible', false)
+      },
+      // 确定按钮事件
+      confirm() {
+        this.close()
+        this.$emit('confirm')
+      },
+    },
+  }
+</script>
+```
+
+在components/index.js目录文件中注册全局组件，如下图：
+
+![Web3研习社](https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2020/7/1/1730afd3c379ec32~tplv-t2oaga2asx-zoom-in-crop-mark:4536:0:0:0.awebp)
+
+完整代码如下：
+
+```javascript
+// 引入自定义全局模态框组件
+import modal from './modal'
+
+const components = {
+  modal,
+}
+
+// install 是默认的方法。当外界在 Vue.use() 这个组件的时候，就会调用本身的 install 方法，同时传一个 Vue 这个类的参数。
+const install = (Vue = {}) => {
+  if (install.installed) return
+  Object.keys(components).forEach((component) => {
+    Vue.component(components[component].name, components[component])
+  })
+
+  install.installed = true
+}
+
+install.installed = false
+
+if (typeof window !== 'undefined' && window.Vue) {
+  install(window.Vue)
+  install.installed = true
+}
+
+// 定义组件库和install对象
+const Vcomp = {
+  ...components,
+  install,
+}
+
+// 导出
+export default Vcomp
+```
+
+在main.js中全局引用，如下图：
+
+![Web3研习社](https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2020/7/1/1730afd510282167~tplv-t2oaga2asx-zoom-in-crop-mark:4536:0:0:0.awebp)
+
+可在任意页面调用，代码如下：
+
+```html
+<template>
+  <div class="page">
+    <modal title="提示" :content="modalContent" :visible.sync="visible" @confirm="confirm"> </modal>
+  </div>
+</template>
+
+export default { data() { return { visible: true, // 显示模态框 modalContent:
+'这是一段自定义模态框消息' } }, methods: { confirm() { this.visible = false; console.log('点击确定')
+} } }
+```
+
+| 参数名         | 类型    | 说明                                       |
+| -------------- | ------- | ------------------------------------------ |
+| visible        | Boolean | 是否显示，默认false                        |
+| title          | String  | 标题                                       |
+| content        | String  | 内容                                       |
+| confirmText    | String  | 确认按钮文字，默认“确认”                   |
+| cancleText     | String  | 取消按钮文字，默认“取消”                   |
+| showCancle     | Boolean | 是否显示，默认true                         |
+| update:visible | Boolean | 更新visible, 使用:visible.sync实现动态绑定 |
+
+(adsbygoogle = window.adsbygoogle || \[\]).push({});
+
+## 数字滚动组件
+
+推荐一款简单好用的数字滚动组件，`vue-count-to`是一个无依赖，轻量级的vue组件，可以自行覆盖easingFn。你可以设置 startVal 和 endVal，它会自动判断计数或倒计时。支持vue-ssr，vue-countTo参考于countUp.js。
+
+- npm安装依赖
+
+```bash
+npm install -D vue-count-to
+```
+
+- 示例代码：
+
+```html
+<template>
+  <countTo :startVal="startVal" :endVal="endVal" :duration="3000"></countTo>
+</template>
+
+<script>
+  import countTo from 'vue-count-to'
+  export default {
+    components: { countTo },
+    data() {
+      return {
+        startVal: 0,
+        endVal: 2020,
+      }
+    },
+  }
+</script>
+```
+
+- 选项：
+
+| 属性      | 描述                   | 数据类型 | 默认值         |
+| --------- | ---------------------- | -------- | -------------- |
+| startVal  | 开始值                 | Number   | 0              |
+| endVal    | 结束值                 | Number   | 2020           |
+| duration  | 持续时间，以毫秒为单位 | Number   | 3000           |
+| autoplay  | 自动播放               | Boolean  | true           |
+| decimals  | 要显示的小数位数       | Number   | 0              |
+| decimal   | 十进制分割             | String   | .（点）        |
+| separator | 分隔符                 | String   | ,（逗号）      |
+| prefix    | 前缀                   | String   | ''（空字符串） |
+| suffix    | 后缀                   | String   | ''（空字符串） |
+| useEasing | 使用缓和功能           | Boolean  | true           |
+| easingFn  | 缓和回调               | Function | —              |
+
+- 功能：
+
+| 函数名          | 描述             |
+| --------------- | ---------------- |
+| mountedCallback | 挂载以后返回回调 |
+| start           | 开始计数         |
+| pause           | 暂停计数         |
+| reset           | 重置countTo      |
+
+首页动态列表组件显示的数据，就引用了数字滚动特效，如下图：
+
+![Web3研习社](https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2020/7/1/1730b0afc2827a7e~tplv-t2oaga2asx-zoom-in-crop-mark:4536:0:0:0.awebp)
+
+代码如下图：
+
+![Web3研习社](https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2020/7/1/1730afd678da599a~tplv-t2oaga2asx-zoom-in-crop-mark:4536:0:0:0.awebp)
+
+如需查看完整源代码请移步到作者的[github仓库](https://github.com/jackchen0120/vueDataV/)
+
+## 讲讲炫酷展示公司品牌实例
+
+##### 功能模块
+
+- 天气和当前日期
+- 自定义词云图
+- 模拟飞机航线动效
+- 自动切换tab选项卡
+- 柱状图、饼图、折线图、南丁格玫瑰图
+
+##### 技术栈
+
+- 基于 flexible.js + rem 智能大屏适配
+
+之前首页大屏布局采用的是绝对定位，加上整体屏幕缩放进行适配（`简单粗暴，不是很优雅`）。 现在推荐一种智能大屏适配方式，选用flexible.js是淘宝移动端自适应解决方案，源码含注解如下：
+
+```javascript
+// 首先是一个立即执行函数，执行时传入的参数是window和document
+;(function flexible(window, document) {
+  // 返回文档的root元素
+  var docEl = document.documentElement
+  // 获取设备的dpr，即当前设置下物理像素与虚拟像素的比值
+  var dpr = window.devicePixelRatio || 1
+
+  // 设置默认字体大小，默认的字体大小继承自body
+  function setBodyFontSize() {
+    if (document.body) {
+      // 调整body标签的fontSize，fontSize = (12 * dpr) + 'px'
+      document.body.style.fontSize = 12 * dpr + 'px'
+    } else {
+      document.addEventListener('DOMContentLoaded', setBodyFontSize)
+    }
+  }
+  setBodyFontSize()
+
+  // set 1rem = viewWidth / 24
+  function setRemUnit() {
+    // 设置root元素的fontSize = 其clientWidth / 24 + 'px'
+    var rem = docEl.clientWidth / 24
+    docEl.style.fontSize = rem + 'px'
+  }
+  setRemUnit()
+
+  // 当页面展示或重新设置大小的时候，触发重新
+  window.addEventListener('resize', setRemUnit)
+  window.addEventListener('pageshow', function (e) {
+    if (e.persisted) {
+      setRemUnit()
+    }
+  })
+
+  // 检测0.5px的支持，支持则root元素的class中有hairlines
+  if (dpr >= 2) {
+    var fakeBody = document.createElement('body')
+    var testElement = document.createElement('div')
+    testElement.style.border = '.5px solid transparent'
+    fakeBody.appendChild(testElement)
+    docEl.appendChild(fakeBody)
+    if (testElement.offsetHeight === 1) {
+      docEl.classList.add('hairlines')
+    }
+    docEl.removeChild(fakeBody)
+  }
+})(window, document)
+```
+
+设计稿尺寸是1920px\*1080px，所以将屏幕分成24等份。
+
+- sublime text 3 cssrem插件
+
+```bash
+// 先下载插件到本地
+git clone https://github.com/flashlizi/cssrem
+```
+
+进入packages目录：Sublime Text -> Preferences -> Browse Packages... 如下图：
+
+![Web3研习社](https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2020/7/1/1730aff1bbb0aaf4~tplv-t2oaga2asx-zoom-in-crop-mark:4536:0:0:0.awebp)
+
+将下载到本地的cssrem目录复制到packges目录里，如下图：
+
+![Web3研习社](https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2020/7/1/1730aff30fc31fde~tplv-t2oaga2asx-zoom-in-crop-mark:4536:0:0:0.awebp)
+
+然后重启Sublime Text，参数配置如下图：
+
+![Web3研习社](https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2020/7/1/1730aff42bf463a4~tplv-t2oaga2asx-zoom-in-crop-mark:4536:0:0:0.awebp)
+
+![Web3研习社](https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2020/7/1/1730aff558850245~tplv-t2oaga2asx-zoom-in-crop-mark:4536:0:0:0.awebp)
+
+如果小伙伴使用的vscode编辑器，也可以安装此插件，打开扩展，搜索cssrem，点击安装，如下图：
+
+![Web3研习社](https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2020/7/1/1730aff775ea9e59~tplv-t2oaga2asx-zoom-in-crop-mark:4536:0:0:0.awebp)
+
+配置设置，如下图：
+
+![Web3研习社](https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2020/7/1/1730aff8e1a2c2a0~tplv-t2oaga2asx-zoom-in-crop-mark:4536:0:0:0.awebp)
+
+![Web3研习社](https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2020/7/1/1730affa1ea32fb2~tplv-t2oaga2asx-zoom-in-crop-mark:4536:0:0:0.awebp)
+
+改完后重启，插件效果如图：
+
+![Web3研习社](https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2020/7/1/1730affb4100cff2~tplv-t2oaga2asx-zoom-in-crop-mark:4536:0:0:0.awebp)
+
+- Flex 布局
+
+Flex是Flexible Box的缩写，意为”弹性布局”，用来为盒状模型提供最大的灵活性。可以简便、完整、响应式地实现各种页面布局。这里推荐阮一峰老师的[Flex布局教程](http://www.ruanyifeng.com/blog/2015/07/flex-grammar.html)。
+
+动手之前，先来分析一下整个页面设计布局，整体布局分为上（头部模块）和下（主体模块），主体模块又分为左中右三部分。主体中间又分为上（数字滚动模块）和下（地图模块）。
+
+头部布局样式采用的是定位position，主体模块column列容器，分三列，占比 3 : 5 : 3。主体代码如下：
+
+```html
+<section class="mainbox">
+  <div class="item left">flex: 3;</div>
+
+  <div class="item center">flex: 5;</div>
+
+  <div class="item right">flex: 3;</div>
+</section>
+```
+
+```css
+.mainbox {
+  min-width: 1024px;
+  max-width: 1920px;
+  padding: 0.125rem 0.125rem 0;
+  display: flex;
+  .item {
+    flex: 3;
+    &.center {
+      flex: 5;
+      margin: 0 0.125rem 0.1rem;
+      overflow: hidden;
+    }
+  }
+}
+```
+
+全屏设置背景图及头部布局样式，可以直接在/src/views/Brand.vue目录文件查看源代码。
+
+补充说明头部有展示天气和当前时间，天气数据实时展示，通过axios的get方法调用第三方免费天气API接口，并且设置每小时获取一次最新数据。代码实现如下：
+
+```javascript
+mounted() {
+  this.getWeather();
+  this.timer = setInterval(() => {
+  	this.getWeather();
+  }, 1000 * 60 * 60)
+},
+methods: {
+  getWeather() { // 第三方天气api接口
+    axios.get('https://www.tianqiapi.com/api/', {
+      params: {
+        appid: '26148275',
+        appsecret: '2id6H48Y',
+        version: 'v6'
+      }
+    }).then(res => {
+      if (res.data) {
+        if (res.data.wea_img == 'xue') {
+          this.imgSrc = require('../assets/img/brand/xue.png');
+        } else if (res.data.wea_img == 'yin') {
+          this.imgSrc = require('../assets/img/brand/yin.png');
+        } else if (res.data.wea_img == 'yu' || res.data.wea_img == 'bingbao') {
+          this.imgSrc = require('../assets/img/brand/yu.png');
+        } else if (res.data.wea_img == 'yun') {
+          this.imgSrc = require('../assets/img/brand/yun.png');
+        } else if (res.data.wea_img == 'wu') {
+          this.imgSrc = require('../assets/img/brand/wu.png');
+        } else if (res.data.wea_img == 'shachen') {
+          this.imgSrc = require('../assets/img/brand/shachen.png');
+        } else if (res.data.wea_img == 'lei') {
+          this.imgSrc = require('../assets/img/brand/lei.png');
+        } else {
+          this.imgSrc = require('../assets/img/brand/qing.png');
+        }
+        this.weatcherData = res.data;
+      }
+    }).catch(err => {
+      console.log(err)
+    })
+  }
+}
+```
+
+当前时间代码实现如下：
+
+```javascript
+mounted() {
+  this.nowTimes();
+},
+methods: {
+  timeFormate(timeStamp) { //显示当前时间
+    let newDate = new Date(timeStamp);
+    let year = newDate.getFullYear();
+    let month = newDate.getMonth() + 1 < 10 ? '0' + (newDate.getMonth() + 1) : newDate.getMonth() + 1;
+    let date = newDate.getDate() < 10 ? '0' + newDate.getDate() : newDate.getDate();
+    let hh = newDate.getHours() < 10 ? '0' + newDate.getHours() : newDate.getHours();
+    let mm = newDate.getMinutes() < 10 ? '0' + newDate.getMinutes() : newDate.getMinutes();
+    let ss = newDate.getSeconds() < 10 ? '0' + newDate.getSeconds() : newDate.getSeconds();
+    let week = newDate.getDay();
+    let weeks = ['日', '一', '二', '三', '四', '五', '六'];
+    let getWeek = '星期' + weeks[week];
+    this.week = getWeek;
+    this.date = year + '.' + month + '.' + date;
+    this.nowTime = hh + ':' + mm + ':' + ss;
+  },
+  nowTimes() {
+    this.timeFormate(new Date());
+    setInterval(this.nowTimes, 1000);
+    this.clear();
+  },
+  clear() {
+    clearInterval(this.nowTimes)
+    this.nowTimes = null;
+  },
+}
+```
+
+- Echarts 图表和地图的基本使用
+
+**1）Echarts使用五部曲**
+
+1.  本项目采用cdn引入echarts.js文件（图表依赖这个js库）
+
+index.html引入cdn
+
+![Web3研习社](https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2020/7/1/1730affcb9ab861f~tplv-t2oaga2asx-zoom-in-crop-mark:4536:0:0:0.awebp)
+
+vue.config.js配置webpack
+
+![Web3研习社](https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2020/7/1/1730affde5652510~tplv-t2oaga2asx-zoom-in-crop-mark:4536:0:0:0.awebp)
+
+2.  准备一个具备大小的容器（生成的图表会放入这个容器内）
+
+```html
+<div class="chart" id="chart" style="width: 480px; height: 240px;"></div>
+```
+
+3.  初始化echarts实例对象（实例化echarts对象）
+
+```javascript
+let myChart = echarts.init(document.getElementById('chart'))
+```
+
+4.  指定配置项和数据 option（根据具体需求修改配置选项）
+
+```javascript
+let option = {
+  xAxis: {
+    type: 'category',
+    boundaryGap: false,
+    data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+  },
+  yAxis: {
+    type: 'value',
+  },
+  series: [
+    {
+      data: [820, 932, 901, 934, 1290, 1330, 1320],
+      type: 'line',
+      areaStyle: {},
+      smooth: true,
+    },
+  ],
+}
+```
+
+5.  将配置项设置给echarts实例对象（让echarts对象根据修改好的配置生效）
+
+```javascript
+myChart.setOption(option)
+
+// 让图表跟随屏幕自适应
+window.addEventListener('resize', () => {
+  myChart.resize()
+})
+```
+
+**2）了解echarts基础配置**
+
+![Web3研习社](https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2020/7/1/1730afff5e138c66~tplv-t2oaga2asx-zoom-in-crop-mark:4536:0:0:0.awebp)
+
+如需了解更多，请移步到[Echarts官网](https://echarts.apache.org/zh/option.html#title)查看相关文档。
+
+**3）制作柱状图图表**
+
+一般直接去echarts官网查找类似实例，适当分析，并且引入到页面中，再根据需求定制图表。官方实例地址：[https://echarts.apache.org/examples/zh/index.html#chart-type-bar](https://echarts.apache.org/examples/zh/index.html#chart-type-bar)
+
+![Web3研习社](https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2020/7/1/1730b00087ac07de~tplv-t2oaga2asx-zoom-in-crop-mark:4536:0:0:0.awebp)
+
+比如上图的效果是如何实现的呢？
+
+作者悄悄地告诉你，其实有个很简单的方法，直接在Echarts案例大全查找。如：[https://madeapie.com/](https://madeapie.com/)，[http://ppchart.com/#/](http://ppchart.com/#/)
+
+本项目实例已封装注册全局小组件，源代码在/src/components/companySummary/business.vue目录文件，请自行查看。
+
+**4）Echarts map地图使用**
+
+实现步骤：
+
+- 首先下载引入中国地图china.js文件（文件存放路径：/src/assets/js/china.js）
+- 其次使用社区实例的配置即可，修改图例，标题，背景色，地图放大比例等达到你想要的效果。
+
+这个例子是扩展案例，大家以后可以多看看社区里面的实例。
+
+```css
+/* 约束屏幕尺寸 */
+@media screen and (max-width: 1024px) {
+  html {
+    font-size: 42px !important;
+  }
+}
+@media screen and (min-width: 1920) {
+  html {
+    font-size: 80px !important;
+  }
+}
+```
+
+**5）自定义词云图**
+
+先上效果图
+
+![Web3研习社](https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2020/7/1/1730b001c6ea7dae~tplv-t2oaga2asx-zoom-in-crop-mark:4536:0:0:0.awebp)
+
+上图效果，作者已封装注册全局小组件，源代码在/src/components/companySummary/wordCloud.vue目录文件，请自行查看。
+
+首先下载echarts-wordcloud.min.js压缩文件（存放路径：/src/assets/js），并导入到wordCloud.vue模板文件中。代码如下：
+
+```html
+<template>
+  <div class="word-container">
+    <div class="chart" id="chart_right1"></div>
+  </div>
+</template>
+
+<script>
+  import '@/assets/js/echarts-wordcloud.min'
+
+  export default {
+    name: 'wordCloud',
+    data() {
+      return {
+        timer: null,
+      }
+    },
+    mounted() {
+      this.getEchartRight1()
+      this.timer = setInterval(() => {
+        this.getEchartRight1()
+      }, 5000)
+    },
+    methods: {
+      getEchartRight1() {
+        let myChart = echarts.init(document.getElementById('chart_right1'))
+        let option = {
+          // tooltip: {
+          //   show: false
+          // },
+          series: [
+            {
+              type: 'wordCloud',
+              gridSize: 1,
+              sizeRange: [12, 50],
+              rotationRange: [-90, 90],
+              rotationStep: 45,
+              shape: 'diamond',
+              width: '90%',
+              textPadding: 0,
+              autoSize: {
+                enable: true,
+                minSize: 6,
+              },
+              textStyle: {
+                normal: {
+                  textBorderColor: 'rgba(255,255,255,0.3)',
+                  textBorderWidth: 1,
+                  color: () => {
+                    return (
+                      'rgb(' +
+                      [
+                        Math.round(Math.random() * 160),
+                        Math.round(Math.random() * 160),
+                        Math.round(Math.random() * 160),
+                      ].join(',') +
+                      ')'
+                    )
+                  },
+                },
+                emphasis: {
+                  fontSize: 20,
+                  // shadowBlur: 10,
+                  // shadowColor: 'rgba(255,255,255, .1)'
+                },
+              },
+              data: [
+                {
+                  name: '区块链',
+                  value: 810,
+                },
+                {
+                  name: '云计算',
+                  value: 520,
+                },
+                {
+                  name: '人工智能',
+                  value: 928,
+                },
+                {
+                  name: '大数据',
+                  value: 906,
+                },
+                {
+                  name: '工业互联网',
+                  value: 825,
+                },
+                {
+                  name: '医疗',
+                  value: 514,
+                },
+                {
+                  name: '质量溯源',
+                  value: 486,
+                },
+                {
+                  name: '政务',
+                  value: 53,
+                },
+                {
+                  name: '密码学',
+                  value: 927,
+                },
+                {
+                  name: '金融行业',
+                  value: 1308,
+                },
+                {
+                  name: '供应链',
+                  value: 693,
+                },
+                {
+                  name: '公有链',
+                  value: 611,
+                },
+                {
+                  name: '私有链',
+                  value: 512,
+                },
+                {
+                  name: '联盟链',
+                  value: 382,
+                },
+                {
+                  name: '数据共享',
+                  value: 312,
+                },
+                {
+                  name: '文创版权',
+                  value: 187,
+                },
+                {
+                  name: '天河链',
+                  value: 163,
+                },
+                {
+                  name: '数据存证',
+                  value: 104,
+                },
+                {
+                  name: 'UDFS存储',
+                  value: 3,
+                },
+                {
+                  name: '在线教育',
+                  value: 31,
+                },
+                {
+                  name: '关联分析',
+                  value: 941,
+                },
+                {
+                  name: '智慧停车',
+                  value: 585,
+                },
+                {
+                  name: '链云生态',
+                  value: 473,
+                },
+                {
+                  name: '应用层',
+                  value: 358,
+                },
+                {
+                  name: '网络层',
+                  value: 246,
+                },
+                {
+                  name: '数据层',
+                  value: 207,
+                },
+                {
+                  name: '基础层',
+                  value: 194,
+                },
+                {
+                  name: '智能合约',
+                  value: 104,
+                },
+                {
+                  name: '去中心化',
+                  value: 87,
+                },
+                {
+                  name: '数字货币',
+                  value: 415,
+                },
+                {
+                  name: '酷屏',
+                  value: 253,
+                },
+                {
+                  name: '可视化',
+                  value: 211,
+                },
+                {
+                  name: 'P2P',
+                  value: 116,
+                },
+                {
+                  name: '数据挖掘',
+                  value: 1309,
+                },
+              ],
+            },
+          ],
+        }
+
+        myChart.setOption(option, true)
+        window.addEventListener('resize', () => {
+          myChart.resize()
+        })
+      },
+    },
+    beforeDestroy() {
+      clearInterval(this.timer)
+    },
+  }
+</script>
+```
+
+参考配置说明：[https://github.com/ecomfe/echarts-wordcloud](https://github.com/ecomfe/echarts-wordcloud)
+
+## 最后
+
+> 如果感觉还不错的话，老铁们是不是来[github里赏个★Star](https://github.com/jackchen0120/vueDataV)鼓励一哈。后续会持续更新和优化，也期待大家的交流。

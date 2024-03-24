@@ -3,7 +3,7 @@
  * @author: Jack Chen @懒人码农
  * @Date: 2024-03-07 23:59:16
  * @LastEditors: Jack Chen
- * @LastEditTime: 2024-03-19 22:25:55
+ * @LastEditTime: 2024-03-25 00:39:03
  */
 /** @type {import("pliny/config").PlinyConfig } */
 const siteMetadata = {
@@ -11,7 +11,7 @@ const siteMetadata = {
   author: 'Jack Chen @懒人码农',
   headerTitle: 'Web3研习社',
   description:
-    '分享最新的技术动态、应用案例与发展趋势，推动Web3技术的普及和应用创新，探寻Web4.0数字化未来时代。以及记录码农学习的经验，分享学习心得，帮助同志共同成长。',
+    '分享最新的技术动态、应用案例与发展趋势，推动Web3技术的普及和应用创新，探寻Web4.0数字化未来时代。以及记录码农学习的经验，分享学习心得，帮助有需要的同志共同成长。',
   language: 'en-us',
   theme: 'system', // system, dark or light
   siteUrl: 'https://54web3.cc',
@@ -100,7 +100,7 @@ const siteMetadata = {
     },
   },
   search: {
-    provider: 'kbar', // kbar or algolia
+    provider: '', // kbar or algolia
     kbarConfig: {
       searchDocumentsPath: 'search.json', // path to load documents to search
     },

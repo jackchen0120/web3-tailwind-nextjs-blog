@@ -74,6 +74,10 @@ module.exports = () => {
         },
         {
           protocol: 'https',
+          hostname: 'mmbiz.qpic.cn',
+        },
+        {
+          protocol: 'https',
           hostname: 'tailwind-nextjs-starter-blog.vercel.app',
         },
       ],

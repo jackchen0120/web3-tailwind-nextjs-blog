@@ -1,0 +1,508 @@
+---
+title: 'Vue+Echarts构建可视化大数据平台实战项目（上篇）'
+date: '2024-03-23'
+lastmod: '2024-03-23'
+tags: ['入门教程', '数据可视化']
+draft: false
+summary: '分享之前我们先来普及一下什么是数据可视化？数据可视化可以把数据从冰冷的数字转换成图形，揭示蕴含在数据中的规律和道理。数据可视化通俗来说就是：数据的展示、处理和分析。目的是借助于图形化手段，清晰有效地传达与沟通信息'
+images: ['/static/images/dataV.jpg']
+---
+
+<TOCInline toc={props.toc} exclude="Introduction" />
+
+## 前言
+
+> 分享之前我们先来普及一下什么是数据可视化？数据可视化可以把数据从冰冷的数字转换成图形，揭示蕴含在数据中的规律和道理。数据可视化通俗来说就是：数据的展示、处理和分析。目的是借助于图形化手段，清晰有效地传达与沟通信息。
+
+那前端数据可视化又是什么呢？前端数据可视化其实就是利用前端表现层的手段，以前端手段展示、处理和分析数据。前端因为H5的到来，使前端有了质的飞跃，也使前端数据可视化的飞速发展得到了契机。H5提供的canvas就是这一契机。它是前端利用JS制作在做前端数据可视化的利器，几乎全部前端数据可视化工具都是基于其上做的。
+
+简而言之，前端数据可视化是数据可视化的发展也是促使前端发展的支柱。
+
+接下来要实现数据可视化平台酷屏展示效果，前端界出现了各种第三方开源库：[Echarts（百度）](https://www.echartsjs.com/zh/index.html)，[AntV（阿里）](https://antv.vision/zh)，[Highcharts（国外公司）](https://www.highcharts.com.cn/demo/highcharts/)，[D3.js（国外公司）](https://observablehq.com/@d3/gallery)等。但是，万变不离其宗。 ![Web3研习社](https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2020/5/13/1720e241e71117d3~tplv-t2oaga2asx-image.image)
+
+总的来说，所有的第三方库都是基于这两种浏览器图形渲染技术实现的： Canvas 和 SVG 。
+
+| SVG                                                                                 | Canvas                                                                                             |
+| ----------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| 不依赖分辨率                                                                        | 依赖分辨率                                                                                         |
+| 支持事件处理器                                                                      | 不支持事件处理器                                                                                   |
+| 最适合带有大型渲染区域的应用程序（如地图）                                          | 弱的文本渲染能力                                                                                   |
+| 复杂度高会减慢渲染速度（任何过度使用 DOM 的应用都不快）                             | 能够以 .png 或 .jpg 格式保存结果图像                                                               |
+| 不适合游戏应用                                                                      | 最适合图像密集型的游戏                                                                             |
+| 可以为某个元素附加 JavaScript 事件处理器。在 SVG 中，每个被绘制的图形均被视为对象。 | 一旦图形被绘制完成，它就不会继续得到浏览器的关注。如果其位置发生变化，那么整个场景都需要重新绘制。 |
+
+## 数据可视化利器对比
+
+1、**兼容性**
+
+- Highcharts 兼容 IE6 及以上的所有主流浏览器，完美支持移动端缩放、手势操作。
+- Echarts 兼容 IE6 及以上的所有主流浏览器，同样支持移动端的缩放和手势操作。
+- D3 兼容IE9 及以上的所有主流浏览器，对于移动端的兼容性也同上。
+- AntV 兼容IE9 及以上的所有主流浏览器，对于移动端的兼容性也同上。
+
+2、**是否免费/开源**
+
+- Highcharts 非商业免费，商业需授权，代码开源。
+- Echarts 完全免费，代码开源。
+- D3 完全免费，代码开源。
+- AntV 完全免费，代码开源。
+
+3、**难易程度**
+
+- Highcharts 基于SVG，方便自己定制，但图表类型有限。
+- Echarts 基于Canvas，适用于数据量比较大的情况。
+- D3版本v3 基于SVG，方便自己定制；D3版本v4支持Canvas+SVG，如果计算比较密集，也可以选择用Canvas。除此之外，D3图表类型非常丰富，几乎可以满足所有开发需求，但代码相对于以上两个插件来说，会稍微难一点。
+- G 是 AntV 蚂蚁金服旗下一款易用、高效、强大的 2D 可视化渲染引擎，提供 Canvas、SVG 等多种渲染方式的实现。
+
+通过各种比较之后，我最终选择基于Echarts进行开发，上手快。当然，如果技术够硬，可以选择D3.js等，学成后牛逼哄哄，非常适合用于为用户制定个性化图表，但更强的专业性也就意味着更高的学习成本，仁者见仁智者见智吧。
+
+## 了解可视化相关设计
+
+自己去百度搜索数据可视化设计，乍一看，设计主题都是偏深蓝色调。科技感，酷炫，大屏展示，视觉冲击感强。如图：
+
+![Web3研习社](https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2020/5/13/1720e241e8542bbe~tplv-t2oaga2asx-image.image)
+
+看完这些，基本对大数据可视化的设计有所了解，没有UI设计师，自己也懂一点设计得话，前端一样可以愉快的玩耍。先上一波效果图。
+
+## 效果截图
+
+#### 登录界面
+
+![Web3研习社](https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2020/5/13/1720e241ebcdfa35~tplv-t2oaga2asx-image.image) ![Web3研习社](https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2020/5/13/1720e241ed0c8e4a~tplv-t2oaga2asx-image.image) ![Web3研习社](https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2020/5/13/1720e241ed2467b9~tplv-t2oaga2asx-image.image)
+
+#### 酷屏首页组件库
+
+![Web3研习社](https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2020/5/13/1720e241ed9e3260~tplv-t2oaga2asx-image.image)
+
+![Web3研习社](https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2020/5/13/1720e24214789add~tplv-t2oaga2asx-image.image)
+
+![Web3研习社](https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2020/5/13/1720e2421b43d99a~tplv-t2oaga2asx-image.image)
+
+![Web3研习社](https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2020/5/13/1720e24225dfc125~tplv-t2oaga2asx-image.image)
+
+看了以上效果图，都只是静态的，还不过瘾，直接线上体验：[https://jackchen0120.github.io/vueDataV/](https://jackchen0120.github.io/vueDataV/)
+
+高端大气上档次，是我追求的目标。如果感觉还不错的话，老铁们是不是赏个点赞鼓励一哈，作者才有动力继续写下去。好了，言归正传，想要快速做出酷炫大屏，让人眼前一亮，就请接着往下看。
+
+## 项目架构
+
+```json
+│   vue.config.js // webpack配置
+├─public
+│   favicon.ico // ico图标
+│   index.html // 入口html文件
+└─src
+│   App.vue // 根组件
+│   main.js // 程序入口文件
+├─assets
+│ ├─iconfont // 引用阿里巴巴矢量图标库
+│ ├─img // 存放公共图片文件夹
+│ ├─js
+│ │   utils.js // 封装工具类方法
+│ └─styles
+│ │   base.scss // 基础样式文件
+│ │   common.scss // 公用样式文件
+│ └─fonts // 字体库文件
+├─components
+│ │   index.js // 封装组件库
+│ ├─bar3d // 3D立体柱状图
+│ ├─bgAnimation // 登录界面背景图动画
+│ ├─cakeLinkage // 柱饼组合联动
+│ ├─circleNesting // 圆环套圆环
+│ ├─circleRunway // 环形跑道图
+│ ├─colorfulArea // 多彩轮播面积
+│ ├─colorfulRadar // 多彩雷达
+│ ├─dynamicLine // 动态轮播折线图
+│ ├─dynamicList // 动态列表动画
+│ ├─flashCloud // 闪动云
+│ ├─gauge // 仪表盘
+│ ├─modal // 自定义全局模态框
+│ ├─pyramid // 金字塔动画
+│ ├─pyramidTrend // 金字塔趋势
+│ ├─rainbow // 彩虹轨道图
+│ ├─ringPie // 环形饼图
+│ ├─ringPin // 环形气泡图
+│ ├─rotateColorful // 旋转多彩图
+│ ├─scanRadius // 扫描半径图
+│ ├─scrollArc // 滚动弧形线
+│ ├─seamless // 新闻无缝滚动
+│ ├─sinan // 司南排名图
+│ ├─staffMix // 人员占比
+│ ├─szBar // 双轴柱状图
+│ ├─toast
+│ │   index.js // 注册全局消息提示框组件
+│ │   index.vue // 自定义消息提示框模板
+│ └─waterPolo
+│   index.vue // 水球图、水波图
+├─router
+│   index.js // 单页面路由注册组件
+├─store
+│   index.js // 状态管理仓库未使用到
+└─views
+    Home.vue // 酷屏首页统计图
+    Login.vue // 登录界面
+```
+
+## 技术栈
+
+- vue2.6
+- echarts4.7
+- axios
+- webpack
+- ES6
+- scss
+- css3
+- jquery
+- iconfont
+
+## 功能模块
+
+- 登录界面抖动
+- 粒子动效
+- 背景图轮播
+- 自定义全局模态框
+- 自定义消息提示框
+- 数字滚动
+- 酷屏首页组件库
+- 各种酷炫小部件
+- 可视化面板布局
+
+## 准备工作
+
+1.  windows 10系统
+2.  下载安装 nodejs v10+ [https://nodejs.org/zh-cn/](https://nodejs.org/zh-cn/)
+3.  代码编辑器工具 sublime text 3
+
+## 搭建开发环境（此处非小白可以忽略）
+
+1） 打开命令行窗口，输入 node -v 查看，出现版本号说明已安装成功，如下图：
+
+![Web3研习社](https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2020/5/13/1720e242186b9799~tplv-t2oaga2asx-image.image)
+
+2） 使用以下命令安装vue-cli3
+
+```bash
+npm install -g @vue/cli
+# 安装指定版本
+npm install -g @vue/cli@3.11.0
+# OR
+yarn global add @vue/cli
+```
+
+![](https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2020/5/13/1720e2421d6cb91f~tplv-t2oaga2asx-image.image)
+
+3）安装完成，检查vue版本，如下图：
+
+```bash
+vue - V
+```
+
+![Web3研习社](https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2020/5/13/1720e2422f91d608~tplv-t2oaga2asx-image.image)
+
+4） vue-cli3 创建项目及运行
+
+```bash
+vue create woyouzhe
+cd woyouzhe
+npm run serve
+```
+
+![Web3研习社](https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2020/5/13/1720e242384fc970~tplv-t2oaga2asx-image.image)
+
+![Web3研习社](https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2020/5/13/1720e2423a046b22~tplv-t2oaga2asx-image.image)
+
+![Web3研习社](https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2020/5/13/1720e2423f868a86~tplv-t2oaga2asx-image.image)
+
+在浏览器地址栏输入：http://localhost:8080/
+
+![Web3研习社](https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2020/5/13/1720e2424bd561ac~tplv-t2oaga2asx-image.image)
+
+5）开发配置 在使用vue-cli3脚手架创建项目后，因为webpack的配置均被隐藏，当你需要覆盖原有的配置时，则需要在项目的根目录下，新建vue.config.js文件，来配置新的配置如下（含注解）：
+
+```javascript
+module.exports = {
+  publicPath: process.env.NODE_ENV === 'production' ? '/vueDataV/' : '/', // 部署生产环境和开发环境下的URL：可对当前环境进行区分
+  lintOnSave: false, // 是否在代码保存时进行eslint检测
+  productionSourceMap: false, // 是否在构建生产包时生成sourceMap文件，false将提高构建速度
+  devServer: {
+    // webpack-dev-server 相关配置
+    port: 8081, // 端口号
+    hotOnly: false, // 取消热更新
+    // proxy: { // 使用代理
+    //   '/api': {
+    //      target: '//api.github.com', // 目标代理服务器地址
+    //     changeOrigin: true, // 允许跨域
+    //     pathRewrite:{
+    //       '^/api': '' // 重写路径，需要设置重写的话，要在后面的调用接口前加上/api来代替target
+    //     }
+    //   }
+    // }
+  },
+  configureWebpack: {
+    // 把原本需要写在webpack.config.js中的配置代码 写在这里 会自动合并
+    externals: {
+      jquery: '$',
+      echarts: 'echarts',
+      axios: 'axios',
+    },
+  },
+}
+```
+
+在配置文件vue.config.js中添加webpack的externals对象，把不需要打包的依赖库（减少打包文件体积），直接按上面的方式写入。然后在index.html文件中引入CDN即可，如下图：
+
+![Web3研习社](https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2020/5/13/1720e24255f4104d~tplv-t2oaga2asx-image.image)
+
+6） 公共样式，图片，字体，JS，统一存放在/src/assets/文件夹下，如下图：
+
+![Web3研习社](https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2020/5/13/1720e242599ee4db~tplv-t2oaga2asx-image.image)
+
+js文件夹里面的utils.js文件的作用，如下图：
+
+![Web3研习社](https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2020/5/13/1720e242a054e3de~tplv-t2oaga2asx-image.image)
+
+作者偷懒只针对酷屏首页组件库会用到，通常按照UI设计师提供的数据可视化屏幕尺寸都是宽：1920px，高：1080px，所以上面的配置也按照这个尺寸进行屏幕缩放。后续会专门讲数据可视化面板的合理布局。首页引用如下图：
+
+![Web3研习社](https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2020/5/13/1720e242688f9c62~tplv-t2oaga2asx-image.image)
+
+iconfont文件夹存放图标文件，可以直接去[阿里巴巴矢量图标库](https://www.iconfont.cn/)查找下载所需要的图标。
+
+style文件夹存放base.scss（基本样式）和common.scss（组件库通用样式），直接在main.js文件引入即可，如下图：
+
+![Web3研习社](https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2020/5/13/1720e242742d6b10~tplv-t2oaga2asx-image.image)
+
+## 功能设计和代码实现
+
+按照上面的步骤完成脚手架构建，把需要的axios、vue-router、echarts、scss、jquery等依赖库引入和安装配置好，准备开始上路。
+
+登录界面主要功能包含：背景图轮播、粒子动效、登录框抖动、自定义消息提示框等等。
+
+- 背景图轮播
+
+利用css3动画属性animation实现轮播背景图的路径，使这个动画无限循环下去，以实现背景图自动轮播的效果。背景图轮播功能已封装注册全局小组件在components/bgAnimation目录文件，直接上代码：
+
+```html
+<template>
+  <ul class="slide-box">
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+  </ul>
+</template>
+
+<script>
+  export default {
+    name: 'bgAnimation',
+  }
+</script>
+
+<style lang="scss">
+  .slide-box {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 134, 179, 0.5);
+    top: 0;
+    left: 0;
+    z-index: 0;
+    li {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0px;
+      left: 0px;
+      color: transparent;
+      background-size: cover;
+      background-position: 50% 50%;
+      background-repeat: none;
+      opacity: 0;
+      z-index: 0;
+      -webkit-backface-visibility: hidden;
+      -webkit-animation: imgAnimation 48s linear infinite 0s;
+      -moz-animation: imgAnimation 48s linear infinite 0s;
+      -o-animation: imgAnimation 48s linear infinite 0s;
+      -ms-animation: imgAnimation 48s linear infinite 0s;
+      animation: imgAnimation 48s linear infinite 0s;
+
+      &:nth-child(1) {
+        background-image: url(../../assets/img/bg-4.jpg);
+      }
+      &:nth-child(2) {
+        background-image: url(../../assets/img/bg-5.jpg);
+        -webkit-animation-delay: 12s;
+        -moz-animation-delay: 12s;
+        -o-animation-delay: 12s;
+        -ms-animation-delay: 12s;
+        animation-delay: 12s;
+      }
+      &:nth-child(3) {
+        background-image: url(../../assets/img/bg-2.jpg);
+        -webkit-animation-delay: 24s;
+        -moz-animation-delay: 24s;
+        -o-animation-delay: 24s;
+        -ms-animation-delay: 24s;
+        animation-delay: 24s;
+      }
+      &:nth-child(4) {
+        background-image: url(../../assets/img/bg-4.jpg);
+        animation-delay: 36s;
+      }
+    }
+  }
+  @-webkit-keyframes imgAnimation {
+    0% {
+      opacity: 0;
+      -webkit-animation-timing-function: ease-in;
+    }
+    8% {
+      opacity: 1;
+      -webkit-transform: scale(1.1);
+      -webkit-animation-timing-function: ease-out;
+    }
+    17% {
+      opacity: 1;
+      -webkit-transform: scale(1.2);
+    }
+    25% {
+      opacity: 0;
+      -webkit-transform: scale(1.3);
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+  @keyframes imgAnimation {
+    0% {
+      opacity: 0;
+      animation-timing-function: ease-in;
+    }
+    8% {
+      opacity: 1;
+      transform: scale(1.1);
+      animation-timing-function: ease-out;
+    }
+    17% {
+      opacity: 1;
+      transform: scale(1.2);
+    }
+    25% {
+      opacity: 0;
+      transform: scale(1.3);
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+</style>
+```
+
+如果对animation属性不熟，可以参考这个[网站教程](https://www.runoob.com/cssref/css3-pr-animation.html)。
+
+- 粒子动效
+
+这种粒子背景特效在Vue框架中实现不难，因为已经有大神帮我们做好了，我们只需引入到自己的项目中即可，作者推荐vue-particles插件，简单看一下使用，具体用法可以移步[vue-particles官网](https://vue-particles.netlify.app/)。
+
+```html
+<vue-particles
+  color="#6495ED"
+  :particleOpacity="0.7"
+  :particlesNumber="80"
+  shapeType="circle"
+  :particleSize="4"
+  linesColor="#6495ED"
+  :linesWidth="1"
+  :lineLinked="true"
+  :lineOpacity="0.6"
+  :linesDistance="150"
+  :moveSpeed="3"
+  :hoverEffect="true"
+  hoverMode="grab"
+  :clickEffect="true"
+  clickMode="push"
+>
+</vue-particles>
+```
+
+- 自定义全局消息提示框
+
+消息弹框组件，默认3秒后自动关闭，可设置info/success/warning/error类型。效果如下图：
+
+![Web3研习社](https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2020/5/13/1720e2427c0b8542~tplv-t2oaga2asx-image.image)
+
+![Web3研习社](https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2020/5/13/1720e2428e8e986e~tplv-t2oaga2asx-image.image)
+
+消息弹框功能已封装注册全局小组件在components/toast目录文件，代码如下：
+
+```html
+<template>
+  <transition name="fade">
+    <div class="toast-container" v-if="visible">
+      <div class="toast" :class="type">
+        <div class="content">
+          <i class="iconfont" :class="'icon-' + type"></i>
+          <span>{{ content }}</span>
+        </div>
+        <i v-if="hasClose" class="iconfont icon-close close" @click="visible = false"></i>
+      </div>
+    </div>
+  </transition>
+</template>
+
+<script>
+  export default {
+    name: 'Toast',
+    data() {
+      return {
+        content: '',
+        time: 3000,
+        visible: false,
+        type: 'error', //四种类型：info, success, warning, error
+        hasClose: false,
+      }
+    },
+    mounted() {
+      this.close()
+    },
+    methods: {
+      close() {
+        setTimeout(() => {
+          this.visible = false
+        }, this.time)
+      },
+    },
+  }
+</script>
+```
+
+在components/toast/index.js目录文件中注册全局组件，如下图：
+
+![Web3研习社](https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2020/5/13/1720e2427dbb560e~tplv-t2oaga2asx-image.image)
+
+在main.js中全局引用，如下图：
+
+![Web3研习社](https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2020/5/13/1720e242a2b7d0dc~tplv-t2oaga2asx-image.image)
+
+在登录模板界面调用即可，如下图：
+
+![Web3研习社](https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2020/5/13/1720e2429de4cc51~tplv-t2oaga2asx-image.image)
+
+| 参数名   | 类型    | 说明                                 |
+| -------- | ------- | ------------------------------------ |
+| content  | String  | 内容                                 |
+| time     | Number  | 消失时间，默认3秒后消失              |
+| type     | String  | info/success/warning/error，默认info |
+| hasClose | Boolean | 是否含关闭按钮，默认false            |
+
+## 最后
+
+由于时间关系，文章写的仓促，难免会有些问题或BUG出现，愿意接受批评和指正。此次实战项目分享内容分为上下两篇文章，下一篇要分享的内容大概有：自定义全局模态框、首页设计布局、数字滚动、某个酷炫小部件开发等。
+
+[下一篇讲讲可视化酷屏展示公司品牌实例](/blog/induction-tutorial/vue-echarts-next-section)
+
+1.  基于 flexible.js + rem 智能大屏适配
+2.  sublime text 3 cssrem插件
+3.  Flex 布局
+4.  Echarts 图表和地图的基本使用
+
+> 如果感觉还不错的话，老铁们是不是来[github里赏个★Star鼓励](https://github.com/jackchen0120/vueDataV)一哈。后续会持续更新和优化，也期待大家的交流。

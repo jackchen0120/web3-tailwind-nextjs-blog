@@ -1,0 +1,166 @@
+---
+title: 'Web3开发学习路线'
+date: '2024-03-22'
+lastmod: '2024-03-22'
+tags: ['学习路线', '区块链', 'Dapp应用']
+draft: false
+summary: '我们将有关在Web3中构建的所有最有用的信息汇集到本文中。你将找到指导您完成开发过程的每一步的教程，如部署智能合约、Dapps等等。'
+images:
+  [
+    'https://mmbiz.qpic.cn/mmbiz_jpg/GxbBAxrsEibqsq6I9W5K5bx3Rib1dqUFTEf102djiaxicicdqzGCasUMg291WBF4s60nUj73qZoticLib9RXiaYjT41HTQ/640?wx_fmt=jpeg',
+  ]
+---
+
+<TOCInline toc={props.toc} exclude="Introduction" />
+
+## 前言
+
+> 我们将有关在Web3中构建的所有最有用的信息汇集到本文中。你将找到指导您完成开发过程的每一步的教程，如部署智能合约、Dapps等等。Web3开发有多种途径可供选择。你可以是前端开发者、全栈开发者、智能合约开发者、Rust/Solana开发者、Solidity/Go开发者、架构、区块链、协议开发者等等。
+
+Web3.0 是一个去中心化的网络，通过将权力和数据集中到用户手中，而不是某个公司所独有。将数据分布到网络上其中内含去中心化的区块链技术。Web3.0 这个词语已存在多年了，只是在过去一年才开始流行起来。使用 Web3，网络是去中心化的，因此没有权威机构对其进行控制，并且构建在网络之上的去中心化应用程序（dapps）是开放的。去中心化网络的开放性意味着任何一方都无法控制数据或限制访问。任何人都可以在未经中央公司许可的情况下构建和连接不同的 dapp。
+
+Web3.0 的主要特点包括如下几点：
+
+- 语义 Web：它是 Web3.0 的关键，使机器易于处理数据。
+- AI：AI是影响 Web3.0 技术流行的主要关键因素之一。它使机器通过大量的Web数据变得更加智能，以满足用户的需求。
+- 3D图形：Web3.0 已经超越了传统的互联网，因为它的三维技术，它提供了一个比2D更现实的三维在线世界。
+- 无处不在：同时存在或无处不在的概念，移动设备的兴起日益增加，许多人更容易随时随地访问互联网。
+- 开放性和互操作性，这指的是在应用程序编程接口、数据格式、协议和设备与平台之间的互操作性方面的开放性。
+- 全球数据存储库，这是一种跨程序和跨网络访问信息的能力。
+
+总之：Web3.0 是读、写、拥有网络的一切。
+
+## 概念
+
+> 无论你是做前端、后端、智能合约还是全栈，都需要了解 Web3 中的基本概念。其中包括：`Web3 原理、加密货币、区块链、钱包、交易所、区块链浏览器、智能合约、NFT、DApp、DAO、比特币底层原理及核心技术、以太坊底层原理及核心技术`。
+
+我们先了解一下专业术语有哪些：
+
+- **Web3：** 它是以太坊区块链 Ethereum blockchain 和智能合约 Smart Contracts 之间的连接。
+- **以太坊 Ethereum：** 一个去中心化的开源区块链 blockchain，允许用户通过创建智能合约 creating smart contracts 与网络进行交互。它的原生加密货币是以太币。就市值而言，以太币是仅次于比特币的第二大最有价值的加密货币。它由 Vitalik Buterin 于 2013 年创建。
+- **智能合约 Smart Contracts ：** 它们是存储在区块链上的计算机程序 computer programs ，在满足预定条件时运行。智能合约是用 Solidity 语言编写的。
+- **去中心化 Decentralized ：** 数据状态不由中央实体 central entity、平台 platform 或个人 individual 收集
+- **区块链：** 区块链网络是一种点对点连接，其中信息在多个设备之间共享，几乎不可能被黑客入侵。它是一种记录信息的系统，其方式使得很难或不可能更改保存在网络上的信息。
+- **Solidity：** 一种用于编写智能合约 writing smart contracts 的面向对象 object-oriented 的编程语言。它用于在各种区块链平台上实施智能合约，最著名的是以太坊。Solidity 的语法类似于 javascript。要了解 Solidity，最好有 javascript 等编程语言的背景。直接跳入 Solidity 是一个坏主意
+- **Dapp：** 代表去中心化应用程序 Decentralized App 。它们是在去中心化网络或区块链上运行其后端代码（主要用 Solidity 编写的智能合约）的应用程序。可以使用 react、vue 或 Angular 等前端框架构建 Dapps。
+- **Bitcoin 比特币：** 世界上第一个被广泛应用的加密货币。
+- **Crypto:** 又称 Cryptocurrency，加密货币，一种去中心化的数字货币。
+- **NFT：** Non-Fungible Token，一种在链上被记录的、有所有权的数字资产。
+- **DAO：** Decentralized Autonomous Organization，去中心化的自治组织。
+- **Metaverse 元宇宙：** 一种由科技手段创造的虚拟世界的构想。
+- **DeFi Decentralized Finance：** 去中心化金融系统。
+- **Token 代币：** 可以理解为加密货币、NFT 等数字资产的统称。
+- **GameFi：** Game + DeFi，中文说法链游，游戏中的金融系统可通过加密货币和 NFT 映射到现实。
+
+## 区块链基础知识
+
+> 区块链是 Web3 的基础。你首先要了解它是如何工作的，以及它为什么会彻底改变我们交换商品和支付的方式。
+
+区块链技术不仅仅是和加密货币有关，而是已经成为真正的分布式云计算系统，能够运行完整的后端（为了和 web2.0 时代的后端进行区分，我有时也习惯称它为链端）来为前端的去中心化应用程序 (DApp) 提供动力。
+
+在学习完区块链基础知识后，你应该能够准确回答出以下问题：
+
+- Web1.0、Web2.0 和 Web3 的区别？
+- 什么是区块链？
+- 什么是分布式账本？
+- 什么是加密货币？
+- 什么是加密钱包？
+- 什么是区块链浏览器？
+
+## 去中心化应用基础知识
+
+当你了解了什么是区块链、Node、共识机制和这些技术的主要组件后，你应该会思考：“我可以使用区块链开发什么样的应用程序？”
+
+建立在区块链之上的应用被称为去中心化应用或者被称为 DApp，它在大的结构上和传统 Web2.0 应用很像，包含两个部分：
+
+- 使用 JavaScript 或 React、Vue、Svelte 等框架/库构建的标准前端。
+- 使用 Solidity/Solana/Rust 等语言构建的后端，它们建立在区块链之上。
+
+你除了要了解什么是去中心化应用，还要了解 DApp 的前端和后端是如何通信和交换数据的，你需要学习前端开发和后端开发，并且需要掌握 API 的基本原理。
+
+## 前端基础知识
+
+因为 DApp 也要有前端页面，所以你必须懂前端基础知识。这部分内容并不多。
+
+- 一款代码编辑器：VSCode。
+- 三门必备网站编程语言：HTML、CSS、JavaScript。
+- 一门非必选静态类型语言：TypeScript。
+
+## 前端框架
+
+只学习前端基础知识确实能够开发一个 DApp 的前端，但要想 hold 住一个稍有规模的项目还是比较吃力的。这时需要学习一门框架。
+
+目前大多数 Web3 项目都会采用 Next.js 框架，并使用 Vercel 部署。
+
+而 Next.js 框架又基于 React 库。
+
+所以这里你需要学习 React 和 Next.js。
+
+当然你也可以学习 Vue、Angular、jQuery 这些库或者框架，但使用率没那么高，机会会少很多。
+
+## 后端基础知识
+
+任何一门编程语言都可以充当 Web3 的后端，可以学习 Nodejs、Go、Java。
+
+这里推荐 Nodejs，因为是全栈，使用 Nodejs 的话可以前后端都只使用一门语言就可以了。
+
+## 后端框架
+
+Next.js 可以写一些 API，使用 Next.js 作为后端框架完全可以。
+
+当然也可以选择其他语言的框架，比如 Nodejs 的 express、koa；Java 的 Spring；Go 的 gin、Iris 等。
+
+## 智能合约
+
+你需要掌握 Remix 编辑器的使用，Solidity 编程语言的使用。还要学会一些工具，比如 Hardhat、Waffle、Ganache 和 Truffle，它们可以帮我们更好的完成智能合约编译、测试和部署工作。你还需要学习 OpenZeppelin，它是一个很棒的 Solidity 库。
+
+然后还需要学习各种协议标准以及它们的区别，比如 ERC20、ERC721 和 ERC1155 等。这是必不可少的基础。同时你还需要知道代理合约。
+
+## 智能合约交互
+
+智能合约交互需要学习 Web3.js、Ethers.js 和 Wagmi 这三个主流的库。如果你使用 TypeScript，还需要学会使用 typechain 这个库。
+
+Ethers.js 是我认为目前最好的智能合约交互库。
+
+如果你使用 Next.js + React + Typescript 进行开发，那么 Wagmi 是更好的选择。
+
+## 基础设施
+
+这部分内容比较杂，包括公链、域名系统、EVM、跨链桥、去中心化存储、IPFS、预言机等。
+
+但很多都是存在于概念上的，在技术上可能很少会接触到。
+
+但是像 IPFS 和预言机这种技术还是会用得到的。如果使用 IPFS 还要使用 Pinata 这类 Pin 服务。
+
+总结来说，基础设施除了一些原理性知识和概念外，主要是去中心化存储这项技术，它取代了传统数据库，用来存储体积大难以上链的数据。
+
+## 了解应用生态
+
+基础知识的学习对于大多数人而言注定是枯燥乏味的，在学习区块链的同时不妨同时了解一下现在国内外有哪些具体的应用。
+
+你也许有听过几个应用了，例如：[MetaMask](https://metamask.io/)（最知名的区块链钱包）、[Stepn](https://stepn.com)（一个能购买跑鞋，跑步会赚取收益的Dapp）、[AxieInfinity](https://axieinfinity.com/)（一款神奇宝贝主题的区块链游戏）、NBA TopShot（NBA官方验证的NFT）、[OpenSea](https://opensea.io/)（全球最大的NFT交易市场）等等。了解这些基于区块链的Dapp，能够让我们更加直观的认识到区块链的应用场景。
+
+在你了解的过程中，你还会发现如今区块链生态的繁荣，目前有很多的Dapp不是在以太坊这一条链上运行的了，还有BNB Chain、SOLONA、TRON等众多公链生态。这里推荐每位开发者都通过dappradar.com探索一下Dapp生态，而且这个网站的Blog质量极高，有很多优秀的博客文章和专业的区块链调研报告。
+
+## 学习资料
+
+- [B站-肖臻老师 区块链技术与应用公开课](https://www.bilibili.com/video/BV1Vt411X7JF/)
+- [比特币底层设计](https://bitcoin.org/files/bitcoin-paper/bitcoin_zh_cn.pdf)
+- [B站-崔棉大师](https://space.bilibili.com/286084162)
+- [区块链基础教程](https://www.liaoxuefeng.com/wiki/1207298049439968)
+- [精通比特币 第二版 中文版](https://github.com/jackchen0120/bitcoin_book_2nd)
+- [精通以太坊 中文版](https://github.com/jackchen0120/ethereum_book)
+- [Solidity 中文官方资料](https://solidity-cn.readthedocs.io/zh/develop/)
+- [Solidity 入门](https://www.wtf.academy/)
+- [Web3.js 官方文档](https://web3js.readthedocs.io/en/v1.10.0/)
+- [Metamask 区块链钱包](https://metamask.io/)
+- [Dapp 生态圈](https://dappradar.com/)
+- [在线游戏学习 Dapp](https://cryptozombies.io/)
+- [以太坊开发基础](https://ethereum.org/zh/developers/)
+- [Remix IDE 编辑器](https://remix.ethereum.org/)
+- [Ethers.js 官方文档](https://docs.ethers.org/v5/)
+- [Truffle 官方文档](https://trufflesuite.com/)
+- [Hardhat 官方文档](https://hardhat.org/)
+- [OpenZeppelin 代码库](https://github.com/OpenZeppelin/openzeppelin-contracts)
+- [ERC-20 代币标准](https://eips.ethereum.org/EIPS/eip-20)
+- [以太坊官网-ERC-20 代币标准](https://ethereum.org/zh/developers/docs/standards/tokens/erc-20/)
