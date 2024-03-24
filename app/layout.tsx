@@ -1,15 +1,15 @@
 /*
- * @description: 描述信息
+ * @description: 主文件布局
  * @author: Jack Chen @懒人码农
  * @Date: 2024-03-05 20:30:07
  * @LastEditors: Jack Chen
- * @LastEditTime: 2024-03-14 21:23:32
+ * @LastEditTime: 2024-03-25 02:19:07
  */
 import 'css/tailwind.css'
 import 'pliny/search/algolia.css'
 
 import { Space_Grotesk } from 'next/font/google'
-import { Analytics, AnalyticsConfig } from 'pliny/analytics'
+// import { Analytics, AnalyticsConfig } from 'pliny/analytics'
 import { SearchProvider, SearchConfig } from 'pliny/search'
 import Header from '@/components/Header'
 import SectionContainer from '@/components/SectionContainer'
@@ -83,7 +83,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <link rel="alternate" type="application/rss+xml" href="/feed.xml" />
       <body className="relative bg-[#fcfcfd] text-black antialiased dark:bg-[#050a1a] dark:text-white">
         <ThemeProviders>
-          <Analytics analyticsConfig={siteMetadata.analytics as AnalyticsConfig} />
+          {/* <Analytics analyticsConfig={siteMetadata.analytics as AnalyticsConfig} /> */}
           <SectionContainer>
             <div className="flex h-screen flex-col justify-between font-sans">
               <div className="absolute inset-0 -z-10 overflow-hidden bg-[#fcfcfd] dark:bg-[#050a1a]">
