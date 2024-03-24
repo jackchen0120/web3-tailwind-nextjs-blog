@@ -3,7 +3,7 @@
  * @author: Jack Chen @懒人码农
  * @Date: 2024-03-05 20:30:07
  * @LastEditors: Jack Chen
- * @LastEditTime: 2024-03-25 02:19:07
+ * @LastEditTime: 2024-03-25 03:07:26
  */
 import 'css/tailwind.css'
 import 'pliny/search/algolia.css'
@@ -31,6 +31,7 @@ export const metadata: Metadata = {
     default: siteMetadata.title,
     template: `%s | ${siteMetadata.title}`,
   },
+  keywords: siteMetadata.keywords,
   description: siteMetadata.description,
   openGraph: {
     title: siteMetadata.title,

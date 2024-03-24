@@ -3,7 +3,7 @@
  * @author: Jack Chen @懒人码农
  * @Date: 2024-03-05 20:30:07
  * @LastEditors: Jack Chen
- * @LastEditTime: 2024-03-05 22:06:02
+ * @LastEditTime: 2024-03-25 02:49:22
  */
 import Link from './Link'
 import Image from 'next/image'
@@ -31,7 +31,7 @@ export default function Footer() {
           {/* <div>{` • `}</div> */}
           <div>{`Copyright © ${new Date().getFullYear()}`}</div>
           <div>{` • `}</div>
-          <Link href="/">{siteMetadata.title}</Link>
+          <Link href="/">{siteMetadata.headerTitle}</Link>
         </div>
         <div className="mb-8 text-center text-sm text-gray-500 dark:text-gray-400">
           <Link href="http://beian.miit.gov.cn">湘ICP备2023013145号-1</Link>

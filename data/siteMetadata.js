@@ -3,13 +3,15 @@
  * @author: Jack Chen @懒人码农
  * @Date: 2024-03-07 23:59:16
  * @LastEditors: Jack Chen
- * @LastEditTime: 2024-03-25 00:39:03
+ * @LastEditTime: 2024-03-25 03:03:48
  */
 /** @type {import("pliny/config").PlinyConfig } */
 const siteMetadata = {
-  title: 'Web3研习社',
+  title: 'Web3研习社 - 一站式免费学习Web3技术、应用与创新的交流与分享平台',
   author: 'Jack Chen @懒人码农',
   headerTitle: 'Web3研习社',
+  keywords:
+    'Web3研习社,Dapp应用,区块链,以太坊,元宇宙,Web3D,Web3D动画,数据可视化大屏,人工智能,智能合约,开发工具,比特币,钱包',
   description:
     '分享最新的技术动态、应用案例与发展趋势，推动Web3技术的普及和应用创新，探寻Web4.0数字化未来时代。以及记录码农学习的经验，分享学习心得，帮助有需要的同志共同成长。',
   language: 'en-us',
