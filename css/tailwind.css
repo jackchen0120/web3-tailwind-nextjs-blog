@@ -52,6 +52,14 @@ input:-webkit-autofill:focus {
   margin-bottom: 0 !important;
 }
 
+.bg-linear-gradient {
+  background: linear-gradient(45deg,#5cc3ee 0,#5d91ef 29%,#5e5ef0 50%,#947be1 73%,#ca97d2 100%);
+}
+
+.bg-linear-gradient:hover {
+  background: linear-gradient(135deg,rgba(6,147,227,1) 0%,rgb(155,81,224) 100%);
+}
+
 @keyframes textclip {
   to {
     background-position: 200%;

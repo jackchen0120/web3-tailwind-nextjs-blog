@@ -1,9 +1,9 @@
 /*
- * @description: SEO组件
+ * @description: SEO配置文件
  * @author: Jack Chen @懒人码农
  * @Date: 2024-03-05 20:30:07
  * @LastEditors: Jack Chen
- * @LastEditTime: 2024-03-25 02:58:51
+ * @LastEditTime: 2024-03-25 22:05:15
  */
 import { Metadata } from 'next'
 import siteMetadata from '@/data/siteMetadata'

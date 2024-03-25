@@ -3,7 +3,7 @@
  * @author: Jack Chen @懒人码农
  * @Date: 2024-03-05 20:30:07
  * @LastEditors: Jack Chen
- * @LastEditTime: 2024-03-25 03:07:26
+ * @LastEditTime: 2024-03-26 00:12:13
  */
 import 'css/tailwind.css'
 import 'pliny/search/algolia.css'
@@ -18,6 +18,7 @@ import siteMetadata from '@/data/siteMetadata'
 import { ThemeProviders } from './theme-providers'
 import { Metadata } from 'next'
 import ProgressBarProvider from '@/components/ProgressBarProvider'
+import Script from 'next/script'
 
 const space_grotesk = Space_Grotesk({
   subsets: ['latin'],
@@ -82,6 +83,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <meta name="theme-color" media="(prefers-color-scheme: light)" content="#fff" />
       <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000" />
       <link rel="alternate" type="application/rss+xml" href="/feed.xml" />
+      <head>
+        <Script
+          strategy="afterInteractive"
+          src="https://hm.baidu.com/hm.js?d64984e982d5b707fa7f7d7fb5ce8959"
+        ></Script>
+      </head>
       <body className="relative bg-[#fcfcfd] text-black antialiased dark:bg-[#050a1a] dark:text-white">
         <ThemeProviders>
           {/* <Analytics analyticsConfig={siteMetadata.analytics as AnalyticsConfig} /> */}
