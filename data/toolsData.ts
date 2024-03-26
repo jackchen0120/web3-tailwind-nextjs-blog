@@ -83,6 +83,53 @@ const toolsData: Tools[] = [
     ],
   },
   {
+    title: '水龙头',
+    tools: [
+      {
+        title: 'Optimism Sepolia',
+        description: `POW奖励 0.5 opETH`,
+        imgSrc: '/static/images/tool/optimism.png',
+        href: 'https://www.ethereum-ecosystem.com/faucets/optimism-sepolia',
+      },
+      {
+        title: 'Ethereum Sepolia',
+        description: `POW奖励 0.5 sETH`,
+        imgSrc: '/static/images/tool/ethereum.png',
+        href: 'https://www.ethereum-ecosystem.com/faucets/ethereum-sepolia',
+      },
+      {
+        title: 'Linea Goerli',
+        description: `滴水一次 0.01 ETH`,
+        imgSrc: '/static/images/tool/linea.png',
+        href: 'https://learnweb3.io/faucets/linea_goerli/',
+      },
+      {
+        title: 'Base Sepolia',
+        description: `滴水一次 0.01 bsETH`,
+        imgSrc: '/static/images/tool/base.png',
+        href: 'https://learnweb3.io/faucets/base_sepolia/',
+      },
+      {
+        title: 'Ethereum Sepolia',
+        description: `滴水一次 0.1 sETH`,
+        imgSrc: '/static/images/tool/ethereum.png',
+        href: 'https://learnweb3.io/faucets/sepolia/',
+      },
+      {
+        title: 'Arbitrum Sepolia',
+        description: `滴水一次 0.01 arbETH`,
+        imgSrc: '/static/images/tool/arbitrum.png',
+        href: 'https://learnweb3.io/faucets/arbitrum_sepolia/',
+      },
+      {
+        title: 'Polygon Amoy',
+        description: `滴水一次 0.1 MATIC`,
+        imgSrc: '/static/images/tool/polygon.png',
+        href: 'https://learnweb3.io/faucets/polygon_amoy/',
+      },
+    ],
+  },
+  {
     title: '辅助工具',
     tools: [
       {
