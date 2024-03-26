@@ -87,15 +87,27 @@ const toolsData: Tools[] = [
     tools: [
       {
         title: 'Optimism Sepolia',
-        description: `POW奖励 0.5 opETH`,
+        description: `PoW 奖励 0.5 opETH`,
         imgSrc: '/static/images/tool/optimism.png',
         href: 'https://www.ethereum-ecosystem.com/faucets/optimism-sepolia',
       },
       {
         title: 'Ethereum Sepolia',
-        description: `POW奖励 0.5 sETH`,
+        description: `PoW 奖励 0.5 sETH`,
         imgSrc: '/static/images/tool/ethereum.png',
         href: 'https://www.ethereum-ecosystem.com/faucets/ethereum-sepolia',
+      },
+      {
+        title: 'Base Sepolia',
+        description: `PoW 奖励 0.5 bsETH`,
+        imgSrc: '/static/images/tool/base.png',
+        href: 'https://www.ethereum-ecosystem.com/faucets/base-sepolia',
+      },
+      {
+        title: 'Ethereum Sepolia',
+        description: `滴水一次 0.1 sETH`,
+        imgSrc: '/static/images/tool/ethereum.png',
+        href: 'https://learnweb3.io/faucets/sepolia/',
       },
       {
         title: 'Linea Goerli',
@@ -108,12 +120,6 @@ const toolsData: Tools[] = [
         description: `滴水一次 0.01 bsETH`,
         imgSrc: '/static/images/tool/base.png',
         href: 'https://learnweb3.io/faucets/base_sepolia/',
-      },
-      {
-        title: 'Ethereum Sepolia',
-        description: `滴水一次 0.1 sETH`,
-        imgSrc: '/static/images/tool/ethereum.png',
-        href: 'https://learnweb3.io/faucets/sepolia/',
       },
       {
         title: 'Arbitrum Sepolia',
