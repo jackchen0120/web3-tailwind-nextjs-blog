@@ -3,7 +3,7 @@
  * @author: Jack Chen @懒人码农
  * @Date: 2024-03-05 20:30:07
  * @LastEditors: Jack Chen
- * @LastEditTime: 2024-03-18 22:36:22
+ * @LastEditTime: 2024-03-27 00:22:15
  */
 interface Tools {
   title: string
@@ -29,7 +29,7 @@ const toolsData: Tools[] = [
       },
       {
         title: 'OKX Wallet',
-        description: `Web3 多链钱包`,
+        description: `Web3多链钱包`,
         imgSrc: '/static/images/tool/okx.jpeg',
         href: 'https://www.okx.com/cn/web3',
       },
@@ -87,19 +87,19 @@ const toolsData: Tools[] = [
     tools: [
       {
         title: 'Optimism Sepolia',
-        description: `PoW 奖励 0.5 opETH`,
+        description: `PoW奖励 0.5 opETH`,
         imgSrc: '/static/images/tool/optimism.png',
         href: 'https://www.ethereum-ecosystem.com/faucets/optimism-sepolia',
       },
       {
         title: 'Ethereum Sepolia',
-        description: `PoW 奖励 0.5 sETH`,
+        description: `PoW奖励 0.5 sETH`,
         imgSrc: '/static/images/tool/ethereum.png',
         href: 'https://www.ethereum-ecosystem.com/faucets/ethereum-sepolia',
       },
       {
         title: 'Base Sepolia',
-        description: `PoW 奖励 0.5 bsETH`,
+        description: `PoW奖励 0.5 bsETH`,
         imgSrc: '/static/images/tool/base.png',
         href: 'https://www.ethereum-ecosystem.com/faucets/base-sepolia',
       },
