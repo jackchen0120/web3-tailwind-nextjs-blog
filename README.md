@@ -71,7 +71,7 @@ I wanted it to be nearly as feature-rich as popular blogging templates like [bea
 1. Clone the repo
 
 ```bash
-npx degit 'timlrx/tailwind-nextjs-starter-blog'
+npx degit 'jackchen0120/tailwind-nextjs-starter-blog'
 ```
 
 2. Personalize `siteMetadata.js` (site related information)
@@ -87,12 +87,6 @@ npx degit 'timlrx/tailwind-nextjs-starter-blog'
 
 ```bash
 yarn
-```
-
-Please note, that if you are using Windows, you may need to run:
-
-```bash
-set PWD="$(pwd)"
 ```
 
 ## Development
@@ -209,10 +203,6 @@ See [Next.js on Netlify](https://docs.netlify.com/integrations/frameworks/next-j
 - [How can I add a custom MDX component?](/faq/custom-mdx-component.md)
 - [How can I customize the `kbar` search?](/faq/customize-kbar-search.md)
 - [How do I deploy on Github pages?](/faq/github-pages-deployment.md)
-
-## Support
-
-Using the template? Support this effort by giving a star on GitHub, sharing your own blog and giving a shoutout on Twitter or becoming a project [sponsor](https://github.com/sponsors/jackchen0120).
 
 ## Licence
 

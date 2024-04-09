@@ -3,7 +3,7 @@
  * @author: Jack Chen @懒人码农
  * @Date: 2024-03-07 23:59:16
  * @LastEditors: Jack Chen
- * @LastEditTime: 2024-03-26 00:32:12
+ * @LastEditTime: 2024-04-09 22:28:15
  */
 /** @type {import("pliny/config").PlinyConfig } */
 const siteMetadata = {
@@ -24,12 +24,6 @@ const siteMetadata = {
   github: 'https://github.com/jackchen0120',
   juejin: 'https://juejin.cn/user/1714893872433928/posts',
   csdn: 'https://blog.csdn.net/qq_15041931?type=lately',
-  // twitter: 'https://twitter.com/Twitter',
-  // facebook: 'https://facebook.com',
-  // youtube: 'https://youtube.com',
-  // linkedin: 'https://www.linkedin.com',
-  // threads: 'https://www.threads.net',
-  // instagram: 'https://www.instagram.com',
   locale: 'zh-CN',
   analytics: {
     // If you want to use an analytics provider you have to add it to the
